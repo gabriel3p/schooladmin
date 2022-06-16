@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <%- include('../components/head'); -%>
+<body>
+    <%- include('../components/header'); -%>
+    <%- include('../components/menu'); -%>
+
+    <%- include('../../partials/msg') -%>
+
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+            <h1>Feedbacks</h1>
+            <nav>
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/admin/dashboard">Painel Principal</a></li>
+                <li class="breadcrumb-item">Feedbacks</li>
+              </ol>
+            </nav>
+          </div><!-- End Page Title -->
+
+
+          <section class="section dashboard">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card" id="lista">
+                        <div class="card-body pt-4">
+
+                            <div class="px-3 border-b mb-4">
+                                <form action="/admin/feedbacks/pesquisar" id="form_pesq" method="POST" class="search-form d-flex align-items-center form_pesq">
+                                    <input class="p-2 col-12" type="text" name="pesquisa" placeholder="Pesquisar mensagem...">
+                                    <button type="submit" class="p-2">
+                                        <i class="bi bi-search"></i>
+                                    </button>
+                                </form>
+                            </div>
+
+                            <table class="table table-hover" id="filtros">
+                                <thead>
+                                    <tr>
+                                        <th scope="cols">Nome</th>
+                                        <th scope="cols">Assunto</th>
+                                        <th scope="cols">Data</th>
+                                        <% if (funcionario.cargo.toLowerCase() == 'diretor') { %>
+                                          <th scope="cols">Acções</th>
+                                        <% } %>
+                                    </tr>
+                                </thead>
+                                <tbody id="filtro_feedbacks">
+
+                                    <% feedbacks.forEach(feedback => { %>
+                                        <tr class="lida_<%= feedback.dataValues.lida %>">
+                                            <td>
+                                                <a class="feedback_item" href="/admin/feedbacks/<%= feedback.dataValues.id %>" style=" padding: .5rem 2rem .5rem 0;">
+                                                    <%= feedback.dataValues.nome %>
+                                                </a>
+                                            </td>    
+                                            <td><%= feedback.dataValues.assunto %></td>    
+                                            <td><%= setTime(feedback.dataValues.createdAt) %></td>
+                                            <% if (funcionario.cargo.toLowerCase() == 'diretor') { %>
+                                              <td>
+                                                  <a href="#" style="color: #dd3535;" data-bs-toggle="modal" data-bs-target=".modal_deletar_<%= feedback.dataValues.id %>" title="Deletar feedback"><i class="bi bi-trash-fill"></i></a>  
+                                              </td>
+                                            <% } %>
+                                        </tr>
+
+                                        <div class="modal fade modal_deletar_<%= feedback.dataValues.id %>" id="" tabindex="-1" aria-hidden="true" style="display: none;">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                              <div class="modal-content">
+                                                <div class="modal-header">
+                                                  <h5 class="modal-title">Tem certeza que quer eliminar esta mensagem?</h5>
+                                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-footer">
+                                                  <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Não</button>
+                                                  <a href="/admin/feedbacks/<%= feedback.dataValues.id %>/deletar"><button type="button" class="btn btn-danger">Sim</button></a>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div><!-- Fim Modal DEletar curso --> 
+                                    <% }) %>
+
+                                </tbody>
+                                
+                            </table>
+
+                            <nav aria-label="..." id="pagination">
+                                <ul class="pagination">
+                                  <% if (paginasTotal > 1 && pagina > 1) { %>
+                                    <li class="page-item">
+                                      <a class="page-link" href="/admin/feedbacks?pagina=<%= pagina - 1 %>" tabindex="-1" aria-disabled="true">Anterior</a>
+                                    </li>
+                                  <% } else { %>
+                                    <li class="page-item disabled">
+                                      <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Anterior</a>
+                                    </li>
+                                  <% } %>
+                                 
+          
+                                  <% for (let pag = pagina; pag <= paginasTotal; pag++) { %>
+                                   
+                                    <% if (pagina === pag) { %> 
+                                      <li class="page-item active" aria-current="page">
+                                        <a class="page-link" href="/admin/feedbacks?pagina=<%= pag %>"><%= pag %></a>
+                                      </li>
+                                      <% continue %>
+                                    <% } %>
+                                    <li class="page-item">
+                                      <a class="page-link" href="/admin/feedbacks?pagina=<%= pag %>"><%= pag %></a>
+                                    </li>
+                                   <% } %>
+          
+                                   <% if (paginasTotal > 1 && pagina < paginasTotal) { %>
+                                    <li class="page-item">
+                                      <a class="page-link" href="/admin/feedbacks?pagina=<%= pagina + 1 %>">Próximo</a>
+                                    </li>
+                                  <% } else { %>
+                                    <li class="page-item disabled">
+                                      <a class="page-link" href="#">Próximo</a>
+                                    </li>
+                                  <% } %>
+                                </ul>
+                              </nav><!-- End Disabled and active states -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </section>
+
+    </main>
+
+    <%- include('../components/footer'); -%>
+    <%- include('../components/scripts'); -%>
+
+    <script>
+      new FormFilter('form_pesq', 'alert');
+    </script>
+
+    
+</body>
+</html>  

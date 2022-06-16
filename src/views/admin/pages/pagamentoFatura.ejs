@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <%- include('../components/head'); -%>
+<body style="background: #fff;">
+    
+    <%- include('../../partials/msg'); -%>
+    <div style="display: none;" class="pagetitle">
+        <h1>Fatura do Pagamento</h1>
+    </div><!-- End Page Title -->
+
+    <div class="row" style="padding: 1rem 2rem;">
+
+        <div class="go-back">
+            <a href="/admin/pagamentos/propina" title="Voltar" style="font-size: 2rem;">
+                <i class="bi bi-arrow-left-square-fill"></i>
+            </a>
+        </div>
+
+        <div class="col-12" id="page">
+
+            <div class="col-12 row fatura_header" style="margin-bottom: 1rem;">
+                <div class="col-6 fatura_left" align="center">
+                    <img src="/assets/img/logo.png" alt="" style="width: 12rem;">
+                    <h6>INSTITUTO POLITÉCNICO PRIVADO QINET - IPPQ</h6>
+                    <p>
+                        Rua do Qinet Km 9 C, Viana<br>
+                        Email: ippqinet.geral@gmail.com<br>
+                        NIF: 5505161403<br>
+                        <h6>LUANDA - ANGOLA</h6>
+                    </p>
+                </div>
+                <div class="col-6 fatura_right" align="left">
+                  <div>
+                      <% const date = new Date(); %>
+                    <p>Data: <span><%= ((date.getDate() > 9) ? date.getDate() : '0' + date.getDate()) + '/' + '0' + (parseInt(date.getMonth()) + 1) + '/' + date.getFullYear() %></span></p>
+                    <p>Exmo. Sr.(a): <span><%= aluno.nome %></span></p>
+                    <p>Contacto: <span><%= aluno.phone1 %></span></p>
+                    <p>Email: <span><%= aluno.email %></span></p>
+                  </div>
+
+                </div>
+            </div>
+            <table class="table table-hover" id="turmas">
+                <thead>
+                    <tr>
+                        <th scope="col">Mês</th>
+                        <th scope="col">Forma de Pagamento</th>
+                        <th scope="col">Preço unitário</th>
+                        <th scope="col">Subtotal</th>
+                    </tr>
+                </thead>
+                
+                <tbody>
+                    <% if (typeof meses == 'object') { %>
+                    <% meses.forEach((mes, index) => { %>
+
+                            <tr>
+                                <td><%= mes %></td>
+                                <td style="text-transform: capitalize;"><%= forma_pagamento %></td>
+                                <td><%= valor_pago[index] %>,00</td>
+                                <td><%= valor_pago[index] %>,00</td>
+
+                            </tr>
+                    
+                        <% }) %>
+
+                        <tr>
+                            <th scope="col" colspan="3" >Total:</th>
+                            <th scope="col"><%= valor_pago[0] * meses.length %>,00</th>
+                        </tr>
+                    <% } else { %>
+                        <tr>
+                            <td><%= meses %></td>
+                            <td style="text-transform: capitalize;"><%= forma_pagamento %></td>
+                            <td><%= valor_pago %>,00</td>
+                            <td><%= valor_pago %>,00</td>
+
+                        </tr>
+
+                        <tr>
+                            <th scope="col" colspan="3" >Total:</th>
+                            <th scope="col"><%= valor_pago %>,00</th>
+                        </tr>
+                    <% } %>
+
+                    
+                </tbody>
+            </table>
+
+            <div class="fatura_footer">
+                <h6>O Responsável</h6>
+                <h5><%= funcionario.nome %> <%= funcionario.sobrenome %></h5>
+            </div>
+
+        </div>
+
+
+        <div class="col-12 btn_gp" align="right" style="margin-top: 10rem;">
+            <button type="button" class="btn btn btn-success" id="export-pdf"><i class="bi bi-file-earmark-pdf"></i> Exportar para PDF</button>
+            <button class="btn btn-primary print-btn"><i class="bi bi-printer"></i> Imprimir</button>
+        </div>
+        
+    </div>
+
+
+    
+    <%- include('../components/scripts'); -%>
+
+    <script>
+        const btn = document.getElementById('export-pdf');
+        
+        btn.addEventListener('click', () => {
+            Utils.exportPDF('page', 'Fatura Pagamento', 'portrait');
+        });
+
+    </script>
+    
+</body>
+</html>                                                                                 

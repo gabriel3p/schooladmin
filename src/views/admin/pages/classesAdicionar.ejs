@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <%- include('../components/head'); -%>
+<body>
+    <%- include('../components/header'); -%>
+    <%- include('../components/menu'); -%>
+
+    <%- include('../../partials/msg'); -%>
+
+
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+          <h1>Adicionar Classes</h1>
+          <nav>
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="/admin/dashboard">Painel Principal</a></li>
+              <li class="breadcrumb-item"><a href="/admin/cursos">Cursos</a></li>
+              <li class="breadcrumb-item">Classe</li>
+            </ol>
+          </nav>
+        </div><!-- End Page Title -->
+    
+        <section class="section dashboard">
+          <div class="row">
+    
+            <!-- Left side columns -->
+            
+                <form class="row g-3 needs-validation" id="form-classe-register" enctype="multipart/form-data" method="post" action="/admin/cursos/classe/add" novalidate>
+                  <div class="card col-md-12">
+                    <div  class="card-body row col-md-12 p-3">
+                      
+                      <div align="center" class="row col-md-12 col-lg-6 student__photo">
+                        <div class="col-12">
+                          <input type="file" name="foto" style="display: none">
+                          <img src="/admin/assets/img/undraw_Dashboard_re_3b76.svg" id="photo" alt="Capa do curso...">
+                        </div>
+                      </div>
+
+                     <div class="row col-md-12 col-lg-6">
+                        
+
+                          <div class="col-lg-6 col-md-12 pt-2">
+                            <label for="nome_curso" class="form-label">Nome do curso*</label>
+                            <select name="curso_id" class="form-select" id="nome_curso" required>
+                              <option value="" selected disabled>-- selecione o curso --</option>
+                              <% cursos.forEach(curso => { %>
+                                <option value="<%= curso.dataValues.id %>"><%= curso.dataValues.nome %></option>
+                              <% }); %>
+                            </select>
+                            <div class="invalid-feedback">Por favor, introduza o codigo do curso!</div>
+                          </div>
+
+                            <div class="col-lg-6 col-md-12 pt-2">
+                              <label for="sigla" class="form-label">Sigla</label>
+                              <input type="text" class="form-control" id="sigla" disabled>
+                              <div class="invalid-feedback">Por favor, introduza o nome do curso.</div>
+                          </div>
+                          
+                          <div class="col-lg-6 col-md-12 pt-2 mb-5">
+                            <label for="classe_nivel" class="form-label">Classe</label>
+                            <select class="form-select" id="classe_nivel" required>
+                              <option value="" selected disabled>-- selecione a classe --</option>
+                              <option value="10">10ª</option>
+                              <option value="11">11ª</option>
+                              <option value="12">12ª</option>
+                              <option value="13">13ª</option>
+                            </select>
+                            <div class="invalid-feedback">Selecione uma classe!</div>
+                          </div>
+
+                          <div class="col-lg-6 col-md-12 pt-2 mb-5">
+                            <label for="valor_prop" class="form-label">Valor da propina</label>
+                            <input type="number" class="form-control" id="valor_prop" required>
+                            <div class="invalid-feedback">Por favor,introduza um valor para a propina!</div>
+                          </div>
+
+                          <div class="col-12 pt-2 mb-5">
+                            <!-- Table with hoverable rows -->
+                      <table class="table table-hover">
+                        
+                        <tbody id="filtro_cursos">
+                        </tbody>
+                      </table>
+                      <!-- End Table with hoverable rows -->
+                          </div>
+    
+                          <div class="col-12">
+                            <button class="btn btn-secondary w-20" type="submit" id="add_classe">Add Classe</button>
+                            <button class="btn btn-primary w-20" id="save" type="submit">Salvar</button>
+                          </div>
+                     </div>
+  
+                    </div>
+                  </div>
+                </form>       
+            
+    
+          </div>
+        </section>
+      
+    
+    </main><!-- End #main -->
+    
+
+    <%- include('../components/footer'); -%>
+    <%- include('../components/scripts'); -%>
+
+    
+    <script>
+      const imgEl = document.getElementById('photo');
+      const selectEl = document.getElementById('nome_curso');
+      const inputEl = document.getElementById('sigla');
+      const selectNiv = document.getElementById('classe_nivel'); 
+
+      selectEl.addEventListener('change', async () => {
+        let opts = selectNiv.querySelectorAll('option');
+
+        opts.forEach(opt => {
+          opt.disabled = false;
+        });
+
+        await fetch(`/admin/cursos/classe/pegar-dados/${ selectEl.value }`).then(response => {
+                response.json().then(data => {
+
+                    opts.forEach((opt, index) => {
+                      if (opt.value) {
+                        data.curso.classes.forEach(classe => {
+                            if (classe.nivel == opt.value) {
+                              opt.disabled = true;
+                            } 
+                        });
+                      }
+                    });
+
+                    imgEl.src = `/files/${ data.curso.foto }`;
+                    inputEl.value = data.curso.codigo_curso;
+
+                }).catch(error => {
+                    console.error('1Erro durante a requisição ' + error);
+                })
+            }).catch(error => {
+              console.error('Erro durante a requisição ' + error);
+            })
+      });
+    </script>
+
+    <script>
+      const nivel = document.getElementById('classe_nivel');
+      const preco = document.getElementById('valor_prop');
+      const tbody = document.getElementById('filtro_cursos');
+      const btn_add = document.getElementById('add_classe');
+      const formEl = document.getElementById('form-classe-register');
+      const btnSave = document.getElementById('save');
+      let valorAnt = [];
+
+      btnSave.disabled = true;
+
+      btn_add.addEventListener('click', event => {
+        
+        let isValid = true;
+     
+
+        [...formEl.elements].forEach(field => {
+            if (!field.validity.valid) {
+                isValid = false;
+            }
+        });
+
+      
+        if (!isValid) return false;
+
+        if (valorAnt.includes(nivel.value)) return event.preventDefault();
+       
+        valorAnt.push(nivel.value)
+
+        tbody.innerHTML += `
+                          <tr>
+                            <td>
+                              ${ nivel.value }ª Classe
+                              <input type="checkbox" style="display: none;" checked name="nivel" value="${ nivel.value }" id="nivel${ nivel.value }">
+                            </td>
+
+                            <td>
+                              ${ preco.value }kz
+                              <input type="checkbox" style="display: none;" checked name="preco" value="${ preco.value }" id="preco${ preco.value }">
+                            </td>
+
+                            <td class="action_links">
+                                <a href="#" class="delete_link" title="Remover classe"><i class="bi bi-trash-fill"></i></a>
+                            </td>
+                          </tr>
+      `;
+
+        if ([...tbody.children].length > 0) {
+          btnSave.disabled = false;
+        }
+
+        [...tbody.children].forEach((tr, index) => {
+            let aEls = tr.querySelectorAll('.delete_link');
+            aEls.forEach(aEl => {
+                aEl.addEventListener('click', event => {
+                event.preventDefault();
+                tr.remove();
+                valorAnt.splice(index, 1);
+                if ([...tbody.children].length <= 0) {
+                  btnSave.disabled = true;
+                  valorAnt = [];
+                }
+            });
+          })
+        });
+
+        event.preventDefault();
+      });
+
+      formEl.addEventListener('submit', () => {
+        btnSave.disabled = true;
+        valorAnt = [];
+        document.getElementById('photo').src = '/admin/assets/img/undraw_Dashboard_re_3b76.svg';
+        if ([...tbody.children].length <= 0) {
+          btnSave.disabled = true;
+        }
+      })
+      
+    </script>
+
+    <script>
+      new FormValidation('form-classe-register', 'alert', false, false);
+    </script>
+
+    
+    
+</body>
+</html>

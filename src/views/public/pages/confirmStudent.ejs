@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <%- include('../components/head'); -%>
+<body id="page_students">
+    <%- include('../components/header'); -%>
+
+    <main id="main">
+
+        <!-- ***** Header Area End ***** -->
+   
+     <section class="heading-page header-text" id="top">
+       <div class="container" data-aos="zoom-in" data-aos-delay="100">
+         <div class="row">
+           <div class="col-lg-12">
+             <h6>Faça a Confirmação do seu</h6>
+             <h2>Encarregando</h2>
+           </div>
+         </div>
+       </div>
+     </section>
+     
+     <%- include('../../partials/msg') -%>
+
+     <section class="section profile">
+       <div class="container">
+           <div class="section-header">
+               <p>Digite o código de matrícula do encarregando na barra de pesquisa abaixo<br> para obter as informações do mesmo.</p>
+             </div>
+       </div>
+       
+   
+       <div class="search-bar">
+           <form class="search-form d-flex align-items-center" method="POST" id="search-form" action="/admin/matriculas/buscar" required>
+             <input type="text" name="query" placeholder="#Digite o Código de Matrícula" title="Introduza a palavra chave">
+             <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+           </form>
+        </div><!-- End Search Bar -->
+   
+       <div class="col-lg-12 container">
+   
+           <div>
+             <div>
+               
+               <!-- Custom Styled Validation with Tooltips -->
+               <form id="form-confirm" class="needs-validation" id="form-register" action="/admin/matriculas/confirmar" enctype="multipart/form-data" method="POST" novalidate>
+                 
+                 
+                <fieldset class="personal__datas card" data-aos="fade-up"><legend>Dados Pessoais</legend>
+                
+                 <div class="card-body">
+                   
+                   <div class="row mb-3 student__photo">
+                     
+                     <div class="col-md-8 col-lg-9 position-relative">
+                       <img src="/assets/img/undraw_male_avatar_323b.svg" id="photo_student" alt="Profile">
+                     </div>
+                   </div>
+     
+                   <div class="row g-3 personal__data">
+                     <div class="col-md-4 position-relative">
+                       <label for="validationTooltip01" class="form-label">Nome do Aluno (a)</label>
+                       <input type="text" class="form-control" name="nome" minlength="10" id="validationTooltip01" required disabled>
+                       <div class="invalid-tooltip">
+                         Campo obrigatório!
+                       </div>
+                     </div>
+                     <div class="col-md-4 position-relative">
+                       <label for="validationTooltip02" class="form-label">Nome do Pai</label>
+                       <input type="text" class="form-control" name="nome_pai" minlength="10" id="validationTooltip02" required disabled>
+                       <div class="invalid-tooltip">
+                        Campo obrigatório!
+                       </div>
+                     </div>
+       
+                     <div class="col-md-4 position-relative">
+                       <label for="validationTooltipMother" class="form-label">Nome da Mãe</label>
+                       <input type="text" class="form-control" name="nome_mae" minlength="10" id="validationTooltipMother" required disabled>
+                       <div class="invalid-tooltip">
+                        Campo obrigatório!
+                       </div>
+                     </div>
+                     
+                     <div class="col-md-4 position-relative">
+                       <label for="validationTooltip03" class="form-label">Naturalidade (província)</label>
+                       <input type="text" class="form-control" minlength="3" name="nacionalidade" id="validationTooltip03" required disabled>
+                       <div class="invalid-tooltip">
+                        Por favor introduza uma naturalidade válida!
+                       </div>
+                     </div>
+                     
+                     <div class="col-md-4 position-relative">
+                       <label for="validationTooltip04" class="form-label">Município</label>
+                       <input type="text" class="form-control" minlength="4" name="municipio" id="validationTooltip04" required disabled>
+                       <div class="invalid-tooltip">
+                        Por favor introduza um município válido!
+                       </div>
+                     </div>
+                     
+                     
+                     <div class="col-md-4 position-relative">
+                       <label for="validationTooltip05" class="form-label">Bairro</label>
+                       <input type="text" class="form-control" minlength="5" name="bairro"  id="validationTooltip05" required disabled>
+                       <div class="invalid-tooltip">
+                         Por favor introduza um bairro válido!
+                       </div>
+                     </div>
+       
+                     
+       
+                     <div class="col-md-4 position-relative">
+                       <label for="validationTooltip14" class="form-label">Gênero</label>
+                       <input class="form-control" id="validationTooltip14" name="genero" required disabled>
+                        
+                     </div>
+       
+                     <div class="col-md-4 position-relative">
+                       <label for="validationTooltip06" class="form-label">Bilhete de Identidade Nº</label>
+                       <input type="text" class="form-control" minlength="9" name="bi" max maxlength="9"  id="validationTooltip06" required disabled>
+                       <div class="invalid-tooltip">
+                        Por favor introduza o número do BI ou Cédula
+                       </div>
+                     </div>
+                     
+                     <div class="col-md-4 position-relative">
+                       <label for="validationTooltip07" class="form-label">Telefone (+244)</label>
+                       <input type="text" class="form-control" id="validationTooltip07" minlength="9"  name="phone1" max maxlength="9" required disabled>
+                       <div class="invalid-tooltip">
+                        Por favor introduza um número de telefone.
+                       </div>
+                     </div>
+                     
+                     <div class="col-md-4 position-relative">
+                       <label for="validationTooltip016" class="form-label">Telefone 2 (+244)</label>
+                       <input type="text" class="form-control" minlength="9" max maxlength="9"  name="phone2" id="validationTooltip016" required disabled>
+                       <div class="invalid-tooltip">
+                        Por favor introduza um número de telefone.
+                       </div>
+                     </div>
+                     
+                     <div class="col-md-4 position-relative">
+                       <label for="validationTooltip08" class="form-label">Email</label>
+                       <input type="text" class="form-control" id="validationTooltip08" name="email" disabled>
+                       <div class="invalid-tooltip">
+                        Por favor introduza o número do BI ou Cédula
+                       </div>
+                     </div>
+
+                     <div class="col-md-4 position-relative">
+                      <input type="hidden" class="form-control" id="validationTooltip08" name="aluno_id">
+                      
+                    </div>
+
+                   </div>
+                 </div>
+   
+                </fieldset>
+                 
+                <fieldset class="personal__datas card mt-5 mb-5 outros-dados" style="display: none;" data-aos="fade-up"><legend>Dados da Matrícula</legend>
+                    
+                  <div class="card-body">
+
+                      <div class="row student__photo">
+                        <div class="col-md-8 col-lg-9 position-relative">
+                          <label for="bolderon"><img src="/assets/img/undraw_add_document_re_mbjx.svg" id="photo_bolderon" alt="Foto do estudante..."></label>
+                          <div class="pt-2" align="center">
+                            <label style="color: #352157e0;">Anexe a Foto do Bolderon<label>
+                            <label for="bolderon" class="btn btn-primary btn-sm" title="Anexe uma foto."><i class="bi bi-upload"></i></label>
+                            <input style="display: none;" type="file" name="foto" class="form-control" id="bolderon" required>
+                            <input type="hidden" class="form-control" id="bolderonHidden" required>
+                            <div id="error_msg" class="invalid-tooltip">
+                              É obrigatório anexar a foto do bolderon.
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row g-3">
+                          <div class="col-md-6 position-relative">
+                            <label for="curso" class="form-label">Curso</label>
+                            <select class="form-select" id="curso" name="curso" required>
+                              <option selected disabled value="">Escolha um curso...</option>
+                              <% cursos.forEach(curso => { %>
+                                      <option value="<%= curso.dataValues.id %>"><%= curso.dataValues.nome %></option>
+                              <% }) %>
+                            </select>
+                            <div class="invalid-tooltip">
+                              Por favor selecione um curso.
+                            </div>
+                          </div>
+              
+                          <div class="col-md-6 position-relative">
+                              <label for="nivel" class="form-label">Classe</label>
+                              <select class="form-select" id="nivel" required name="nivel">
+                                  <option selected disabled value="">Escolha a classe...</option>
+                              </select>
+                              <div class="invalid-tooltip">
+                              Por favor informe a classe.
+                              </div>
+                          </div>
+              
+                          <div class="col-md-6 position-relative">
+                              <label for="turno" class="form-label">Turno</label>
+                              <select class="form-select" id="turno" required name="turma_id" required>
+                              <option selected disabled value="">Escolha o turno...</option>
+                            
+                              </select>
+                              <div class="invalid-tooltip">
+                              Por favor informe o turnos.
+                              </div>
+                          </div>
+
+                          <input type="hidden" name="situacao_financeira" class="form-control" id="situacao_financeira" value="inadimplente">
+                            
+                          <input style="display: none;" type="number" name="ano_lectivo" class="form-control" id="ano_lectivo" minLength="4" maxLength="4">
+
+                          <input type="hidden" name="estado_matricula" class="form-control" id="estado_matricula" value="pendente">
+                      </div>
+
+                  </div>
+                  </fieldset>
+     
+                  <div class="col-12 outros-dados" style="display: none;" data-aos="fade-right">
+                   <div class="form-check">
+                     <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required checked>
+                     <label class="form-check-label" for="invalidCheck">
+                       Concordo com o <a href="#" data-bs-toggle="modal" data-bs-target="#TermModal">Termo de Responsabilidade</a>
+                     </label>
+                     <div class="invalid-feedback">
+                       É necessário concordar com o nosso Termo de Responsabilidade.
+                     </div>
+                   </div>
+                 </div>
+     
+                   <div class="col-12 btn__submit outros-dados" style="display: none;" align="right" data-aos="fade-left">
+                     <button class="btn btn-primary" type="submit"><i class="bi bi-calendar2-check"></i> Confirmar Aluno</button>
+                   </div>
+     
+                 </div>
+               </form><!-- End Custom Styled Validation with Tooltips -->
+   
+             </div>
+           </div>
+   
+         </div>
+   
+         
+   
+          <!-- Termo de Responsabilidade Modal -->
+         <div class="modal fade" id="TermModal" tabindex="-1">
+           <div class="modal-dialog modal-lg">
+             <div class="modal-content">
+               <div class="modal-header">
+                 <h5 class="modal-title">Termo de Responsabilidade</h5>
+                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+               </div>
+               <div class="modal-body">
+                 Non omnis incidunt qui sed occaecati magni asperiores est mollitia. Soluta at et reprehenderit. Placeat autem numquam et fuga numquam. Tempora in facere consequatur sit dolor ipsum. Consequatur nemo amet incidunt est facilis. Dolorem neque recusandae quo sit molestias sint dignissimos.
+                 Non omnis incidunt qui sed occaecati magni asperiores est mollitia. Soluta at et reprehenderit. Placeat autem numquam et fuga numquam. Tempora in facere consequatur sit dolor ipsum. Consequatur nemo amet incidunt est facilis. Dolorem neque recusandae quo sit molestias sint dignissimos.
+                 Non omnis incidunt qui sed occaecati magni asperiores est mollitia. Soluta at et reprehenderit. Placeat autem numquam et fuga numquam. Tempora in facere consequatur sit dolor ipsum. Consequatur nemo amet incidunt est facilis. Dolorem neque recusandae quo sit molestias sint dignissimos.
+                 Non omnis incidunt qui sed occaecati magni asperiores est mollitia. Soluta at et reprehenderit. Placeat autem numquam et fuga numquam. Tempora in facere consequatur sit dolor ipsum. Consequatur nemo amet incidunt est facilis. Dolorem neque recusandae quo sit molestias sint dignissimos.
+                 Non omnis incidunt qui sed occaecati magni asperiores est mollitia. Soluta at et reprehenderit. Placeat autem numquam et fuga numquam. Tempora in facere consequatur sit dolor ipsum. Consequatur nemo amet incidunt est facilis. Dolorem neque recusandae quo sit molestias sint dignissimos.
+                 Non omnis incidunt qui sed occaecati magni asperiores est mollitia. Soluta at et reprehenderit. Placeat autem numquam et fuga numquam. Tempora in facere consequatur sit dolor ipsum. Consequatur nemo amet incidunt est facilis. Dolorem neque recusandae quo sit molestias sint dignissimos.
+                 Non omnis incidunt qui sed occaecati magni asperiores est mollitia. Soluta at et reprehenderit. Placeat autem numquam et fuga numquam. Tempora in facere consequatur sit dolor ipsum. Consequatur nemo amet incidunt est facilis. Dolorem neque recusandae quo sit molestias sint dignissimos.
+               </div>
+               <div class="modal-footer">
+                 <button type="button" class="btn btn-secondary" disabled><i class="bi bi-file-excel"></i> Fechar</button>
+             </div>
+           </div>
+         </div><!-- End Large Modal-->
+   
+     </main><!-- End #main -->
+  
+    <%- include('../components/footer'); -%>
+    <%- include('../components/scripts'); -%>
+
+   
+    <script>
+      const cursoSelect = document.getElementById('curso');
+      const nivelSelect = document.getElementById('nivel');
+      const turnoSelect = document.getElementById('turno');
+
+      cursoSelect.addEventListener('change', async () => {
+          await fetch(`/admin/cursos/classe/pegar-dados/${ cursoSelect.value }`).then(response => {
+            
+            response.json().then(data => {
+                let element = '<option selected disabled value="">Escolha a classe...</option>';
+
+                data.curso.classes.forEach(classe => {
+                  element += `
+                      <option value="${ classe.id }">${ classe.nivel }ª</option>
+                  `
+                });
+
+                nivelSelect.innerHTML = element;
+
+                nivelSelect.addEventListener('change', () => {
+                  let turnoOpt = ' <option selected disabled value="">Escolha o turno...</option>';
+
+                  data.curso.classes.forEach(classe => {
+                      if (nivelSelect.value == classe.id) {
+                        classe.turmas.forEach(turma => {
+                          turnoOpt += `
+                            <option value="${ turma.id }">${ (turma.turno.toLowerCase() == 't') ? 'Tarde' : 'Manhã' }</option>
+                          `; 
+                        });
+                      }
+                  })
+
+                  turnoSelect.innerHTML = turnoOpt;
+                })
+              }).catch(error => {
+                  console.error('Erro durante a requisição ' + error);
+              })
+          }).catch(error => {
+            console.error('Error durante a requisição ' + error);
+        })
+      });
+    </script>
+
+    <script>
+      const ano_lectivo = document.getElementById('ano_lectivo');
+      let date = new Date();
+      window.addEventListener('load', () => {
+        ano_lectivo.value = date.getFullYear();
+      });
+
+      new FormFilter('search-form', 'alert', true)
+
+      new FormValidation('form-confirm', 'alert', true, false);
+      new DevMoonFileReader('bolderon', 'bolderonHidden', 'photo_bolderon', 'error_msg');
+
+    </script>
+</body>
+</html>

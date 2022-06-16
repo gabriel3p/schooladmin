@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <%- include('../components/head'); -%>
+<body>
+    <%- include('../components/header'); -%>
+    <%- include('../components/menu'); -%>
+
+    <%- include('../../partials/msg'); -%>
+
+
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+          <h1>Cadastrar Funcionários</h1>
+          <nav>
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="/admin/dashboard">Painel Principal</a></li>
+              <li class="breadcrumb-item"><a href="/admin/funcionarios">Funcionários</a></li>
+              <li class="breadcrumb-item">Cadastrar</li>
+            </ol>
+          </nav>
+        </div><!-- End Page Title -->
+    
+        <section class="section dashboard">
+          <div class="row">
+    
+            <!-- Left side columns -->
+            
+                <form class="row g-3 needs-validation" id="form-admin-register" method="post" action="/admin/registrar" novalidate>
+                  
+                  <div class="card col-md-12">
+                    <div  class="card-body row col-md-12 p-3">
+                      <h5 class="card-title col-12">Dados Pessoais</h5>
+
+                      <div align="center" class="row mb-3 student__photo">
+                     
+                        <div class="col-md-8 col-lg-12 position-relative">
+                          <img src="/assets/img/undraw_male_avatar_323b.svg" id="photo_student" alt="Foto do estudante...">
+                          <div class="pt-2">
+                            <label for="validationTooltipPhoto" class="btn btn-primary btn-sm" title="Anexe uma foto."><i class="bi bi-upload"></i></label>
+                            <input style="display: none;" type="file" name="foto" class="form-control" id="validationTooltipPhoto">
+                            <input type="hidden" class="form-control" id="validationTooltipPhotoHidden">
+                            <div id="error_msg" class="invalid-tooltip">
+                              É obrigatório ter uma foto.
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 col-md-12 pt-2">
+                        <label for="yourName" class="form-label">Nome*</label>
+                        <input type="text" name="nome" class="form-control" id="yourName" minLength="3" required>
+                        <div class="invalid-feedback">Por favor, introduza o seu nome.</div>
+                      </div>
+                      
+                      <div class="col-lg-6 col-md-12 pt-2">
+                        <label for="sobrenome" class="form-label">Sobrenome*</label>
+                        <input type="text" name="sobrenome" class="form-control" id="sobrenome" minLength="3" required>
+                        <div class="invalid-feedback">Por favor, introduza o seu sobrenome.!</div>
+                      </div>
+  
+                      <div class="col-lg-6 col-md-12 pt-2">
+                        <label for="data_nascimento" class="form-label">Data de nascimento*</label>
+                        <input type="date" name="data_nascimento" class="form-control" id="data_nascimento" required>
+                        <div class="invalid-feedback">Por favor Introduza uma data de nascimento válida!</div>
+                      </div>
+    
+                      <div class="col-lg-6 col-md-12 pt-2">
+                        <label for="yourEmail" class="form-label">Email*</label>
+                        <input type="email" name="email" class="form-control" id="yourEmail" required>
+                        <div class="invalid-feedback">Por favor Introduza um email válido!</div>
+                      </div>
+    
+                      <div class="col-lg-6 col-md-12 pt-2">
+                          <label for="genero" class="form-label">Gênero*</label>
+                          <select class="form-select" name="genero" id="genero">
+                              <option selected value="M">Masculino</option>
+                              <option value="F">Feminino</option>
+                          </select>
+                          <div class="invalid-feedback">Por favor escolha um gênero!</div>
+                      </div>
+    
+                      <div class="col-lg-6 col-md-12 pt-2">
+                        <label for="cargo" class="form-label">Cargo*</label>
+                        <select name="cargo" id="cargo" class="form-select" required>
+                          <option value="" selected disabled>-- selecione o cargo --</option>
+                          <option value="Diretor">Diretor</option>
+                          <option value="Professor">Professor</option>
+                          <option value="Secretário">Secretário</option>
+                        </select>
+                        <div class="invalid-feedback">Por favor selecione um cargo!</div>
+                      </div>
+
+                      <div class="col-lg-6 col-md-12 pt-2">
+                        <label for="bi" class="form-label">Bilhete de Identidade Nº</label>
+                        <input type="text" name="bi" class="form-control" id="bi" maxlength="14" minLength="14" required>
+                        <div class="invalid-feedback">Por favor Introduza um número do Bilhete de Identidade válido!</div>
+                      </div>
+    
+                      <div class="col-lg-6 col-md-12 pt-2">
+                        <label for="telefone" class="form-label">Telefone*</label>
+                        <input type="text" name="telefone" class="form-control" id="telefone" maxlength="9" minLength="9" required>
+                        <div class="invalid-feedback">Por favor Introduza um número de telefone válido!</div>
+                      </div>
+
+                    </div>
+                  </div>
+                 
+                  <div class="card row col-md-12">
+                    <div  class="card-body row col-md-12 p-3">
+
+                      <h5 class="card-title col-12">Dados de acesso</h5>
+
+                      <div class="col-lg-6 col-md-12 pt-2">
+                        <label for="yourUsername" class="form-label">Usuário*</label>
+                        <div class="input-group has-validation">
+                          <span class="input-group-text" id="inputGroupPrepend">@</span>
+                          <input type="text" name="usuario" class="form-control" id="yourUsername" minLength="3" required>
+                          <div class="invalid-feedback">Escolha um nome de usuário.</div>
+                        </div>
+                      </div>
+    
+                      <div class="col-lg-6 col-md-12 pt-2">
+                        <label for="yourPassword" class="form-label">Senha*</label>
+                        <input type="password" name="senha" class="form-control" id="yourPassword" required>
+                        <div class="invalid-feedback">Por favor introduza uma senha!</div>
+                      </div>
+
+                    </div>             
+                  </div>
+
+                  <div class="col-12">
+                    <button class="btn btn-secondary w-20" type="reset"><i class="bi bi-file-excel"></i> Limpar</button>
+                    <button class="btn btn-primary w-20" type="submit"><i class="bi bi-person-plus"></i> Cadastrar Funcionário</button>
+                  </div>
+                  
+                </form>
+            
+          </div>
+        </section>
+      
+    
+    </main><!-- End #main -->
+
+    <%- include('../components/footer'); -%>
+    <%- include('../components/scripts'); -%>
+
+    <script>
+      new FormValidation('form-admin-register', 'alert', false, false);
+    </script>
+    
+</body>
+</html>

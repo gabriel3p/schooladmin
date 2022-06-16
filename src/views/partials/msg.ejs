@@ -1,0 +1,29 @@
+
+<%success_msg.forEach(success => {%>
+    <%if (success) {%>
+        <div class="alert text-light alert-success bg-success  alert-dismissible fade msg show" id="alert" role="alert">
+            <%= success %>
+           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <%}%>
+<%})%>
+
+<%error_msg.forEach(error => {%>
+    <%if (error) {%>
+        <div class="alert text-light alert-danger bg-danger  alert-dismissible fade msg show" id="alert" role="alert">
+            <%= error %>
+           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <%}%>
+<%})%>
+
+<div class="alert text-light  alert-dismissible fade msg" id="alert" role="alert">
+    <span></span>
+   <button type="button" class="btn-close btn-close-white" aria-label="Close"></button>
+</div>
+
+ <!--alert alert-danger bg-danger text-light border-0 alert-dismissible fade show-->
+
+ <!-- senha: grupo: Yg1DW2Hh6J -->
+
+

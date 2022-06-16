@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <%- include('../components/head'); -%>
+<body>
+    <%- include('../components/header'); -%>
+    <%- include('../components/menu'); -%>
+
+    <%- include('../../partials/msg'); -%>
+
+
+    <main id="main" class="main">
+
+      <div class="pagetitle">
+        <h1>Professor - Adicionar Disciplina</h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/admin/dashboard">Painel Principal</a></li>
+            <li class="breadcrumb-item"><a href="/admin/funcionarios">Funcionarios</a></li>
+            <li class="breadcrumb-item">Adicionar Disciplina</li>
+          </ol>
+        </nav>
+      </div><!-- End Page Title -->
+    
+        <section class="section dashboard">
+          <div class="row">
+    
+            <!-- Left side columns -->
+            
+                <form class="row g-3 needs-validation" id="form-disciplina-professor" enctype="multipart/form-data" method="post" action="/admin/funcionarios/adicionar-disciplina" novalidate>
+                  <div class="card col-md-12">
+                    <div  class="card-body row col-md-12 p-3">
+                      
+                      <div align="center" class="d-flex col-md-12 col-lg-3 student__photo">
+                        <div class="col-12">
+                          <img src="/admin/assets/img/undraw_Dashboard_re_3b76.svg" id="photo" alt="Capa do curso...">
+                          <input type="file" name="foto" style="display: none">
+                        </div>
+                      </div>
+
+                     <div class="row col-md-12 col-lg-9">
+                        
+
+                          <div class="col-lg-6 col-md-12 pt-2">
+                            <label for="nome_curso" class="form-label">Nome do curso*</label>
+                            <select name="curso_id" class="form-select" id="nome_curso" required>
+                              <option value="" selected disabled>-- selecione o curso --</option>
+                              <% cursos.forEach(curso => { %>
+                                <option value="<%= curso.dataValues.id %>"><%= curso.dataValues.nome %></option>
+                              <% }); %>
+                            </select>
+                            <div class="invalid-feedback">Por favor, introduza o codigo do curso!</div>
+                          </div>
+
+                            <div class="col-lg-6 col-md-12 pt-2">
+                              <label for="sigla" class="form-label">Sigla</label>
+                              <input type="text" class="form-control" id="sigla" disabled>
+                              <div class="invalid-feedback">Por favor, introduza o nome do curso.</div>
+                          </div>
+                          
+                          <div class="col-lg-6 col-md-12 pt-2">
+                            <label for="classe_nivel" class="form-label">Classe</label>
+                            <select class="form-select" id="classe_nivel" required>
+                              <option value="" selected disabled>-- selecione a classe --</option>
+                              <option value="10">10ª</option>
+                              <option value="11">11ª</option>
+                              <option value="12">12ª</option>
+                              <option value="13">13ª</option>
+                            </select>
+                            <div class="invalid-feedback">Selecione uma classe!</div>
+                          </div>
+
+                          <div class="col-lg-6 col-md-12 pt-2">
+                            <label for="turma" class="form-label">Turma</label>
+                            <select class="form-select" id="turma" required>
+                              <option value="" selected disabled>-- selecione a turma --</option>
+                            </select>
+                            <div class="invalid-feedback">Selecione uma turma!</div>
+                          </div>
+
+
+                          <div class="col-lg-6 col-md-12 pt-2">
+                            <label for="disciplina" class="form-label">Disciplina</label>
+                            <select class="form-select" id="disciplina" required>
+                              <option value="" selected disabled>-- selecione a disciplina --</option>
+                              
+                            </select>
+                            <div class="invalid-feedback">Selecione uma disciplina!</div>
+                          </div>
+
+                          <div class="col-lg-6 col-md-12 pt-2">
+                            <label for="professor" class="form-label">Professor</label>
+                            <select class="form-select" id="professor" required>
+                              <option value="" selected disabled>-- selecione o professor --</option>
+                              <% professores.forEach(professor => { %>
+                                <option value="<%= professor.dataValues.id %>"><%= professor.dataValues.nome %> <%= professor.dataValues.sobrenome %></option>
+                              <% }); %>
+                            </select>
+                            <div class="invalid-feedback">Selecione um professor!</div>
+                          </div>
+
+                         
+
+                          <div class="col-12 pt-2 mb-2" style="overflow-x: auto;">
+                            <!-- Table with hoverable rows -->
+                            <table class="table table-hover" style="margin-top: 2rem;">
+                              
+                              <tbody id="filtro_cursos">
+                              </tbody>
+                            </table>
+                            <!-- End Table with hoverable rows -->
+                          </div>
+    
+                          <div class="col-12">
+                            <button class="btn btn-secondary w-20" type="submit" id="add_classe"><i class="bi bi-clipboard-plus"></i> Add Disciplina</button>
+                            <button class="btn btn-primary w-20" id="save" type="submit"><i class="bi bi-clipboard-check"></i> Salvar</button>
+                          </div>
+                     </div>
+  
+                    </div>
+                  </div>
+                </form>       
+            
+    
+          </div>
+        </section>
+      
+    
+    </main><!-- End #main -->
+    
+
+    <%- include('../components/footer'); -%>
+    <%- include('../components/scripts'); -%>
+
+    
+    <script>
+      const imgEl = document.getElementById('photo');
+      const selectEl = document.getElementById('nome_curso');
+      const inputEl = document.getElementById('sigla');
+      const selectNiv = document.getElementById('classe_nivel'); 
+      const selectDisc = document.getElementById('disciplina');
+      const selectTurma = document.getElementById('turma');
+
+     
+
+      selectEl.addEventListener('change', async () => {
+        let opts = selectNiv.querySelectorAll('option');
+
+        opts.forEach(opt => {
+          opt.disabled = true;
+        });
+
+        await fetch(`/admin/cursos/classe/pegar-dados/${ selectEl.value }`).then(response => {
+                response.json().then(data => {
+                  //console.log(data)
+                  selectNiv.addEventListener('change', () => {
+                    let options = '<option value="" selected disabled>-- selecione a disciplina --</option>'
+                    let optionsT = '<option value="" selected disabled>-- selecione a turma --</option>'
+                    
+
+
+                    data.curso.classes.forEach(classe => {
+                        if (selectNiv.value == classe.nivel) {
+                          classe.turmas.forEach(turma => {
+                            optionsT += `<option value="${ turma.id }">${ turma.codigo_turma }</option>`
+                          });
+
+                          selectTurma.addEventListener('change', () => {
+                              let options = '<option value="" selected disabled>-- selecione a disciplina --</option>'
+
+                              classe.disciplinas.forEach((disciplina, index) => {
+                                  options += `<option value="${ disciplina.id }">${ disciplina.nome_disciplina }</option>`
+                              })
+
+                              selectDisc.innerHTML = options;
+                          });
+                         
+                        }
+                    
+                    });
+
+                    selectTurma.innerHTML = optionsT;                   
+
+                  });
+                  
+
+                  opts.forEach((opt, index) => {
+                    if (opt.value) {
+                      data.curso.classes.forEach(classe => {
+                          if (classe.nivel == opt.value) {
+                            opt.disabled = false;
+                          }  
+                      });
+                    }
+                  });
+
+                  imgEl.src = `/files/${ data.curso.foto }`;
+                  inputEl.value = data.curso.codigo_curso;
+
+                }).catch(error => {
+                    console.error('Erro durante a requisição ' + error);
+                })
+            }).catch(error => {
+              console.error('Erro durante a requisição ' + error);
+          })
+      });
+
+    
+    </script>
+
+    <script>
+      const nivel = document.getElementById('classe_nivel');
+      const professor = document.getElementById('professor');
+      const disciplina = document.getElementById('disciplina');
+      const turma = document.getElementById('turma');
+
+      const sigla = document.getElementById('sigla');
+
+      const tbody = document.getElementById('filtro_cursos');
+      const btn_add = document.getElementById('add_classe');
+      const formEl = document.getElementById('form-disciplina-professor');
+      const btnSave = document.getElementById('save');
+      let date = new Date();
+
+      let valorAnt = [];
+
+      btnSave.disabled = true;
+
+      btn_add.addEventListener('click', event => {
+
+        let optionProfessor = [...professor.selectedOptions][0]
+        let optionDisciplina = [...disciplina.selectedOptions][0]
+        let optionTurma = [...turma.selectedOptions][0]
+
+
+        let isValid = true;
+     
+
+        [...formEl.elements].forEach(field => {
+            if (!field.validity.valid) {
+                isValid = false;
+            }
+        });
+
+      
+        if (!isValid) return false;
+
+       // if (valorAnt.includes(turmas.value)) return event.preventDefault();
+       
+        //valorAnt.push(turmas.value)
+
+        tbody.innerHTML += `
+                          <tr>
+                            <td>
+                                ${ optionProfessor.innerHTML }
+                                <input type="checkbox" style="display: none;" checked name="professor_id" value="${ optionProfessor.value }" >
+                            </td>
+
+                            <td>
+                              ${ sigla.value }
+                            </td>
+                            
+                            <td>
+                              ${ nivel.value }ª Classe
+                              <input type="checkbox" style="display: none;" checked name="nivel" value="${ nivel.value }" >
+                            </td>
+
+                            <td>
+                              ${ optionDisciplina.innerHTML }
+                              <input type="checkbox" style="display: none;" checked name="disciplina_id" value="${ optionDisciplina.value }">
+                              <input type="hidden" value="${ optionDisciplina.innerHTML }" name="disciplina_nome">
+                            </td>
+
+                            <td>
+                              ${ optionTurma.innerHTML }
+                              <input type="checkbox" style="display: none;" checked name="turma_id" value="${ optionTurma.value }">
+                              <input type="hidden" value="${ optionTurma.innerHTML }" name="turma_nome">
+                            </td>
+
+                            <td class="action_links">
+                                <a href="#" class="delete_link" title="Remover classe"><i class="bi bi-trash-fill"></i></a>
+                            </td>
+                          </tr>
+      `;
+
+        if ([...tbody.children].length > 0) {
+          btnSave.disabled = false;
+        }
+
+        [...tbody.children].forEach((tr, index) => {
+            let aEls = tr.querySelectorAll('.delete_link');
+            aEls.forEach(aEl => {
+                aEl.addEventListener('click', event => {
+                event.preventDefault();
+                tr.remove();
+
+                valorAnt.splice(index, 1);
+                
+                if ([...tbody.children].length <= 0) {
+                  btnSave.disabled = true;
+                  valorAnt = [];
+                }
+            });
+          })
+        });
+
+        event.preventDefault();
+      });
+
+      formEl.addEventListener('submit', () => {
+        btnSave.disabled = true;
+        valorAnt = [];
+        document.getElementById('photo').src = '/admin/assets/img/undraw_Dashboard_re_3b76.svg';
+        if ([...tbody.children].length <= 0) {
+          btnSave.disabled = true;
+        }
+      })
+      
+    </script>
+
+    <script>
+      new FormValidation('form-disciplina-professor', 'alert', false, false);
+    </script>
+
+    
+    
+</body>
+</html>

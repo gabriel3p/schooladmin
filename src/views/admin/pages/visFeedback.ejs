@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <%- include('../components/head'); -%>
+<body>
+    <%- include('../components/header'); -%>
+    <%- include('../components/menu'); -%>
+
+    <%- include('../../partials/msg') -%>
+
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+            <h1>Visualizar Feedback</h1>
+            <nav>
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/admin/dashboard">Painel Principal</a></li>
+                <li class="breadcrumb-item"><a href="/admin/feedbacks">Feedbacks</a></li>
+                <li class="breadcrumb-item"><%= feedback.dataValues.nome %></li>
+              </ol>
+            </nav>
+          </div><!-- End Page Title -->
+
+
+          <section class="section dashboard">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card" id="lista">
+                        <div class="card-body pt-4">
+
+                            <div class="tab-pane fade show active profile-overview turmas_view" id="profile-overview">
+                                                
+                                <h5 class="card-title">Detalhes do feedback</h5>
+              
+                                <div class="row">
+                                  <div class="col-lg-3 col-md-4 label ">Autor:</div>
+                                  <div class="col-lg-9 col-md-8"><%= feedback.dataValues.nome %></div>
+                                </div>
+              
+                                <div class="row">
+                                  <div class="col-lg-3 col-md-4 label">Contacto:</div>
+                                  <div class="col-lg-9 col-md-8"><%= feedback.dataValues.contacto %></div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label">Assunto:</div>
+                                    <div class="col-lg-9 col-md-8"><%= feedback.dataValues.assunto %></div>
+                                </div>
+              
+                                <div class="row">
+                                  <div class="col-lg-3 col-md-4 label">Enviado em:</div>
+                                  <div class="col-lg-9 col-md-8"><%= setTime(feedback.dataValues.createdAt) %></div>
+                                </div>
+                              
+
+                              
+                              <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Mensagem:</div>
+                                <div class="col-lg-9 col-md-8"><%= feedback.dataValues.mensagem %></div>
+                              </div>
+                           
+                        </div>
+
+                       <div align="right">
+                           <a href="/admin/feedbacks" >
+                               <button class="btn btn-primary">
+                                <i class="bi bi-arrow-left-square"></i>
+                                Voltar
+                               </button>
+                           </a>
+                           <% if (funcionario.cargo.toLowerCase() == 'diretor') { %>
+                              <a href="#" data-bs-toggle="modal" data-bs-target=".modal_deletar_<%= feedback.dataValues.id %>" title="Deletar feedback">
+                                  <button class="btn btn-danger">
+                                      <i class="bi bi-trash-fill" style="color: #fff;" ></i> 
+                                      Deletar
+                                  </button>
+                              </a>
+                            <% }%>
+                       </div>
+                        
+                        <div class="modal fade modal_deletar_<%= feedback.dataValues.id %>" id="" tabindex="-1" aria-hidden="true" style="display: none;">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Tem certeza que quer eliminar esta mensagem?</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Não</button>
+                                    <a href="/admin/feedbacks/<%= feedback.dataValues.id %>/deletar"><button type="button" class="btn btn-danger">Sim</button></a>
+                                </div>
+                                </div>
+                            </div>
+                            </div><!-- Fim Modal DEletar curso --> 
+
+                    </div>
+                </div>
+            </div>
+          </section>
+
+      
+    </main>
+
+    <%- include('../components/footer'); -%>
+    <%- include('../components/scripts'); -%>
+    
+</body>
+</html>  

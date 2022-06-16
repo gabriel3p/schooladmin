@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <%- include('../components/head'); -%>
+<body>
+    <%- include('../components/header'); -%>
+    <%- include('../components/menu'); -%>
+
+    <%- include('../../partials/msg') -%>
+
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+          <h1>Turmas</h1>
+          <nav>
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="/admin/dashboard">Painel Principal</a></li>
+              <li class="breadcrumb-item">Minhas Turmas</li>
+            </ol>
+          </nav>
+        </div><!-- End Page Title -->
+    
+        <section class="section dashboard">
+          <div class="row">
+    
+            <div class="col-lg-12">
+              <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Buscar</h5>
+      
+                    <form class="row g-3" id="form-admin-filter" method="post" action="/admin/turmas/buscar?professor=<%= funcionario.id %>">
+
+                      <div class="col-lg-3 col-md-6 col-sm-12">
+                        <label for="nivel" class="form-label">Classe</label>
+                        <select class="form-select" name="nivel" id="nivel">
+                          <option selected value="" disabled>-- selecione a classe --</option>
+                          <option value="10">10ª</option>
+                          <option value="11">11ª</option>
+                          <option value="12">12ª</option>
+                          <option value="13">13ª</option>
+                        </select>
+                      </div>
+
+                      <div class="col-lg-3 col-md-6 col-sm-12">
+                        <label for="codigo_curso" class="form-label">Curso</label>
+                        <select class="form-select" name="codigo_curso" id="codigo_curso">
+                          <option selected value="" disabled>-- selecione a classe --</option>
+                          <% cursos.forEach(curso => { %>
+                            <option value="<%= curso.dataValues.codigo_curso %>"><%= curso.dataValues.nome %></option>
+                          <% }) %>
+                        </select>
+                      </div>   
+
+                      <div class="col-lg-3 col-md-6 col-sm-12">
+                        <label for="turno" class="form-label">Turno</label>
+                        <select class="form-select" name="turno" id="turno">
+                          <option selected value="" disabled>-- selecione o turno --</option>
+                          <option value="m">Manhã</option>
+                          <option value="t">Tarde</option>
+                        </select>
+                      </div>
+
+                      <div class="col-lg-3 col-md-6 col-sm-12">
+                        <label for="codigo_turma" class="form-label">Turma</label>
+                        <input type="text" name="codigo_turma" class="form-control" id="codigo_turma" minLength="2">
+                      </div> 
+                      
+
+                      <div class="col-12">
+                        <button class="btn btn-secondary w-10" type="reset">Limpar</button>
+                        <button class="btn btn-primary w-10" type="submit">Buscar</button>
+                      </div>
+                      
+                    </form>
+      
+                  </div>
+                </div>
+          </div>
+            
+            <div class="col-lg-12">
+                <div class="card" id="lista">
+                    <div class="card-body">
+                      <h5 class="card-title">Lista das Turmas</h5>
+                      <form class="needs-validation" id="form-accoes" method="post" action="" novalidate>
+                      
+                        <table class="table table-hover" id="turmas">
+                          <thead>
+                          <tr>
+                              <th scope="col">
+                                <input type="checkbox" class="form-check-input" name="todos" value="all" id="todos">
+                                Disciplina
+                              </th>
+                              <th scope="col">Professor</th>
+                              <th scope="col">Curso</th>
+                              <th scope="col">Classe</th>
+                              <th scope="col">Turma</th>
+                              <th scope="col">Matrículas</th>
+                              <th>Acções</th>
+                          </tr>
+                          </thead>
+
+                          <tbody id="filtros">
+                             <% turmas.forEach(turma => { %>
+                              <% turma.classe.disciplinas.forEach(disciplina => { %>
+                                <% disciplina.professores.forEach(professor => { %>
+                                    <% if (funcionario.id == professor.id ) { %>
+
+                                      <tr>
+                                        <td>
+                                            <input type="checkbox" class="form-check-input" name="turmas_id" value="<%= turma.id %>" id="">
+                                            <%= disciplina.nome_disciplina %>
+                                        </td>
+                                        
+                                        <td>
+                                          <%= professor.nome %> <%= professor.sobrenome %>
+                                        </td>
+                              
+                                        <td>
+                                            <%= turma.classe.curso.nome %>
+                                        </td>
+                              
+                                        <td>
+                                          <%= turma.classe.nivel %>ª
+                                        </td>
+                              
+                                        <td>
+                                          <%= turma.codigo_turma %>
+                                        </td>
+                              
+                                        <td>
+                                          <%= turma.matriculas.length %>
+                                        </td>
+                              
+                                        <td class="action_links">
+                                            <a style="color: #2e9b2e" href="/admin/turmas/pauta/<%= disciplina.id %>/<%= turma.id %>" title="Notas" class="bi bi-pencil-square"></a>
+                                        </td>
+                                      </tr>
+
+                                    <% } %>
+                                  <% }) %>
+                                <% }) %>
+                            <% }) %>
+                          </tbody>
+                          
+                      </table>
+                      <!-- End Table with hoverable rows -->
+                       
+
+                        <div class="col-12 pt-2" id="apply_div">
+                            <label for="select_accoes" class="form-label">Acçoes</label>
+                            <div class="row">
+                                <div class="col-lg-5 col-md-6 col-sm-12">
+                                    <select class="form-select" id="select_accoes" name="accao" required>
+                                        <option value="" selected disabled>-- selecione uma acção --</option>
+                                        <option value="GLP">Gerar Lista de Presença</option>
+                                        <option value="GMP">Gerar Mini Pautas</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="col-lg-2 col-md-2 col-sm-12">
+                                    <a href="#apply_div" class="btn btn-primary w-100" id="btn_aplicar">Aplicar</a>
+                                </div>
+                            </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+            </div>
+    
+          </div>
+        </section>
+      
+    
+    </main><!-- End #main -->
+
+   
+    
+     <!--********************************
+            Modals selecionados 
+      ***********************************-->   
+    
+
+    <div class="modal fade" id="modal_deletar_selecionados" tabindex="-1" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-header">
+          <h5 class="modal-title" id="select_modal"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form class="needs-validation" id="form_delete_selected" method="post" action="/admin/turmas/delete/selected">
+
+            <div id="select_inputs">
+
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Não</button>
+              <button type="submit" class="btn btn-danger">Sim</button>
+            </div>
+
+          </form>
+      </div>
+      </div>
+    </div><!-- Fim Modal Deletar Selecionados -->
+    
+    <div class="modal fade" id="modal_gerar_list_presenca" tabindex="-1" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-header">
+          <h5 class="modal-title" id="select_modal">Gerar Lista de Presença</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form class="needs-validation" id="form_lista_presenca_selected" method="post" action="/admin/turmas/generate-list/selected">
+
+            <div class="col-12 p-4">
+
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="estado_matricula" name="estado_matricula">
+                <label class="form-check-label" for="estado_matricula">
+                  Somente alunos ativos
+                </label>
+              </div>
+
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="codigo_matricula"  name="codigo_matricula">
+                <label class="form-check-label" for="codigo_matricula">
+                  Exibir código de matrícula dos alunos
+                </label>
+              </div>
+
+              <div class="form-check form-switch">
+                <input class="form-check-input" name="ordem_alfabetica" type="checkbox" id="ordem_alfabetica" checked="">
+                <label class="form-check-label" for="ordem_alfabetica">Ordenar alfabéticamente</label>
+              </div>
+
+            </div>
+
+            <div id="input_turmas">
+              
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+              <button type="submit" class="btn btn-primary">Gerar</button>
+            </div>
+
+          </form>
+          
+      </div>
+      </div>
+    </div><!-- Fim Modal Gerar Lista de Presença Selecionados --> 
+    
+    <%- include('../components/footer'); -%>
+    <%- include('../components/scripts'); -%>
+
+
+    <script>
+      new FormPrint('form-imprimir', 'alert', '/admin/turmas/imprimir');
+      new FormFilter('form-admin-filter', 'alert');
+      new FormActions('form-accoes', 'alert');
+    </script>
+    
+    
+</body>
+</html>                                                                                 

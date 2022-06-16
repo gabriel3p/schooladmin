@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <%- include('../components/head'); -%>
+<body>
+    <main>
+
+      <%- include('../../partials/msg') -%>
+
+      <div style="display: none;" class="pagetitle">
+        <h1>SchoolAdmin - Registro Privado</h1>
+      </div><!-- End Page Title -->
+
+        <div class="container">
+    
+          <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+            <div class="container">
+              <div class="row justify-content-center">
+                <div class="col-lg-8 col-md-6 d-flex flex-column align-items-center justify-content-center">
+    
+                  <div class="d-flex justify-content-center py-4">
+                    <a href="index.html" class="logo d-flex align-items-center w-auto">
+                      <img src="/admin/assets/img/logo.png" alt="">
+                      <span class="d-none d-lg-block">SchoolAdmin</span>
+                    </a>
+                  </div><!-- End Logo -->
+    
+                  <div class="card mb-3">
+    
+                    <div class="card-body">
+    
+                      <div class="pt-4 pb-2">
+                        <h5 class="card-title text-center pb-0 fs-4">Crie a sua conta</h5>
+                        <p class="text-center small">Introduza os seus dados pessoais para criar a conta</p>
+                      </div>
+    
+                      <form class="row g-3 needs-validation" id="form-admin-register" method="post" action="/admin/privado/registrar" novalidate>
+                        <div class="col-lg-6 col-md-12">
+                          <label for="yourName" class="form-label">Nome*</label>
+                          <input type="text" name="nome" class="form-control" id="yourName" minLength="3" required>
+                          <div class="invalid-feedback">Por favor, introduza o seu nome.</div>
+                        </div>
+
+                        <div class="col-lg-6 col-md-12">
+                            <label for="sobrenome" class="form-label">Sobrenome*</label>
+                            <input type="text" name="sobrenome" class="form-control" id="sobrenome" minLength="3" required>
+                            <div class="invalid-feedback">Por favor, introduza o seu sobrenome.!</div>
+                          </div>
+      
+                          <div class="col-lg-6 col-md-12">
+                            <label for="data_nascimento" class="form-label">Data de nascimento*</label>
+                            <input type="date" name="data_nascimento" class="form-control" id="data_nascimento" required>
+                            <div class="invalid-feedback">Por favor Introduza uma data de nascimento válida!</div>
+                          </div>
+    
+                        <div class="col-lg-6 col-md-12">
+                          <label for="yourEmail" class="form-label">Email*</label>
+                          <input type="email" name="email" class="form-control" id="yourEmail" required>
+                          <div class="invalid-feedback">Por favor Introduza um email válido!</div>
+                        </div>
+
+                        <div class="col-lg-6 col-md-12">
+                            <label for="genero" class="form-label">Gênero*</label>
+                            <select class="form-control" name="genero" id="genero">
+                                <option selected value="M">Masculino</option>
+                                <option value="F">Feminino</option>
+                            </select>
+                            <div class="invalid-feedback">Por favor escolha um gênero!</div>
+                        </div>
+
+                        <div class="col-lg-6 col-md-12">
+                            <input type="hidden" name="cargo" class="form-control" id="cargo" value="Diretor">
+                        </div>
+
+                        <h5 class="col-12">Dados de acesso</h5>
+    
+                        <div class="col-lg-6 col-md-12">
+                          <label for="yourUsername" class="form-label">Usuário*</label>
+                          <div class="input-group has-validation">
+                            <span class="input-group-text" id="inputGroupPrepend">@</span>
+                            <input type="text" name="usuario" class="form-control" id="yourUsername" minLength="3" required>
+                            <div class="invalid-feedback">Escolha um nome de usuário.</div>
+                          </div>
+                        </div>
+    
+                        <div class="col-lg-6 col-md-12">
+                          <label for="yourPassword" class="form-label">Senha*</label>
+                          <input type="password" name="senha" class="form-control" id="yourPassword" required>
+                          <div class="invalid-feedback">Por favor introduza uma senha!</div>
+                        </div>
+
+                        <div class="col-12">
+                          <button class="btn btn-primary w-100" type="submit">Criar Conta</button>
+                        </div>
+                        <div class="col-12">
+                          <p class="small mb-0">Já tem uma conta? <a href="/admin/login">Log in</a></p>
+                        </div>
+                      </form>
+    
+                    </div>
+                  </div>
+
+    
+                </div>
+              </div>
+            </div>
+    
+          </section>
+    
+        </div>
+      </main><!-- End #main -->
+    
+      <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+    
+    <%- include('../components/scripts'); -%>
+
+    <script>
+      new FormValidation('form-admin-register', 'alert', false, '/admin/dashboard');
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <%- include('../components/head'); -%>
+<body>
+    <%- include('../components/header'); -%>
+    <%- include('../components/menu'); -%>
+
+    <%- include('../../partials/msg'); -%>
+
+
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+          <h1>Mini Pauta</h1>
+          <nav>
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="/admin/dashboard">Painel Principal</a></li>
+              <li class="breadcrumb-item"><a href="/admin/turmas/minhas-turma/<%= funcionario.id %>">Minhas Turmas</a></li>
+              <li class="breadcrumb-item">Mini Pauta</li>
+            </ol>
+          </nav>
+        </div><!-- End Page Title -->
+    
+        <section class="section dashboard">
+          <div class="row">
+    
+            <!-- Left side columns -->
+            
+                <form class="row" id="" method="post" action="/admin/notas/editar/<%= disciplina.id %>/<%= turma.id %>">
+                  
+                  <div class="card col-md-12 student-profile">
+                    <div  class="card-body row col-md-12 p-3">
+                      
+                        <div class="d-flex" style="justify-content: space-between;">
+                            <h6><span>Disciplina:</span> <%= disciplina.nome_disciplina %></h6>
+                            <h6><span>Classe:</span> <%= turma.classe.nivel %>ª</h6>
+                            <h6><span>Turma:</span> <%= turma.codigo_turma %></h6>
+                            <h6><span>Curso:</span> <%= turma.classe.curso.nome %></h6>
+                            <h6><span>Turno:</span> <%= (turma.turno.toLowerCase() == 't') ? 'Tarde' : 'Manhã' %></h6>
+                            <h6><span>Ano Lectivo:</span> <%= turma.ano_lectivo %></h6>
+                       </div>
+                     
+
+                    </div>
+                  </div>
+                 
+                  <div class="card row col-md-12">
+                    <div  class="card-body row col-md-12 p-3">
+
+                      <div class="col-lg-3 col-md-6 col-sm-12">
+                        <label for="trimestre" class="form-label">Trimestre</label>
+                        <select class="form-select" name="trimestre" id="trimestre">
+                          <option value="I" selected>Iº</option>
+                          <option value="II">IIº</option>
+                          <option value="III">IIIº</option>
+                        </select>
+                      </div>
+
+                      <input type="hidden" name="turma_id" id="turma_id" value="<%= turma.id %>">
+
+                      <input type="hidden" name="disciplina_id" id="disciplina_id" value="<%= disciplina.id %>">
+
+
+                        <table class="table table-hover" id="turmas">
+                            <thead>
+                            <tr>
+                                <th scope="col">Nº</th>
+                                <th scope="col">Nome Completo</th>
+                                <th scope="col">Gênero</th>
+                                <th scope="col">1ª Prova</th>
+                                <th scope="col">2ª Prova</th>
+                                <th scope="col">Média</th>
+                              
+                            </tr>
+                            </thead>
+
+                            <tbody id="filtros">
+                                <% turma.matriculas.forEach((matricula, index)=> { %>
+                                  <% matricula.notas.forEach(nota => { %>
+                                    <% if (nota.trimestre == 'I') { %>
+                                        <tr class="dados_mini_pauta">
+                                            <th scope="col"><%= index + 1 %></th>
+                                            <td>
+                                              <a href="/admin/alunos/aluno/<%= matricula.aluno.id %>">
+                                                <%= matricula.aluno.nome %>
+                                              </a>
+                                              <input type="hidden" value="<%= matricula.id %>" name="matricula_id">
+                                            </td>
+                                            <td><%= matricula.aluno.genero %></td>
+                                            <td><input class="form-control prova1" type="number" name="prova1" value="<%= nota.prova1 || '' %>" ></td>
+                                            <td><input class="form-control prova2" type="number"  name="prova2" value="<%= nota.prova2 || '' %>"></td>
+                                            <td><input class="form-control medias" type="number"  name="media" disabled></td>
+                                        </tr>
+                                    <% } %>
+                                  <% }) %>
+                                <% }); %>
+                                 
+                            </tbody>
+                            
+                        </table>
+                        <!-- End Table with hoverable rows -->
+
+                        <div class="col-12" align="right">
+                            <button type="submit" class="btn btn-success w-40" type="submit">Salvar</button>
+                          </div>
+
+                    </div>             
+                  </div>
+                  
+                </form>
+            
+          </div>
+        </section>
+      
+    
+    </main><!-- End #main -->
+
+    <%- include('../components/footer'); -%>
+    <%- include('../components/scripts'); -%>
+
+    <script>
+        let prova1 = document.querySelectorAll('.prova1');
+        let prova2 = document.querySelectorAll('.prova2'); 
+        let medias = document.querySelectorAll('.medias'); 
+
+        window.addEventListener('load', calcMedia(medias));
+
+        prova1.forEach(prova => {
+            prova.addEventListener('change', () => calcMedia(medias));
+        });
+
+        prova2.forEach(prova => {
+            prova.addEventListener('change', () => calcMedia(medias));
+        });
+
+       function calcMedia(filds) {
+           filds.forEach((media, index) => {
+                if (prova1[index].value > 0 && prova2[index].value > 0) {
+                    media.value = (parseFloat(prova1[index].value) + parseFloat(prova2[index].value) ) / 2;
+                }
+            });
+        }
+
+    </script>
+    
+    <script>
+        const trimestreSelect = document.querySelector('#trimestre');
+        const disciplinaInp = document.querySelector('#disciplina_id');
+        const turmaInp = document.querySelector('#turma_id');
+
+        const tbody = document.querySelector('#filtros');
+        trimestreSelect.addEventListener('change', async () => {
+
+          await fetch(`/admin/notas/pegar-notas/${ trimestreSelect.value }/${ disciplinaInp.value }/${ turmaInp.value }`).then(response => {
+            response.json().then(data => {
+              const { alunos } = data;
+              let element = '';
+              let item = '';
+
+              alunos.forEach((aluno,  index)=> {
+
+                aluno.matriculas[aluno.matriculas.length - 1].notas.forEach(nota => {
+
+                  element += `
+                    <tr class="dados_mini_pauta">
+                        <th scope="col">${ index + 1 }</th>
+                        <td>
+                          <a href="/admin/alunos/aluno/${aluno.id}">
+                            ${ aluno.nome }
+                          </a>
+                          <input type="hidden" value="${ aluno.matriculas[aluno.matriculas.length - 1].id }" name="matricula_id">
+                          </td>
+                        <td>${ aluno.genero }</td>
+                        <td><input class="form-control prova1" type="number" name="prova1" value="${ nota.prova1 || '' }" ></td>
+                        <td><input class="form-control prova2" type="number"  name="prova2" value="${ nota.prova2 || '' }"></td>
+                        <td><input class="form-control medias" type="number" value="${ (nota.prova1 > 0 && nota.prova2 > 0) ? (nota.prova1 + nota.prova2) / 2 : '' }"  name="media" disabled></td>
+                    </tr>
+                  `
+
+                })
+
+              });
+              
+              tbody.innerHTML = element;
+
+            }).catch(error => {
+              console.log(error)
+            }).catch(error => {
+              console.log(error)
+            });
+          })
+        
+        });
+    </script>
+</body>
+</html>

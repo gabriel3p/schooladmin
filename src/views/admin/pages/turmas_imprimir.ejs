@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <%- include('../components/head'); -%>
+<body style="background: #fff;">
+    
+    <%- include('../../partials/msg'); -%>
+    <div style="display: none;" class="pagetitle">
+        <h1>Visualizar turmas</h1>
+    </div><!-- End Page Title -->
+
+    <div class="row" style="padding: 1rem 2rem;">
+
+        <div class="go-back">
+            <a href="/admin/turmas" title="Voltar" style="font-size: 2rem;">
+                <i class="bi bi-arrow-left-square-fill"></i>
+            </a>
+        </div>
+
+        <div class="col-12" id="page">
+            <div class="col-12 row" style="margin-bottom: 1rem;">
+                <div class="col-6">
+                    <h3 style="margin-top: .8rem;">Lista das Turmas</h3>
+                </div>
+                <div class="col-6" align="right">
+                    <img src="/assets/img/logo.png" alt="" style="width: 12rem;">
+                </div>
+            </div>
+            <table class="table table-hover" id="turmas">
+                <thead>
+                <tr>
+                    <th scope="col">Nº</th>
+                    <% if (codigo_turma != 'false') { %>
+                        <th scope="col">Turma</th>
+                    <% } %>
+                    
+                    <% if (nome_curso != 'false') { %>
+                        <th scope="col">Curso</th>
+                    <% } %>
+
+                    <% if (codigo_curso != 'false') { %>
+                        <th scope="col">Abreviação</th>
+                    <% } %>
+
+                    <% if (ano_lectivo != 'false') { %>
+                        <th scope="col">Ano Lectivo</th>
+                    <% } %>
+
+                    <% if (nivel != 'false') { %>
+                        <th scope="col">Classe</th>
+                    <% } %>
+
+                    <% if (turno != 'false') { %>
+                        <th scope="col">Turno</th>
+                    <% } %>
+
+                    <% if (matriculas != 'false') { %>
+                        <th scope="col">Matrículas</th>
+                    <% } %>
+
+                    <% if (data_cadastro != 'false') { %>
+                        <th scope="col">Data de Criação</th>
+                    <% } %>
+                </tr>
+                </thead>
+                <tbody>
+                <% turmas.forEach((turma, index) => { %>
+                    <tr>
+                        <th scope="col"><%= index + 1 %></th>
+                        <% if (turma.dataValues.codigo_turma) { %>
+                            <td><%= turma.dataValues.codigo_turma %></td>
+                        <% } %>
+
+                        <% if (turma.dataValues.classe.dataValues.curso.dataValues.nome) { %>
+                            <td><%= turma.dataValues.classe.dataValues.curso.dataValues.nome %></td>
+                        <% } %>
+
+                        <% if (turma.dataValues.classe.dataValues.curso.dataValues.codigo_curso) { %>
+                            <td><%= turma.dataValues.classe.dataValues.curso.dataValues.codigo_curso %></td>
+                        <% } %>
+
+                        <% if (turma.dataValues.ano_lectivo) { %>
+                            <td><%= turma.dataValues.ano_lectivo %></td>
+                        <% } %>
+
+                        <% if (turma.dataValues.classe.dataValues.nivel) { %>
+                            <td><%= turma.dataValues.classe.dataValues.nivel %>ª</td>
+                        <% } %>
+
+                        <% if (turma.dataValues.turno) { %>
+                            <td><%= (turma.dataValues.turno.toLowerCase() == 'm') ? 'Manhã' : 'Tarde' %></td>
+                        <% } %>
+
+                        <% if (matriculas != 'false') { %>
+                            <td><%= turma.dataValues.matriculas.length %></td>
+                        <% } %>
+                        
+                        <% if (turma.dataValues.createdAt) { %>
+                            <td><%= setDate(turma.dataValues.createdAt) %></td>
+                        <% } %>
+
+                    </tr>
+                <% }) %>
+                
+
+                </tbody>
+            </table>
+
+        </div>
+
+
+        <div class="col-12 btn_gp" align="right">
+            <button type="button" class="btn btn btn-success" id="export-pdf"><i class="bi bi-file-earmark-pdf"></i> Exportar para PDF</button>
+            <button class="btn btn-primary print-btn"><i class="bi bi-printer"></i> Imprimir</button>
+        </div>
+    </div>
+
+
+    
+    <%- include('../components/scripts'); -%>
+
+    <script>
+        const btn = document.getElementById('export-pdf');
+        
+        btn.addEventListener('click', () => {
+            Utils.exportPDF('page', 'Lista das Turmas', 'landscape');
+        });
+
+    </script>
+    
+</body>
+</html>                                                                                 

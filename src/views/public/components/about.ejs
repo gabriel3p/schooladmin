@@ -1,0 +1,33 @@
+<!-- ======= About Section ======= -->
+<section id="sobre" class="about section-bg">
+
+    <div class="container" data-aos="fade-up">
+      <div class="row">
+
+        <div class="col-lg-5 col-md-6">
+          <div class="about-img" data-aos="fade-right" data-aos-delay="100">
+            <img src="assets/img/features-3.png" alt="">
+          </div>
+        </div>
+
+        <div class="col-lg-7 col-md-6">
+          <div class="about-content" data-aos="fade-left" data-aos-delay="100">
+            <h2>IPPQ</h2>
+            <h3>INSTITUTO POLITÉCNICO PRIVADO QINET</h3>
+            <p> O IPPQ é uma Instituição do Ensino Médio fundado aos 15 de Fevereiro de 2015 pelo
+              Senhor Rui Brando, vocacionada a ministrar cursos técnicos e pré-universitários
+              nomeadamente:</p>
+            <ul>
+              <% cursos.forEach(curso => { %>
+                <li>
+                  <i class="bi bi-check-circle"></i> <%= curso.nome %>
+                </li>
+              <% }) %>
+             
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section><!-- End About Section -->

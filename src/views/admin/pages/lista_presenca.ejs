@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <%- include('../components/head'); -%>
+<body style="background: #fff;">
+    
+    <%- include('../../partials/msg'); -%>
+    <div style="display: none;" class="pagetitle">
+        <h1>Listas de Presenças</h1>
+    </div><!-- End Page Title -->
+
+    <div class="row" style="padding: 1rem 2rem;">
+
+        <div class="go-back">
+            <% if (funcionario.cargo.toLowerCase() != 'professor') { %>
+                <a href="/admin/turmas" title="Voltar" style="font-size: 2rem;">
+                    <i class="bi bi-arrow-left-square-fill"></i>
+                </a>
+            <% } else { %>
+                <a href="/admin/turmas/minhas-turma/<%= funcionario.id %>" title="Voltar" style="font-size: 2rem;">
+                    <i class="bi bi-arrow-left-square-fill"></i>
+                </a>
+            <% } %>
+        </div>
+
+        <div class="col-12" id="page">
+            <div class="col-12 row" style="margin-bottom: 1rem;">
+                <div class="col-6">
+                    <h3 style="margin-top: .8rem;">Lista de Presença</h3>
+                </div>
+                <div class="col-6" align="right">
+                    <img src="/assets/img/logo.png" alt="" style="width: 12rem;">
+                </div>
+            </div>
+
+            <table class="table table-hover" id="turmas">
+                <thead>
+                <tr style="border-bottom: 1px solid #fff;">
+                    <td>
+                        <h6>Turma: <%= turma.dataValues.codigo_turma %></h6>
+                    </td>
+
+                    <td>
+                        <h6>Curso: <%= turma.dataValues.classe.dataValues.curso.dataValues.nome %></h6>
+                    </td>
+
+                    <td>
+                        <h6>Classe: <%= turma.dataValues.classe.dataValues.nivel %>ª</h6>
+                    </td>
+
+                    <td>
+                        <h6>Turno: <%= (turma.dataValues.turno == 'm') ? 'Manhã' : 'Tarde' %></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="col">Nº</th>
+
+                    <% if (codigo_matricula == 'on') { %>
+                        <th scope="col">Código da Matícula</th>
+                    <% } %>
+                    
+                    <th scope="col">Nome Completo</th>
+                    <th scope="col" >Assinatura</th>
+
+                    <% if (codigo_matricula != 'on') { %>
+                        <th scope="col"></th>
+                    <% } %>
+                
+                </tr>
+                </thead>
+                    <% turma.dataValues.matriculas.forEach((matricula, index) => { %>
+                        <tr>
+                            <th scope="col"><%= index + 1 %></th>
+
+                            <% if (codigo_matricula == 'on') { %>
+                                <td><%= matricula.dataValues.codigo_matricula %></td>
+                            <% } %>
+
+                            <td><%= matricula.dataValues.aluno.dataValues.nome %></td>
+                            <td>
+                                
+                            </td>
+                            <% if (codigo_matricula != 'on') { %>
+                                <td></td>
+                            <% } %>
+                        </tr>
+                    <% }) %>
+                <tbody>
+
+                </tbody>
+            </table>
+
+        </div>
+
+
+        <div class="col-12 btn_gp" align="right">
+            <button type="button" class="btn btn btn-success" id="export-pdf"><i class="bi bi-file-earmark-pdf"></i> Exportar para PDF</button>
+            <button class="btn btn-primary print-btn"><i class="bi bi-printer"></i> Imprimir</button>
+        </div>
+    </div>
+
+
+    
+    <%- include('../components/scripts'); -%>
+
+    <script>
+        const btn = document.getElementById('export-pdf');
+        
+        btn.addEventListener('click', () => {
+            Utils.exportPDF('page', 'Lista de Presença', 'portrait');
+        });
+
+    </script>
+    
+</body>
+</html>                                                                                 

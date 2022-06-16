@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <%- include('../components/head'); -%>
+<body>
+    <%- include('../components/header'); -%>
+    <%- include('../components/menu'); -%>
+    <%- include('../../partials/msg'); -%>
+
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+          <h1>Pagamento da Propina</h1>
+          <nav>
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="/admin/dashboard">Painel Principal</a></li>
+              <li class="breadcrumb-item"><a href="/admin/alunos">Alunos</a></li>
+              <li class="breadcrumb-item">Efetuar Pagamento</li>
+            </ol>
+          </nav>
+        </div><!-- End Page Title -->
+    
+        <section class="section dashboard">
+
+           
+            <div class="row">
+
+                <div class="col-12">
+    
+                    <div class="card">
+                      <div class="card-body profile-card pt-4 ">
+
+                        <div class="search-bar">
+                            <form class="search-form d-flex align-items-center needs-validation" id="form_filter" method="POST" action="/admin/matriculas/buscar" novalidate>
+                              <input type="text" name="query" placeholder="#Digite o Código de Matrícula" title="Introduza a palavra chave" required>
+                              <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+                            </form>
+                          </div><!-- End Search Bar -->
+          
+                          <h1 id="title_error" class="card-title col-12" style="text-align: center; font-size: 1rem; display: none; color: #eb2020;">Matícula não encontrada!</h1>
+                      <div class="student-profile">
+                        <!--<div id="profile-student-photo">
+                            <a href="/files/1651838681533.jpg" target="_blank" rel="noopener noreferrer">
+                                <img style="border: 4px solid #178be971; height: 10rem;" src="/files/1651838681533.jpg" alt="Foto do aluno" class="fluid">
+                              </a>
+                           </div>
+    
+                           <div>
+                                <h6><span>Nome:</span>  aluno.nome </h6>
+                                <h6><span>Código de Matrícula:</span>  aluno.matriculas[aluno.matriculas.length - 1].codigo_matricula</h6>
+                                <h6><span>Curso:</span>  aluno.matriculas[aluno.matriculas.length - 1].classe[0].curso.nome </h6>
+                                <h6><span>Turma:</span>  aluno.matriculas[aluno.matriculas.length - 1].turma[0].codigo_turma </h6>
+                                <h6><span>Classe:</span>  aluno.matriculas[aluno.matriculas.length - 1].turma[0].codigo_turma </h6>
+                                <h6><span>Ano Lectivo:</span>  aluno.matriculas[aluno.matriculas.length - 1].ano_lectivo </h6>
+                           </div>-->
+                      </div>
+                        
+                        
+                      </div>
+                    </div>          
+                </div>
+
+
+                <form id="form_pagamento" action="/admin/pagamentos/propina" method="POST">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body row">
+                                <div class="col-md-6 col-sm-12">
+                                    <h5 class="card-title">Meses</h5>
+
+                                    <table class="table table-hover">
+                                        <tbody id="meses">
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+    
+                                <div class="col-md-6 col-sm-12 divFormaPagamento">
+                                    <h5 class="card-title">Valor a Pagar</h5>
+                                    <input type="number" class="form-control" readonly name="" id="valor_pagar">
+                                    <input type="hidden" name="funcionario_id" value="<%= funcionario.id %>">
+                                    <input type="file" name="help" id="" style="display: none;">
+
+                                    <h5 class="card-title">Forma de Pagamento</h5>
+    
+                                    <div class="col-12">
+                                        <label>
+                                            <input type="radio" class="form-check-input" name="forma_pagamento" value="depósito" checked> Depósito
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="col-12">
+                                        <label>
+                                            <input type="radio" class="form-check-input" name="forma_pagamento" value="transferência"> Trasnferência
+                                        </label>
+                                    </div>
+    
+                                    <div class="col-12">
+                                        <label>
+                                            <input type="radio" class="form-check-input" name="forma_pagamento" value="TPA"> TPA
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div id="matricula_id">
+
+                                </div>
+    
+                                <div class="col-12 row">
+                                    <div class="col-12" align="right">
+                                        <button class="btn btn-primary" type="submit">Efetuar Pagamento</button>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+           
+
+        </section>
+
+    </main>
+
+    <%- include('../components/footer'); -%>
+    <%- include('../components/scripts'); -%>
+    
+    <script>
+        const formFilter = document.querySelector('#form_filter');
+
+        formFilter.addEventListener('submit', async event => {
+            event.preventDefault();
+
+            let data = {};
+            let title_error = document.getElementById('title_error');
+
+            let field = [...formFilter.elements].map(element => {
+                if (element.name == 'query') return element;
+            });
+
+            if (!field[0].value) {
+                field[0].style.borderColor = 'red';
+                return
+            }
+
+            field[0].style.borderColor = 'green';
+            data[field[0].name] = field[0].value;
+
+            const request = new Request(event.target.action, {
+                    method: event.target.method,
+                    body: JSON.stringify(data),
+                    headers: new Headers({
+                        'Content-Type': 'application/json'
+                    })
+            });
+
+            await fetch(request).then(response => {
+                let student_profile = document.querySelector('.student-profile');
+                    response.json().then(data => {
+
+                        const { matricula } = data;
+                        const tbody = document.getElementById('meses');
+                        const matriculaDiv = document.getElementById('matricula_id')
+                        let element = '';
+                        const months = [
+                            //'Janeiro',
+                            'Fevereiro',
+                            'Março',
+                            'Abril',
+                            'Maio',
+                            'Junho',
+                            'Julho',
+                            'Agosto',
+                            'Setembro',
+                            'Outubro',
+                            'Novembro',
+                            'Dezembro'
+                        ];
+                    
+                        if (data.message) {
+                            title_error.innerHTML = data.message
+                            title_error.style.display = 'block';
+                            return 
+                        }
+
+                        student_profile.innerHTML = `
+                            <div id="profile-student-photo">
+                                <a href="/files/${ matricula.aluno.foto }" target="_blank" rel="noopener noreferrer">
+                                    <img style="border: 4px solid #178be971; height: 10rem;" src="/files/${ matricula.aluno.foto }" alt="Foto do aluno" class="fluid">
+                                </a>
+                            </div>
+        
+                            <div>
+                                <h6><span>Nome:</span>  ${matricula.aluno.nome} </h6>
+                                <h6><span>Código de Matrícula:</span>  ${matricula.codigo_matricula}</h6>
+                                <h6><span>Curso:</span>  ${matricula.classe[0].curso.nome} </h6>
+                                <h6><span>Turma:</span>  ${matricula.turma[0].codigo_turma} </h6>
+                                <h6><span>Classe:</span>  ${matricula.classe[0].nivel}ª </h6>
+                                <h6><span>Ano Lectivo:</span>  ${matricula.ano_lectivo} </h6>
+                            </div>
+                        `;
+
+                        
+                           
+                            let pagamentos = matricula.pagamentos.map(pagamento => {
+                                if (pagamento.mes.mes) return pagamento.mes.mes
+                            });
+
+                            //console.log(pagamento)
+                                months.forEach((month, index) => {
+                                        element += `
+                                   
+                                            ${ (pagamentos.includes(month)) 
+                                                
+                                                ? `
+                                                    <tr style="background-color: #6ceb6c;">
+                                                        <td>
+                                                            <label for="" style="color: #fff;">
+                                                                    ${ month }
+                                                                            
+                                                            </label>
+                                                        </td>
+                                                    </tr>
+                                                `
+
+                                                    : `
+                                                    <tr>
+                                                        <td>
+                                                            <label for="">
+                                                                <input type="checkbox" class="form-check-input meses" name="meses" value="${ month }"> ${ month }          
+                                                            </label>
+                                                        </td>
+                                                    </tr>
+                                                    `
+                                            }
+                        
+                   
+                                        `;
+                                   
+                                });
+                               
+                                
+                        
+
+                        tbody.innerHTML = element;
+                        matriculaDiv.innerHTML = `
+                            <input type="hidden" name="matricula_id" value="${ matricula.id }">
+                        `;
+
+
+                        const meses = tbody.querySelectorAll('.meses');
+                        
+                        meses.forEach((item, index) => {
+                            if (index > 0) {
+                                item.setAttribute('disabled', '');
+                            }
+                            
+                            item.addEventListener('click', () => {
+                                let totCheck = 0;
+                                let valor_pagar = document.getElementById('valor_pagar')
+                                let divFormaPagamento = document.querySelector('.divFormaPagamento');
+
+                                let el = [...divFormaPagamento.children].filter(el => {
+                                    if (el.type == 'hidden') {
+                                        return el;
+                                    }
+                                });
+
+                                let inputEl = document.createElement('input');
+                                inputEl.setAttribute('type', 'hidden');
+                                inputEl.setAttribute('name', 'valor_pago');
+                                inputEl.value = matricula.classe[0].preco;
+
+                                //console.log([...divFormaPagamento.children].indexOf(inputEl) > -1)
+
+                                meses.forEach(input => {
+                                    if (input.checked) {
+                                        totCheck += 1;
+                                        if (el.length <= totCheck) {
+                                            divFormaPagamento.appendChild(inputEl);
+                                        }
+                                        
+                                    } 
+                                });
+
+
+                                if (el.length > totCheck) {
+                                   divFormaPagamento.removeChild(el[0]) 
+                                }
+                                
+                                valor_pagar.value = totCheck * matricula.classe[0].preco;
+
+                                if (item.checked) {
+                                    meses[index + 1].removeAttribute('disabled')
+                                } else {
+                                    meses[index + 1].setAttribute('disabled', '');
+                                }
+                            });
+                        });
+
+                        /*const inputCheck = tbody.querySelectorAll('.meses');
+                        console.log(inputCheck);*/
+                            
+
+                    }).catch(error => {
+                        console.log(error)
+                        //this.alert({ message: 'Houve um erro ao enviar os dados, tente novamente' } , event, this.alertEl);
+                    })
+                }).catch(error => {
+                    console.log(error)
+
+                    //this.alert(error, event, this.alertEl);
+            })
+
+        });
+    </script>
+
+    <script>
+        //new FormValidation('form_pagamento', 'alert', false, '/admin/alunos');
+
+       
+        /*document.getElementById('form_pagamento').addEventListener('submit', async event => {
+            event.preventDefault();
+
+            const formData = new FormData(event.target);
+            const submitBtn = (event.submitter) ? event.submitter : event.explicitOriginalTarget;
+
+
+            const data = {};
+            let dataMonths = [];
+            let valorPago = [];
+
+            [...event.target.elements].forEach(field => { 
+
+                if (field.type == 'checkbox') {
+                    if (field.checked) {
+                        dataMonths.push(field.value);
+                        data[field.name] = dataMonths;   
+                    }
+                }   
+
+                if (field.type == 'radio') {
+                    if (field.checked) {
+                        data[field.name] = field.value;   
+                    }
+                }   
+
+                if (field.type == 'hidden') {
+
+                    if (field.name == 'valor_pago') {
+
+                        valorPago.push(field.value);
+                        data[field.name] = valorPago; 
+                        
+                    } else {
+
+                        data[field.name] = field.value;  
+
+                    }
+
+                }
+
+            });
+
+            console.log(data)
+
+
+            let options = {
+                method: event.target.method,
+                body: JSON.stringify(data),
+                headers: new Headers({
+                    'Content-Type': 'application/json'
+                })
+            };
+
+            const request = new Request(event.target.action, options);
+            submitBtn.disabled = true;
+            
+            await fetch(request).then(response => {
+                response.json().then(data => {
+                    const { pagamentos } = data;
+
+                    console.log(pagamentos)
+                    //return window.location.href = `/admin/pagamentos/fatura/${ data.funcionario_id }`; 
+                }).catch(error => {
+                    console.log(error)
+                })
+            }).catch(error => {
+                console.log(error)
+            })
+            
+            submitBtn.disabled = false;
+            
+        });
+        */
+    </script>
+
+</body>
+</html>  

@@ -1,0 +1,83 @@
+<!-- ======= Sidebar ======= -->
+<aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      <li class="nav-heading">Menu</li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/dashboard">
+          <i class="bi bi-grid"></i>
+          <span><span style="display: none;">dashboard</span>Painel Principal</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+      <% if (funcionario.cargo.toLowerCase() === 'diretor') { %>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/funcionarios">
+            <i class="bi bi-people"></i>
+            <span><span style="display: none;">funcionarios</span>Funcionários</span>
+          </a>
+        </li><!-- End Register Page Nav -->
+      <% } %>
+
+      <% if (funcionario.cargo.toLowerCase() == 'professor') { %>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/turmas/minhas-turma/<%= funcionario.id %>">
+            <i class="bi bi-grid-1x2"></i>
+            <span><span style="display: none;">turmas</span>Minhas Turmas</span>
+          </a>
+        </li><!-- End Cursos Page Nav -->
+      <% } %>
+
+  <% if (funcionario.cargo.toLowerCase() == 'diretor' || funcionario.cargo.toLowerCase() == 'secretário') { %>
+
+    <li class="nav-item">
+      <a class="nav-link" href="/admin/cursos">
+        <i class="bi bi-layout-text-window-reverse"></i>
+        <span>Cursos</span>
+      </a>
+    </li><!-- End Cursos Page Nav -->
+
+    <li class="nav-item">
+      <a class="nav-link" href="/admin/turmas">
+        <i class="bi bi-grid-1x2"></i>
+        <span>Turmas</span>
+      </a>
+    </li><!-- End Cursos Page Nav -->
+
+
+    <li class="nav-item">
+      <a class="nav-link" href="/admin/alunos">
+        <i class="bi bi-person-square"></i>
+        <span>Alunos</span>
+      </a>
+    </li><!-- End F.A.Q Page Nav -->
+
+    <% if (funcionario.cargo.toLowerCase() == 'secretário') { %>
+     <!-- <li class="nav-item">
+        <a class="nav-link" href="/admin/financeiro">
+          <i class="bi bi-cash-coin"></i>
+          <span>Financeiro</span>
+        </a>
+      </li> End F.A.Q Page Nav -->
+    <% } %>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/feedbacks">
+          <i class="bi bi-envelope"></i>
+          <span>Feedbacks</span>
+        </a>
+      </li><!-- End Contact Page Nav -->
+    <% } %>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/perfil/<%= funcionario.id %>">
+          <i class="bi bi-person"></i>
+          <span>Perfil</span>
+        </a>
+      </li><!-- End Profile Page Nav -->
+      
+    
+    </ul>
+
+  </aside><!-- End Sidebar-->

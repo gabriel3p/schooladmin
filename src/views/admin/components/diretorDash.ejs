@@ -1,0 +1,297 @@
+<section class="section dashboard">
+
+    <div class="row">
+
+      <!-- Left side columns -->
+      <div class="col-lg-12">
+        <div class="row">
+
+          <!-- Customers Card -->
+          <div class="col-xxl-4 col-md-4 col-sm-4">
+
+            <a class="card_link" href="/admin/funcionarios">
+              <div class="card info-card customers-card">
+                  <div class="card-body">
+                    <h5 class="card-title">Funcionários </h5>
+                    <div class="d-flex align-items-center">
+                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                        <i class="bi bi-people"></i>
+                      </div>
+                      <div class="ps-3">
+                        <h6><% if (totalFuncionarios < 10) { %>0<% } %><%= totalFuncionarios %></h6>
+                        <span class="text-success small pt-1 fw-bold"><%= totalFuncionariosAtivos.count %></span><span class="text-muted small pt-2 ps-1">online</span> 
+                      </div>
+                    </div> 
+                  </div>
+              </div>
+            </a>
+          </div><!-- End Customers Card -->
+
+          <!-- Sales Card -->
+          <div class="col-xxl-4 col-md-4 col-sm-4">
+              <a class="card_link" href="/admin/cursos">
+              <div class="card info-card sales-card">
+                <div class="card-body">
+                  <h5 class="card-title">Cursos </h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi bi-layout-text-window-reverse"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6><% if (totalCursos < 10) { %>0<% } %><%= totalCursos %></h6>
+                      <% let totalTurmas = 0 %>
+                      <% cursos.forEach((curso) => { %>
+                        <% curso.dataValues.classes.forEach(classe => { %>
+                          <% totalTurmas += classe.dataValues.turmas.length %>
+                        <% }); %>
+                      <% }); %>
+                      <span class="text-success small pt-1 fw-bold"><%= totalTurmas %></span> <span class="text-muted small pt-2 ps-1">turmas</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </a>
+            </div>
+          <!-- End Sales Card -->
+
+          <!-- Revenue Card -->
+          <div class="col-xxl-4 col-md-4 col-sm-4">
+            <a class="card_link" href="/admin/alunos">
+              <div class="card info-card revenue-card">
+                <div class="card-body">
+                  <h5 class="card-title">Alunos </h5>
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i style="color: #0084ff;" class="bi bi-person-square"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6><% if (totalAlunos < 10) { %>0<% } %><%= totalAlunos %></h6>
+                      <span class="text-success small pt-1 fw-bold"><%= totalAlunosAtivos %></span> <span class="text-muted small pt-2 ps-1">ativos</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div><!-- End Revenue Card -->
+  
+        </div>
+      </div><!-- End Left side columns -->
+
+      <!-- Right side columns 
+      <div class="col-lg-4">
+ 
+      </div>End Right side columns -->
+
+    </div>
+
+    <div class="row" id="charts">
+        <!-- Reports -->
+    <div class="col-12">
+      <div class="card">
+
+          <div class="card-body">
+          <h5 class="card-title">Evolução de Alunos <span>/Média por Mês</span></h5>
+
+          <!-- Line Chart -->
+          <div id="reportsChart"></div>
+
+          <script>
+            document.addEventListener("DOMContentLoaded", () => {
+              new ApexCharts(document.querySelector("#reportsChart"), {
+                series: [{
+                  name: 'Alunos Ativos',
+                  data: [31, 40, 28, 51, 42, 82, 56, 31, 40, 28, 51],
+                }, {
+                  name: 'Alunos Pagantes',
+                  data: [11, 32, 45, 32, 34, 52, 41, 11, 32, 45, 32]
+                }],
+                chart: {
+                  height: 350,
+                  type: 'area',
+                  toolbar: {
+                    show: false
+                  },
+                },
+                markers: {
+                  size: 4
+                },
+                colors: ['#4154f1', '#2eca6a'],
+                fill: {
+                  type: "gradient",
+                  gradient: {
+                    shadeIntensity: 1,
+                    opacityFrom: 0.3,
+                    opacityTo: 0.4,
+                    stops: [0, 90, 100]
+                  }
+                },
+                dataLabels: {
+                  enabled: false
+                },
+                stroke: {
+                  curve: 'smooth',
+                  width: 2
+                },
+                xaxis: {
+                  categories: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov'],
+                },
+                yaxis: {
+                  title: {
+                    text: 'Quantidades de Alunos'
+                  }
+                },
+                
+              }).render();
+            });
+          </script>
+          <!-- End Line Chart -->
+
+        </div>
+
+      </div>
+    </div><!-- End Reports -->
+
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Matrículas Ativas por Curso</h5>
+
+
+           <!-- Pie Chart -->
+        <div id="pieChart" style="min-height: 400px;" class="echart"></div>
+
+        <script>
+          document.addEventListener("DOMContentLoaded", async () => {
+            await fetch('/admin/cursos/pegar-dados').then(response => {
+              response.json().then(data => {
+                const { cursos } = data;
+                let datas = [];
+                let content = {};
+
+                cursos.forEach(curso => {
+                  let totalMatriculas = 0;
+                  curso.classes.forEach(classe => {
+                    totalMatriculas += classe.matriculas.length
+                  });
+
+                  datas.push({
+                    name: curso.nome,
+                    value: totalMatriculas 
+                  })
+                });
+
+                echarts.init(document.querySelector("#pieChart")).setOption({
+              
+                  tooltip: {
+                    trigger: 'item'
+                  },
+                  legend: {
+                    orient: 'vertical',
+                    left: 'left'
+                  },
+                  series: [{
+                    name: 'Curso:',
+                    type: 'pie',
+                    radius: '70%',
+                    data: datas,
+                    emphasis: {
+                      itemStyle: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                      },
+                      label: {
+                        show: true,
+                        fontSize: '16',
+                        fontWeight: 'bold'
+                      }
+                    }
+                  }]
+                });
+          
+
+              }).catch(error => {
+                console.log(error)
+              });
+            }).catch(error => {
+              console.log(error)
+            })
+            
+          });
+        </script>
+        <!-- End Pie Chart -->
+
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Receitas e Inadimplência Anual<span> /Média por Mês</span></h5>
+
+          <!-- Line Chart -->
+          <div id="lineChart"></div>
+
+          <script>
+            document.addEventListener("DOMContentLoaded", () => {
+              new ApexCharts(document.querySelector("#lineChart"), {
+                series: [{
+                  name: "Receita Anual Esperada",
+                  data: [40000, 81000, 75000, 91000, 79000, 92000, 99000, 161000, 280000]
+                },
+                {
+                  name: "Receita Anual Realizada",
+                  data: [2000, 21000, 25000, 21000, 29000, 22000, 29000, 21000, 18000]
+                },
+                {
+                  name: "Inadimplência Anual",
+                  data: [31000, 40000, 28000, 51000, 42000, 82000, 56000, 31000, 40000],
+                }],
+                chart: {
+                  height: 350,
+                  type: 'line',
+                  zoom: {
+                    enabled: false
+                  }
+                },
+                markers: {
+                    size: 4
+                  },
+                dataLabels: {
+                  enabled: false
+                },
+                stroke: {
+                  curve: 'smooth',
+                  width: 1
+                },
+                grid: {
+                  row: {
+                    colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                    opacity: 0.5
+                  },
+                },
+                xaxis: {
+                  categories: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov'],
+                },
+                yaxis: {
+                  title: {
+                    text: 'Valores (kz)'
+                  }
+                },
+              }).render();
+            });
+          </script>
+          <!-- End Line Chart -->
+
+        </div>
+      </div>
+    </div>
+
+    </div>
+
+
+  </section>
+
+

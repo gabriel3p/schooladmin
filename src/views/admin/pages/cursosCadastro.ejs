@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <%- include('../components/head'); -%>
+<body>
+    <%- include('../components/header'); -%>
+    <%- include('../components/menu'); -%>
+
+    <%- include('../../partials/msg'); -%>
+
+
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+          <h1>Cadastrar Cursos</h1>
+          <nav>
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="/admin/dashboard">Painel Principal</a></li>
+              <li class="breadcrumb-item"><a href="/admin/cursos">Cursos</a></li>
+              <li class="breadcrumb-item">Cadastrar</li>
+            </ol>
+          </nav>
+        </div><!-- End Page Title -->
+    
+        <section class="section dashboard">
+          <div class="row">
+    
+            <!-- Left side columns -->
+            
+                <form class="row g-3 needs-validation" id="form-curso-register" method="post" action="" novalidate>
+                  <div class="card col-md-12">
+                    <div  class="card-body row col-md-12 p-3">
+                      
+                      <div align="center" class="row col-md-12 col-lg-6 student__photo">
+                     
+                        <div class="col-12">
+                          <img src="/admin/assets/img/undraw_Dashboard_re_3b76.svg" id="photo_student" alt="Capa do curso...">
+                          <div class="pt-2 mb-3 col-12 position-relative">
+                            <label for="validationTooltipPhoto" class="btn btn-primary btn-sm" title="Anexe uma foto."><i class="bi bi-upload"></i></label>
+                            <input style="display: none;" type="file" name="foto" class="form-control" id="validationTooltipPhoto" required>
+                            <input type="hidden" class="form-control" id="validationTooltipPhotoHidden">
+                            <div id="error_msg" class="invalid-tooltip">
+                              É obrigatório ter uma foto de capa.
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                     <div class="row col-md-12 col-lg-6">
+                        <div class="col-lg-6 col-md-12 pt-2">
+                            <label for="yourName" class="form-label">Nome*</label>
+                            <input type="text" name="nome" class="form-control" id="yourName" minLength="3" required>
+                            <div class="invalid-feedback">Por favor, introduza o nome do curso.</div>
+                          </div>
+    
+                          <div class="col-lg-6 col-md-12 pt-2">
+                            <label for="codigo_curso" class="form-label">sigla*</label>
+                            <input type="text" name="codigo_curso" class="form-control" id="codigo_curso" required>
+                            <div class="invalid-feedback">Por favor, introduza o codigo do curso!</div>
+                          </div>
+                          
+                          <div class="col-lg-12 col-md-12 pt-2 mb-5">
+                            <label for="descrição" class="form-label">Descrição</label>
+                            <textarea type="text" name="descrição" class="form-control" id="descrição"></textarea>
+                            <div class="invalid-feedback">Por favor, digite a descrição do curso!</div>
+                          </div>
+    
+                          <div class="col-12">
+                            <button class="btn btn-secondary w-20" type="reset">Limpar</button>
+                            <button class="btn btn-primary w-20" type="submit">Cadastrar Curso</button>
+                          </div>
+                     </div>
+  
+                    </div>
+                  </div>
+                </form>       
+            
+    
+          </div>
+        </section>
+      
+    
+    </main><!-- End #main -->
+    
+
+    <%- include('../components/footer'); -%>
+    <%- include('../components/scripts'); -%>
+
+    <script>
+      new FormValidation('form-curso-register', 'alert', false, false);
+    </script>
+    
+</body>
+</html>

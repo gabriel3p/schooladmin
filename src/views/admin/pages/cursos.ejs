@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <%- include('../components/head'); -%>
+<body>
+    <%- include('../components/header'); -%>
+    <%- include('../components/menu'); -%>
+
+    <%- include('../../partials/msg') -%>
+
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+          <h1>Cursos</h1>
+          <nav>
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="/admin/dashboard">Painel Principal</a></li>
+              <li class="breadcrumb-item">Cursos</li>
+            </ol>
+          </nav>
+        </div><!-- End Page Title -->
+    
+        <section class="section dashboard">
+          <div class="row">
+    
+            <!-- Left side columns -->
+            <div class="col-lg-12">
+              <div class="row">
+
+                <!-- Customers Card -->
+                <div class="col-xxl-4 col-md-4 col-sm-4">
+    
+                  <a class="card_link" href="/admin/cursos/cadastrar">
+                    <div class="card info-card sales-card">
+                        <div class="card-body">
+                          <h5 class="card-title">Cursos </h5>
+                          <div class="d-flex align-items-center">
+                            <div style="background: transparent; margin: 0;" class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                              <i style="font-size: 5rem;" class="bi bi-layout-text-window-reverse"></i>
+                            </div>
+                            <div class="ps-3">
+                              <h6 style="text-transform: uppercase;  font-size: 0.9rem;">Cadastrar</h6>
+                            </div>
+                          </div> 
+                        </div>
+                    </div>
+                  </a>
+                </div><!-- End Customers Card -->
+
+                <!-- Customers Card -->
+                <div class="col-xxl-4 col-md-4 col-sm-4">
+    
+                  <a class="card_link" href="/admin/cursos/classe/add">
+                    <div class="card info-card customers-card">
+                        <div class="card-body">
+                          <h5 class="card-title">Classes </h5>
+                          <div class="d-flex align-items-center">
+                            <div style="background: transparent; margin: 0;" class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                              <i style="font-size: 5rem;" class="bi bi-list-ol"></i>
+                            </div>
+                            <div class="ps-3">
+                              <h6 style="text-transform: uppercase;  font-size: 0.9rem;">Cadastrar</h6>
+                            </div>
+                          </div> 
+                        </div>
+                    </div>
+                  </a>
+                </div><!-- End Customers Card -->
+
+                 
+                     <!-- Customers Card -->
+                <div class="col-xxl-4 col-md-4 col-sm-4">
+    
+                  <a class="card_link" href="/admin/cursos/disciplinas/cadastrar">
+                    <div class="card info-card customers-card">
+                        <div class="card-body">
+                          <h5 class="card-title">Disciplinas </h5>
+                          <div class="d-flex align-items-center">
+                            <div style="background: transparent; margin: 0;" class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                              <i style="font-size: 5rem; color: #0084ff;" class="bi bi-book"></i>
+                            </div>
+                            <div class="ps-3">
+                              <h6 style="text-transform: uppercase;  font-size: 0.9rem;">Cadastrar</h6>
+                            </div>
+                          </div> 
+                        </div>
+                    </div>
+                  </a>
+                </div><!-- End Customers Card -->
+
+              </div>
+            </div><!-- End Left side columns -->
+    
+            <div class="col-lg-12">
+              <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Buscar</h5>
+      
+                    <form class="row g-3" id="form-admin-filter" method="post" action="/admin/cursos/buscar">
+                      <div class="col-lg-3 col-md-6 col-sm-12">
+                        <label for="yourName" class="form-label">Nome do curso</label>
+                        <input type="text" name="nome" class="form-control" id="yourName" minLength="3">
+                      </div>
+
+                      <div class="col-lg-3 col-md-6 col-sm-12">
+                          <label for="codigo_curso" class="form-label">Sigla do curso</label>
+                          <input type="text" name="codigo_curso" class="form-control" id="codigo_curso" minLength="2">
+                      </div>   
+                      
+                      <div class="col-lg-3 col-md-6 col-sm-12">
+                        <label for="preco" class="form-label">Valor da propina</label>
+                        <input type="number" name="preco" class="form-control" id="preco" minLength="2">
+                      </div> 
+
+                      <div class="col-lg-3 col-md-6 col-sm-12">
+                        <label for="nivel" class="form-label">Classe</label>
+                        <select class="form-select" name="nivel" id="nivel">
+                          <option selected value="" disabled>-- selecione a classe --</option>
+                          <option value="10">10ª</option>
+                          <option value="11">11ª</option>
+                          <option value="12">12ª</option>
+                          <option value="13">13ª</option>
+                        </select>
+                      </div>
+
+                      <div class="col-lg-3 col-md-6 col-sm-12">
+                        <label for="codigo_turma" class="form-label">Turma</label>
+                        <input type="text" name="codigo_turma" class="form-control" id="codigo_turma" minLength="2">
+                      </div> 
+
+                      <div class="col-lg-3 col-md-6 col-sm-12">
+                        <label for="turno" class="form-label">Turno</label>
+                        <select class="form-select" name="turno" id="turno">
+                          <option selected value="" disabled>-- selecione o turno --</option>
+                          <option value="m">Manhã</option>
+                          <option value="t">Tarde</option>
+                        </select>
+                      </div>
+
+                      <div class="col-lg-3 col-md-6 col-sm-12">
+                        <label for="nome_disciplina" class="form-label">Discplina</label>
+                        <input type="text" name="nome_disciplina" class="form-control" id="nome_disciplina" minLength="2">
+                      </div>
+
+                      <div class="col-lg-3 col-md-6 col-sm-12">
+                        <label for="abreviacao" class="form-label">Abreviação da discplina</label>
+                        <input type="text" name="abreviacao" class="form-control" id="abreviacao"  minLength="2">
+                      </div>
+
+                      <div class="col-12">
+                        <button class="btn btn-secondary w-10" type="reset">Limpar</button>
+                        <button class="btn btn-primary w-10" type="submit">Buscar</button>
+                      </div>
+                      
+                    </form>
+      
+                  </div>
+                </div>
+          </div>
+            
+            <div class="col-lg-12">
+                <div class="card" id="lista">
+                    <div class="card-body">
+                      <h5 class="card-title">Lista dos Cursos</h5>
+        
+                      <!-- Table with hoverable rows -->
+                      <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Sigla</th>
+                            <th scope="col">Turmas</th>
+                            <th scope="col">Classes</th>
+                            <th>Acções</th>
+                          </tr>
+                        </thead>
+                        <tbody id="filtros">
+                            <% cursos.forEach((curso) => { %>
+                                <% let totalTurmas = 0 %>
+                                <% curso.dataValues.classes.forEach(classe => { %>
+                                  <% totalTurmas += classe.dataValues.turmas.length %>
+                                <% }); %>
+                                <tr>
+                                    <td style="text-transform: capitalize;"><%= curso.dataValues.nome %></td>
+                                    <td><%= curso.dataValues.codigo_curso %></td>
+                                    <td><%= totalTurmas %></td>
+                                    <td><%= curso.dataValues.classes.length %></td>
+                                    <td class="action_links">
+                                        <a href="/admin/curso/<%= curso.dataValues.codigo_curso %>" data-bs-toggle="modal" data-bs-target=".modal_visualizar_<%= curso.dataValues.codigo_curso %>" title="Visualizar curso"><i class="bi bi-eye-fill"></i></a>
+                                        <a style="color: #2e9b2e" href="#" data-bs-toggle="modal" data-bs-target=".modal_editar" title="Editar curso" class="bi bi-pencil-square edit_btn"><span style="display: none;"><%= curso.dataValues.id %></span></a>
+                                        <% if (funcionario.cargo.toLowerCase() == 'diretor') { %><a href="#" data-bs-toggle="modal" data-bs-target=".modal_deletar_<%= curso.dataValues.codigo_curso %>" title="Deletar curso"><i class="bi bi-trash-fill"></i></a><% } %>
+                                    </td>
+                                  </tr>
+
+                                  <div class="modal fade modal_deletar_<%= curso.dataValues.codigo_curso %>" id="" tabindex="-1" aria-hidden="true" style="display: none;">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <h5 class="modal-title">Tem certeza que quer eliminar este curso?</h5>
+                                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-footer">
+                                          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Não</button>
+                                          <a href="/admin/cursos/<%= curso.dataValues.codigo_curso %>/deletar"><button type="button" class="btn btn-danger">Sim</button></a>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div><!-- Fim Modal DEletar curso --> 
+
+                                  <div class="modal fade modal_visualizar_<%= curso.dataValues.codigo_curso %>" id="verticalycentered" tabindex="-1" style="display: none;" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <h5 class="modal-title">Informações do Curso</h5>
+                                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+
+                                         <div class="row mb-3">
+                                            <div class="col-lg-4 col-md-12 student__photo">
+                                              <div class="col-12">
+                                                <img src="/files/<%= curso.dataValues.foto %>" id="photo" alt="Capa do curso...">
+                                              </div>
+                                            </div>
+
+                                            <div class="col-lg-8 col-md-12">
+                                                <div class="d-flex col-12">
+                                                  <div style="text-align: justify; margin-bottom: 0.1rem;" class="col-12">
+                                                    <span style="font-weight: bold;">Sigla:</span> 
+                                                    <%= curso.dataValues.codigo_curso %>
+                                                  </div>
+                                                </div>
+                                                  
+                                                <div class="d-flex col-12">
+                                                  <div style="text-align: justify; margin-bottom: 0.1rem;" class="col-12">
+                                                    <span style="font-weight: bold;">Nome do curso:</span> 
+                                                    <%= curso.dataValues.nome %>
+                                                  </div>
+                                                </div>
+
+                                                <div class="d-flex col-12">
+                                                  <div style="text-align: justify;" class="col-12">
+                                                    <span style="font-weight: bold;">Descrição:</span> 
+                                                    <%= curso.dataValues.descrição %>
+                                                  </div>
+                                                </div>
+                                            </div>
+                                         </div>
+
+                                        
+                                          <div class="card-body col-12">
+                                            <h5 class="card-title">Classes, Disciplinas e Turmas</h5>
+                                            <div class="accordion accordion-flush" id="accordionFlushExample-<%= curso.dataValues.codigo_curso %>">
+                                            <% curso.dataValues.classes.forEach((classe, index) => { %>
+                                                <div class="accordion-item">
+
+                                                  <h2 class="accordion-header" id="flush-heading<%= classe.dataValues.nivel %>-<%= curso.dataValues.codigo_curso %>">
+                                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse<%= classe.dataValues.nivel %>-<%= curso.dataValues.codigo_curso %>" aria-expanded="false" aria-controls="flush-collapse<%= classe.dataValues.nivel %>-<%= curso.dataValues.codigo_curso %>">
+                                                      <%= classe.dataValues.nivel %>ª Classe
+                                                    </button>
+                                                  </h2>
+                                                  <div id="flush-collapse<%= classe.dataValues.nivel %>-<%= curso.dataValues.codigo_curso %>" class="accordion-collapse collapse" aria-labelledby="flush-heading<%= classe.dataValues.nivel %>-<%= curso.dataValues.codigo_curso %>" data-bs-parent="#accordionFlushExample-<%= curso.dataValues.codigo_curso %>" style="">
+                                                    <div class="accordion-body" style="padding-left: 1rem;">
+                                                      <div class="col-12">
+                                                        <span style="font-weight: bold;">Propina: <code style="font-size: 1rem;"><%= classe.dataValues.preco %></code>,00kz</span>
+                                                      </div>
+
+                                                      <% if (classe.dataValues.disciplinas.length > 0) { %>
+                                                        <div class="col-12">
+                                                          <h6 class="card-title" style="font-size: 0.9rem; font-weight: bold;">Disciplinas</h6>
+                                                          <div class="col-12">
+                                                            <ul class="list-group">
+                                                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                                  <span class="col-5" style="font-weight: bold;">Disciplina</span>
+                                                                  <span class="col-3"  style="font-weight: bold;">Abreviação</span>
+                                                                  <span class="col-3"  style="font-weight: bold;">Professor</span>
+                                                                  <span class="col-1"  style="visibility: hidden;">Professor</span>
+                                                                </li>
+                                                                <% classe.dataValues.disciplinas.forEach(disciplina => { %>
+                                                                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                                    <span class="col-5"><%= disciplina.dataValues.nome_disciplina %></span>
+                                                                    <span class="col-3" ><%= disciplina.dataValues.abreviacao %></span>
+                                                                    <span class="col-3" >
+                                                                      <% disciplina.dataValues.professores.forEach(professor => { %>
+                                                                        <%= professor.dataValues.nome %> <%= professor.dataValues.sobrenome %> 
+                                                                      <% }); %>
+                                                                    </span>
+                                                                    <% if (funcionario.cargo.toLowerCase() == 'diretor') { %>
+                                                                      <span class="col-1"><a href="/admin/cursos/disciplinas/<%= disciplina.dataValues.id %>/deletar" title="Deletar disciplina" class="bi bi-trash-fill" style="color: rgb(214, 58, 58);"></a></span>
+                                                                    <% } %>
+                                                                  </li>  
+                                                                <%  }) %>
+                                                            </ul>
+                                                          </div>
+                                                        </div>
+                                                      <% } %>
+
+                                                      <% if (classe.dataValues.turmas.length > 0) { %>
+                                                        <div class="col-12">
+                                                          <h6 class="card-title" style="font-size: 0.9rem; font-weight: bold;">Turmas</h6>
+                                                          <div class="col-12">
+                                                            <ul class="list-group">
+                                                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                                  <span class="col-4" style="font-weight: bold;">Turma</span>
+                                                                  <span class="col-4"  style="font-weight: bold;">Turno</span>
+                                                                  <span class="col-4"  style="font-weight: bold;">Alunos</span>
+                                                                </li>
+                                                                <% classe.dataValues.turmas.forEach(turma => { %>
+                                                                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                                    <span class="col-4"><%= turma.dataValues.codigo_turma %></span>
+                                                                    <span class="col-4" ><%= (turma.dataValues.turno == 'm') ? 'Manhã' : 'Tarde' %></span>
+                                                                    <span class="col-2"><span class="badge bg-primary rounded-pill"><%= turma.dataValues.matriculas.length %></span></span>
+                                                                    <% if (funcionario.cargo.toLowerCase() == 'diretor') { %>
+                                                                      <span class="col-2"><a href="/admin/turmas/<%= turma.dataValues.id %>/deletar" title="Deletar Turma" class="bi bi-trash-fill" style="color: rgb(214, 58, 58);"></a></span>
+                                                                    <% } %>
+                                                                  </li>  
+                                                                <%  }) %>
+                                                            </ul>
+                                                          </div>
+                                                        </div>
+                                                      <% } %>
+                                                      <% if (funcionario.cargo.toLowerCase() == 'diretor') { %>
+                                                        <div class="col-12 mt-4">
+                                                          <a href="/admin/cursos/classe/<%= classe.dataValues.id %>/deletar" class="btn btn-danger">Deletar Classe</a>
+                                                        </div>
+                                                      <% } %>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                            <%  }) %>
+                                            </div><!-- End Accordion without outline borders -->
+                              
+                                          </div>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                            <%});%>
+                        </tbody>
+                      </table>
+                      <!-- End Table with hoverable rows -->
+                    
+                
+                    </div>
+                  </div>
+            </div>
+    
+          </div>
+        </section>
+      
+    
+    </main><!-- End #main -->
+
+    <div class="modal fade modal_editar" id="" tabindex="-1" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Editar Curso</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+            <form class="needs-validation" id="form-edit-curso" method="post" enctype="multipart/form-data" novalidate>
+             
+            </form>
+        </div>
+      </div>
+    </div><!-- Fim Modal DEletar curso -->
+    
+    <%- include('../components/footer'); -%>
+    <%- include('../components/scripts'); -%>
+
+    <script>
+      new FormFilter('form-admin-filter', 'alert');
+    </script>
+
+    <script>
+      new FormValidation('form-edit-curso', 'alert', false, '/admin/cursos');
+      
+     
+      //formFilter.showFormEditCurso('.edit_btn', 'form-edit-curso')
+    </script>
+    
+</body>
+</html>                                                                                 

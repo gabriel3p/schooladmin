@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <%- include('../components/head'); -%>
+<body>
+    <%- include('../components/header'); -%>
+    <%- include('../components/menu'); -%>
+
+    <%- include('../../partials/msg'); -%>
+
+
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+          <h1>Matricular Aluno</h1>
+          <nav>
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="/admin/dashboard">Painel Principal</a></li>
+              <li class="breadcrumb-item"><a href="/admin/alunos">Alunos</a></li>
+              <li class="breadcrumb-item">Matricular</li>
+            </ol>
+          </nav>
+        </div><!-- End Page Title -->
+    
+        <section class="section dashboard">
+          <div class="row">
+    
+           
+            
+            <form class="needs-validation" id="form-register" action="/admin/alunos/matricular" enctype="multipart/form-data" method="POST" novalidate>
+                 
+                 
+                <div class="personal__datas card">
+                    
+                
+                 <div class="card-body" style="padding-bottom: 3rem;">
+                   <h2 class="card-title">Dados Pessoais</h2>
+              
+                   <div class="row g-3 personal__data">
+
+                    <div class="row mb-3 col-12 student__photo">
+                     
+                     <div class="position-relative">
+                       <img src="/assets/img/undraw_male_avatar_323b.svg" id="photo_student" alt="Foto do estudante...">
+                       <div class="pt-2">
+                         <label for="validationTooltipPhoto" class="btn btn-primary btn-sm" title="Anexe uma foto."><i class="bi bi-upload"></i></label>
+                         <input style="display: none;" type="file" name="foto" class="form-control" id="validationTooltipPhoto" required>
+                         <input type="hidden" class="form-control" id="validationTooltipPhotoHidden" required>
+                         <div id="error_msg" class="invalid-tooltip">
+                           É obrigatório ter uma foto.
+                         </div>
+                       </div>
+                     </div>
+                   </div>
+
+                     <div class="col-md-4 position-relative">
+                       <label for="validationTooltip01" class="form-label">Nome do Aluno (a)</label>
+                       <input type="text" class="form-control" minlength="10" id="validationTooltip01" name="nome" required>
+                       <div class="invalid-tooltip">
+                         Campo obrigatório!
+                       </div>
+                     </div>
+                     <div class="col-md-4 position-relative">
+                       <label for="validationTooltip02" class="form-label">Nome do Pai</label>
+                       <input type="text" class="form-control" minlength="10" name="nome_pai" id="validationTooltip02" required>
+                       <div class="invalid-tooltip">
+                        Campo obrigatório!
+                       </div>
+                     </div>
+       
+                     <div class="col-md-4 position-relative">
+                       <label for="validationTooltipMother" class="form-label">Nome da Mãe</label>
+                       <input type="text" class="form-control" minlength="10" name="nome_mae" id="validationTooltipMother" required>
+                       <div class="invalid-tooltip">
+                        Campo obrigatório!
+                       </div>
+                     </div>
+                     
+                     <div class="col-md-4 position-relative">
+                       <label for="validationTooltip03" class="form-label">Naturalidade (província)</label>
+                       <input type="text" class="form-control" minlength="3" name="nacionalidade"  id="validationTooltip03" required>
+                       <div class="invalid-tooltip">
+                        Por favor introduza uma naturalidade válida!
+                       </div>
+                     </div>
+                     
+                     <div class="col-md-4 position-relative">
+                       <label for="validationTooltip04" class="form-label">Município</label>
+                       <input type="text" class="form-control" minlength="4" name="municipio" id="validationTooltip04" required>
+                       <div class="invalid-tooltip">
+                        Por favor introduza um município válido!
+                       </div>
+                     </div>
+                     
+                     
+                     <div class="col-md-4 position-relative">
+                       <label for="validationTooltip05" class="form-label">Bairro</label>
+                       <input type="text" class="form-control" minlength="5" name="bairro"  id="validationTooltip05" required>
+                       <div class="invalid-tooltip">
+                         Por favor introduza um bairro válido!
+                       </div>
+                     </div>
+       
+                     <div class="col-md-4 position-relative">
+                       <label for="validationTooltip15" class="form-label">Data de Nascimento</label>
+                       <input type="date" class="form-control inputDate" name="data_nascimento" id="validationTooltip15" required>
+                       <div class="invalid-tooltip">
+                         Por favor introduza a data de nascimento!
+                       </div>
+                     </div>
+       
+                     <div class="col-md-4 position-relative">
+                       <label for="validationTooltip14" class="form-label">Gênero</label>
+                       <select class="form-select" id="validationTooltip14" name="genero" required>
+                        <option selected value="M">Masculino</option>
+                         <option value="F">Feminino</option>
+                       </select>
+                       <div class="invalid-tooltip">
+                         Por favor informe ao gênero.
+                       </div>
+                     </div>
+       
+                     <div class="col-md-4 position-relative">
+                       <label for="validationTooltip06" class="form-label">Bilhete de Identidade Nº</label>
+                       <input type="text" class="form-control" minlength="14" name="bi" max maxlength="14"  id="validationTooltip06" required>
+                       <div class="invalid-tooltip">
+                        Por favor introduza o número do BI ou Cédula
+                       </div>
+                     </div>
+                     
+                     <div class="col-md-4 position-relative">
+                       <label for="validationTooltip07" class="form-label">Telefone (+244)</label>
+                       <input type="text" class="form-control" id="validationTooltip07" name="phone1" minlength="9" max maxlength="9" required>
+                       <div class="invalid-tooltip">
+                        Por favor introduza um número de telefone.
+                       </div>
+                     </div>
+                     
+                     <div class="col-md-4 position-relative">
+                       <label for="validationTooltip016" class="form-label">Telefone Alternativo (+244)</label>
+                       <input type="text" class="form-control" minlength="9" max maxlength="9" name="phone2" id="validationTooltip016" required>
+                       <div class="invalid-tooltip">
+                        Por favor introduza um número de telefone.
+                       </div>
+                     </div>
+                     
+                     <div class="col-md-4 position-relative">
+                       <label for="validationTooltip08" class="form-label">Email (opcional)</label>
+                       <input type="email" class="form-control" name="email" id="validationTooltip08">
+                       <div class="invalid-tooltip">
+                        Por favor introduza um email válido.
+                       </div>
+                     </div>
+                   </div>
+                 </div>
+
+                 <input type="hidden" name="situacao_aluno" class="form-control" id="situacao_aluno" value="ativo">
+   
+                </div>
+                 
+                <div class="card"> 
+                 <div class="card-body row g-3">
+                    <h2 class="card-title">Dados da Matrícula</h2>
+
+                    <div class="col-md-4 position-relative">
+                        <label for="curso" class="form-label">Curso</label>
+                        <select class="form-select" id="curso" name="curso" required>
+                        <option selected disabled value="">Escolha um curso...</option>
+                        <% cursos.forEach(curso => { %>
+                                <option value="<%= curso.dataValues.id %>"><%= curso.dataValues.nome %></option>
+                        <% }) %>
+                        </select>
+                        <div class="invalid-tooltip">
+                        Por favor selecione um curso.
+                        </div>
+                    </div>
+        
+                    <div class="col-md-4 position-relative">
+                        <label for="nivel" class="form-label">Classe</label>
+                        <select class="form-select" id="nivel" required name="nivel">
+                            <option selected disabled value="">Escolha a classe...</option>
+                        </select>
+                        <div class="invalid-tooltip">
+                        Por favor informe a classe.
+                        </div>
+                    </div>
+        
+                    <div class="col-md-4 position-relative">
+                        <label for="turno" class="form-label">Turno</label>
+                        <select class="form-select" id="turno" required name="turma_id" required>
+                        <option selected disabled value="">Escolha o turno...</option>
+                       
+                        </select>
+                        <div class="invalid-tooltip">
+                        Por favor informe o turnos.
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 position-relative">
+                      <label for="validationTooltip11" class="form-label">Estado da Matrícula</label>
+                      <select class="form-select" id="validationTooltip11" required name="estado_matricula" required>
+                        <option selected value="ativa">Ativa</option>
+                        <option value="pendente">Pendente</option>
+                        <option value="recusada">Recusada</option>
+                      </select>
+                      <div class="invalid-tooltip">
+                        Por favor informe estado da matrícula do aluno.
+                      </div>
+                  </div>
+
+                  <div class="col-md-4 position-relative">
+                    <label for="ano_lectivo" class="form-label">Ano Lectivo</label>
+                    <input type="number" name="ano_lectivo" class="form-control" id="ano_lectivo" minLength="4" maxLength="4" readonly>
+                    <div class="invalid-tooltip">
+                      Por favor informe o ano lectivo.
+                    </div>
+                  </div>
+
+                  <input type="hidden" name="situacao_financeira" class="form-control" id="situacao_financeira" value="inadimplente">
+
+                    <div class="col-12 btn__submit" align="right">
+                        <button class="btn btn-secondary" type="reset">Limpar</button>
+                        <button class="btn btn-primary" type="submit">Matricular Aluno</button>
+                    </div>
+                  </div>
+                  </div>
+                </form><!-- End Custom Styled Validation with Tooltips -->
+            
+            
+    
+          </div>
+        </section>
+      
+    
+    </main><!-- End #main -->
+
+    <%- include('../components/footer'); -%>
+    <%- include('../components/scripts'); -%>
+
+    <script>
+        const cursoSelect = document.getElementById('curso');
+        const nivelSelect = document.getElementById('nivel');
+        const turnoSelect = document.getElementById('turno');
+
+        cursoSelect.addEventListener('change', async () => {
+            await fetch(`/admin/cursos/classe/pegar-dados/${ cursoSelect.value }`).then(response => {
+                response.json().then(data => {
+                    let element = '<option selected disabled value="">Escolha a classe...</option>';
+
+                    data.curso.classes.forEach(classe => {
+                        element += `
+                            <option value="${ classe.id }">${ classe.nivel }ª</option>
+                        `
+                    });
+
+                    nivelSelect.innerHTML = element;
+
+                    nivelSelect.addEventListener('change', () => {
+                      let turnoOpt = ' <option selected disabled value="">Escolha o turno...</option>';
+
+                      data.curso.classes.forEach(classe => {
+                          if (nivelSelect.value == classe.id) {
+                            classe.turmas.forEach(turma => {
+                              turnoOpt += `
+                                <option value="${ turma.id }">${ (turma.turno.toLowerCase() == 't') ? 'Tarde' : 'Manhã' }</option>
+                              `; 
+                            });
+                          }
+                      })
+
+                      turnoSelect.innerHTML = turnoOpt;
+                    })
+                    
+
+                }).catch(error => {
+                    console.error('Erro durante a requisição ' + error);
+                })
+            }).catch(error => {
+              console.error('Erro durante a requisição ' + error);
+          })
+        });
+    </script>
+
+    <script>
+      const ano_lectivo = document.getElementById('ano_lectivo');
+      let date = new Date();
+      window.addEventListener('load', () => {
+        ano_lectivo.value = date.getFullYear();
+      });
+
+      new FormValidation('form-register', 'alert', true, false);
+    </script>
+    
+</body>
+</html>

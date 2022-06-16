@@ -1,0 +1,38 @@
+<section class="section dashboard">
+
+    <div class="row">
+
+      <!-- Left side columns -->
+      <div class="col-lg-12">
+        <div class="row">
+          <!-- Customers Card -->
+          <div class="col-xxl-4 col-md-4 col-sm-4">
+
+            <a class="card_link" href="/admin/turmas/minhas-turma/<%= funcionario.id %>">
+              <div class="card info-card customers-card">
+                  <div class="card-body">
+                    <h5 class="card-title">Minhas Turmas</h5>
+                    <div class="d-flex align-items-center">
+                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                        <i class="bbi bi-grid-1x2"></i>
+                      </div>
+                      <div class="ps-3">
+                        <h6><% if (totTurmasProfessor < 10) { %>0<% } %><%= totTurmasProfessor %></h6>
+                      </div>
+                    </div> 
+                  </div>
+              </div>
+            </a>
+            
+          </div><!-- End Customers Card -->
+      
+        </div>
+      </div><!-- End Left side columns -->
+
+
+    </div>
+
+    <br><br><br><br><br><br>
+
+
+  </section>

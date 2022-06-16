@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <%- include('../components/head'); -%>
+<body id="page_students">
+    <%- include('../components/header'); -%>
+
+    <main id="main">
+
+       <!-- ***** Header Area End ***** -->
+       <div class="alert text-light  alert-dismissible fade msg" id="alert" role="alert">
+        <span></span>
+       <button type="button" class="btn-close btn-close-white" aria-label="Close" style="border: none;"></button>
+     </div>
+   
+     <section class="heading-page header-text" id="top">
+       <div class="container" data-aos="zoom-in" data-aos-delay="100">
+         <div class="row">
+           <div class="col-lg-12">
+             <h6>Saiba mais sobre o seu</h6>
+             <h2>Encarregando</h2>
+           </div>
+         </div>
+       </div>
+     </section>
+     
+   
+     <section class="section profile" data-aos="fade-up">
+       <div class="container">
+           <div class="section-header">
+               <p>Digite o código de matrícula do encarregando na barra de pesquisa abaixo<br> para obter as informações do mesmo.</p>
+             </div>
+       </div>
+       
+   
+       <div class="search-bar">
+           <form class="search-form d-flex align-items-center needs-validation" id="form_filter" method="POST" action="/admin/matriculas/buscar" novalidate>
+             <input type="text" name="query" placeholder="#Digite o Código de Matrícula" title="Introduza a palavra chave" required>
+             <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+           </form>
+         </div><!-- End Search Bar -->
+     
+   
+       <div class="about__student">
+
+        <div align="center" id="avatar_group">
+          <h5 class="card-title" style="display: none; text-transform: uppercase; font-weight: bold;" id="avatar_message">Matrícula não encontrada!</h5>
+          <img src="/assets/img/undraw_People_search_re_5rre.svg" id="ilustration_avatar" style="max-width: 25rem; width: 100%;" alt="avatar ilustração">
+        </div>
+
+        <div class="col-12 row d-flex align-items-center" id="about_student" style="display: none;"></div>
+       
+
+      </div>
+
+     </section>
+   
+     </main><!-- End #main -->
+  
+    <%- include('../components/footer'); -%>
+    <%- include('../components/scripts'); -%>
+
+    <script>
+      new FormFilter('form_filter', 'alert')
+      /*const formEl = document.getElementById('form_filter');
+
+      formEl.addEventListener('submit', event => {
+          event.preventDefault();
+          let data = {};
+
+          let field = [...formEl.elements].map(element => {
+            if (element.type == 'text') return element;
+          });
+
+          if (!field[0].value) {
+            field[0].style.borderColor = 'red';
+            return
+          }
+
+          field[0].style.borderColor = 'green';
+          data[field[0].name] = field[0].value;
+
+          let options = {
+                method: event.target.method,
+                body: JSON.stringify(data),
+                headers: new Headers({
+                    'Content-Type': 'application/json'
+                })
+          };
+
+          await fetch(request).then(response => {
+                response.json().then(data => {
+                   
+                    console.log(data)
+
+                }).catch(error => {
+                    console.log(error)
+                    //this.alert({ message: 'Houve um erro ao enviar os dados, tente novamente' } , event, this.alertEl);
+                })
+            }).catch(error => {
+                console.log(error)
+
+                //this.alert(error, event, this.alertEl);
+          })
+
+          return
+        });*/
+    </script>
+</body>
+</html>

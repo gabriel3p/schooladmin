@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <%- include('../components/head'); -%>
+<body>
+    <%- include('../components/header'); -%>
+    <%- include('../components/menu'); -%>
+
+    <%- include('../../partials/msg'); -%>
+
+
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+          <h1>Alunos</h1>
+          <nav>
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="/admin/dashboard">Painel Principal</a></li>
+              <li class="breadcrumb-item">Alunos</li>
+            </ol>
+          </nav>
+        </div><!-- End Page Title -->
+    
+        <section class="section dashboard">
+          <div class="row">
+    
+            <!-- Left side columns -->
+            <div class="col-lg-12">
+              <div class="row">
+
+                <!-- Customers Card -->
+                <div class="col-xxl-4 col-md-4">
+    
+                  <a class="card_link" href="/admin/alunos/matricular">
+                    <div class="card info-card revenue-card">
+                        <div class="card-body">
+                          <h5 class="card-title">Alunos </h5>
+                          <div class="d-flex align-items-center">
+                            <div style="background: transparent; margin: 0 10px;" class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                              <i  style="font-size: 5rem;" class="bi bi-person-plus-fill"></i>
+                            </div>
+                            <div class="ps-3">
+                              <h6 style="text-transform: uppercase;  font-size: 0.9rem;">Matricular</h6>
+                            </div>
+                          </div> 
+                        </div>
+                    </div>
+                  </a>
+                </div><!-- End Customers Card -->
+
+                <!-- Customers Card -->
+                <div class="col-xxl-4 col-md-4 col-sm-4">
+    
+                  <a class="card_link" href="/admin/alunos/confirmar">
+                    <div class="card info-card sales-card">
+                        <div class="card-body">
+                          <h5 class="card-title">Matrícula </h5>
+                          <div class="d-flex align-items-center">
+                            <div style="background: transparent; margin: 0;" class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                              <i style="font-size: 5rem;" class="bi bi-person-check"></i>
+                            </div>
+                            <div class="ps-3">
+                              <h6 style="text-transform: uppercase;  font-size: 0.9rem;">Confirmar</h6>
+                            </div>
+                          </div> 
+                        </div>
+                    </div>
+                  </a>
+                </div><!-- End Customers Card -->
+
+                <% if (funcionario.cargo.toLowerCase() != 'professor') { %>
+                    <div class="col-xxl-4 col-md-4 col-sm-4">
+                        <a class="card_link" href="/admin/pagamentos/propina">
+                          <div class="card info-card customers-card">
+                              <div class="card-body">
+                                <h5 class="card-title">Propina </h5>
+                                <div class="d-flex align-items-center">
+                                  <div style="background: transparent; margin: 0;" class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                    <i style="font-size: 5rem; color: #12d30c;" class="bi bi-cash-coin"></i>
+                                  </div>
+                                  <div class="ps-3">
+                                    <h6 style="text-transform: uppercase;  font-size: 0.9rem;">Efetuar Pagamento</h6>
+                                  </div>
+                                </div> 
+                              </div>
+                          </div>
+                        </a>
+                    </div><!-- End Customers Card -->
+                <% } %> 
+        
+              </div>
+            </div><!-- End Left side columns -->
+    
+            <div class="col-lg-12">
+              <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Buscar</h5>
+      
+                    <form class="row g-3" id="form-admin-filter" method="post" action="/admin/alunos/buscar">
+
+                      <div class="col-lg-3 col-md-6 col-sm-12">
+                        <label for="nome_aluno" class="form-label">Nome do Aluno</label>
+                        <input type="text" name="nome" class="form-control" id="nome_aluno">
+                    </div>
+
+                        <div class="col-lg-3 col-md-6 col-sm-12">
+                            <label for="ano_lectivo" class="form-label">Ano Lectivo</label>
+                            <input type="number" name="ano_lectivo" class="form-control" id="ano_lectivo" minLength="3">
+                        </div>
+
+                        <div class="col-lg-3 col-md-6 col-sm-12">
+                            <label for="situacao_matricula" class="form-label">Situação da Matricula</label>
+                            <select class="form-select" name="situacao_matricula" id="situacao_matricula">
+                                <option selected value="" disabled>--selecione a situação--</option>
+                                <option value="Aprovada">Aprovada</option>
+                                <option value="Pendente">Pendente</option>
+                                <option value="Recusada">Recusada</option>
+                            </select>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6 col-sm-12">
+                            <label for="nivel" class="form-label">Classe</label>
+                            <select class="form-select" name="nivel" id="nivel">
+                                <option selected value="" disabled>--selecione a classe--</option>
+                                <option value="10">10ª</option>
+                                <option value="11">11ª</option>
+                                <option value="12">12ª</option>
+                                <option value="13">13ª</option>
+                            </select>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6 col-sm-12">
+                            <label for="codigo_curso" class="form-label">Curso</label>
+                            <select class="form-select" name="codigo_curso" id="codigo_curso">
+                                <option selected value="" disabled>--selecione o curso--</option>
+                               <% cursos.forEach(curso => { %>
+                                    <option value="<%= curso.dataValues.codigo_curso %>"><%= curso.dataValues.nome %></option>
+                                <% }) %>
+                            </select>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6 col-sm-12">
+                            <label for="codigo_turma" class="form-label">Turma</label>
+                            <select class="form-select" name="codigo_turma" id="codigo_turma">
+                                <option selected value="" disabled>--selecione a turma--</option>
+                                <% turmas.forEach(turma => { %>
+                                    <option value="<%= turma.dataValues.codigo_turma %>"><%= turma.dataValues.codigo_turma %></option>
+                                <% }) %>
+                            </select>
+                        </div>
+
+                      <div class="col-lg-3 col-md-6 col-sm-12">
+                        <label for="bi" class="form-label">BI nº</label>
+                        <input type="text" name="bi" class="form-control" id="bi" minLength="14" maxLength="14">
+                      </div>
+
+                      
+                    <div class="col-lg-3 col-md-6 col-sm-12">
+                      <label for="codigo_matrcula" class="form-label">Código da Matrícula</label>
+                      <input type="text" name="codigo_matrcula" class="form-control" id="codigo_matrcula" minLength="3">
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 col-sm-12">
+                      <label for="email" class="form-label">Email</label>
+                      <input type="email" name="email" class="form-control" id="email">
+                    </div>
+
+                                    
+
+                      <div class="col-12">
+                        <button class="btn btn-secondary w-10" type="reset">Limpar</button>
+                        <button class="btn btn-primary w-10" type="submit">Buscar</button>
+                      </div>
+                      
+                    </form>
+      
+                  </div>
+                </div>
+          </div>
+            
+            <div class="col-lg-12">
+                <div class="card"  id="lista">
+                    <div class="card-body">
+                      <h5 class="card-title">Lista dos Alunos</h5>
+                      <form class="needs-validation" id="form-accoes" method="post" action="" novalidate>
+                          <!-- Table with hoverable rows -->
+                          <table class="table table-hover">
+                            <thead>
+                              <tr>
+                                <th scope="col">
+                                    <input type="checkbox" class="form-check-input" name="todos" id="todos">
+                                    Nome
+                                </th>
+                                <th scope="col">Telefone</th>
+                                <th scope="col">Código de Matrícula</th>
+                                <th scope="col">Classe</th>
+                                <th scope="col">Curso</th>
+                                <th scope="col">Turma</th>
+                                <th>Acções</th>
+                              </tr>
+                            </thead>
+                            <tbody id="filtros">
+                                <% alunos.forEach(aluno => { %>
+                                    <tr class="<%= (aluno.dataValues.matriculas[aluno.dataValues.matriculas.length - 1].estado_matricula == 'pendente') ? 'alert alert-warning' : '' %> <%= (aluno.dataValues.matriculas[aluno.dataValues.matriculas.length - 1].estado_matricula == 'recusada') ? 'alert alert-danger' : '' %>">
+                                      <td>
+                                        <input type="checkbox" class="form-check-input" name="aluno_id" value="<%= aluno.dataValues.id %>" id="">
+                                        <%= aluno.dataValues.nome %>
+                                      </td>
+
+                                      <td>
+                                        <%= aluno.dataValues.phone1 %>
+                                      </td>
+
+                                      <td>
+                                        <%= aluno.dataValues.matriculas[aluno.dataValues.matriculas.length - 1].codigo_matricula %>
+                                        
+                                      </td>
+
+                                      <td>
+                                        <% if (aluno.dataValues.matriculas[aluno.dataValues.matriculas.length - 1].classe[0]) { %>
+                                          <%= aluno.dataValues.matriculas[aluno.dataValues.matriculas.length - 1].classe[0].nivel %>ª
+                                        <% } %>
+                                      </td>
+
+                                      <td>
+                                        <% if (aluno.dataValues.matriculas[aluno.dataValues.matriculas.length - 1].classe[0]) { %>
+                                          <%= aluno.dataValues.matriculas[aluno.dataValues.matriculas.length - 1].classe[0].curso.nome  %>
+                                        <% } %>
+                                      </td>
+
+                                      <td>
+                                        
+                                          <%= aluno.dataValues.matriculas[aluno.dataValues.matriculas.length - 1].turma[0].dataValues.codigo_turma  %>
+                                       
+
+                                      </td>
+
+                                      <td class="action_links">
+                                        <a href="/admin/alunos/aluno/<%= aluno.dataValues.id %>" style="color: #0099ff;" title="Visualizar perfil do aluno"><i class="bi bi-eye-fill"></i></a>
+                                        
+                                        <% if (aluno.dataValues.matriculas[aluno.dataValues.matriculas.length - 1].estado_matricula == 'pendente' || aluno.dataValues.matriculas[aluno.dataValues.matriculas.length - 1].estado_matricula == 'recusada') { %>
+                                          <a style="color: #2e9b2e" href="#" data-bs-toggle="modal" data-bs-target=".modal_editar_matricula_<%= aluno.dataValues.matriculas[aluno.dataValues.matriculas.length - 1].id %>" title="Editar matrícula" class="bi bi-pencil-square"></a>
+                                        <% } %>
+
+                                        <% if (funcionario.cargo.toLowerCase() == 'diretor') { %>
+                                          <a href="#" data-bs-toggle="modal" data-bs-target=".modal_deletar_<%= aluno.dataValues.id %>" title="Deletar aluno"><i class="bi bi-trash-fill"></i></a>
+                                        <% } %>
+                                      </td>
+
+                                    </tr>
+
+                                    <div class="modal fade modal_deletar_<%= aluno.dataValues.id %>" id="" tabindex="-1" aria-hidden="true" style="display: none;">
+                                      <div class="modal-dialog modal-dialog-centered">
+                                      <div class="modal-content">
+                                          <div class="modal-header">
+                                          <h5 class="modal-title">Tem certeza que quer eliminar este Aluno?</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                          </div>
+                                          <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Não</button>
+                                            <a href="/admin/alunos/<%= aluno.dataValues.id %>/deletar"><button type="button" class="btn btn-danger">Sim</button></a>
+                                          </div>
+                                      </div>
+                                      </div>
+                                  </div><!-- Fim Modal DEletar curso --> 
+
+                                  <div class="modal fade modal_editar_matricula_<%= aluno.dataValues.matriculas[aluno.dataValues.matriculas.length - 1].id %>" id="" tabindex="-1" aria-hidden="true" style="display: none;">
+                                    <div class="modal-dialog modal-lg">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <h5 class="modal-title">Editar Estado da Matrícula</h5>
+                                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                          <form id="form_stateMatri" method="post" action="/admin/matriculas/alterar/matricula">
+                                           
+                                            <div class="modal-body row">
+
+                                              <div class="bolderon_img col-12">
+                                                <a href="/files/<%= aluno.dataValues.matriculas[aluno.dataValues.matriculas.length - 1].bolderon %>" target="_blanc">
+                                                  <img src="/files/<%= aluno.dataValues.matriculas[aluno.dataValues.matriculas.length - 1].bolderon %>" alt="">
+                                                </a>
+                                              </div>
+
+                                              <div class="col-12">
+                                                <h6 class="form-label">Aluno: <span><%= aluno.dataValues.nome %></span></h6>
+                                                <h6 class="form-label">Código de Matrícula: 
+                                                    <span> 
+                                                      <%= aluno.dataValues.matriculas[aluno.dataValues.matriculas.length - 1].codigo_matricula %>
+                                                      
+                                                  </span>
+                                                </h6>
+
+                                              </div>
+
+                                              <div class="col-12">
+                                                <label for="estado_matricula" class="form-label">Estado da Matrícula</label>
+                                                <select class="form-select" name="estado_matricula" id="estado_matricula">
+                                                  <option selected value="pendente">Pendente</option>
+                                                  <option value="ativa">Ativa</option>
+                                                  <option value="recusada">Recusada</option>
+                                                </select>
+                                                <input type="hidden" name="codigo_matricula" value="<%= aluno.dataValues.matriculas[aluno.dataValues.matriculas.length - 1].codigo_matricula %>">
+                                            </div>
+
+                                            </div>
+
+                                            <div class="modal-footer">
+                                              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                              <button type="submit" class="btn btn-success btn_saveState">Salvar</button>
+                                            </div>
+                                          </form>
+                                      </div>
+                                    </div>
+                                  </div><!-- Fim Modal DEletar curso -->
+                                <% }); %>
+                            </tbody>
+                          </table>
+                          <!-- End Table with hoverable rows -->
+
+
+                            <!-- Disabled and active states -->
+                        <nav aria-label="...">
+                          <ul class="pagination">
+                            <% if (paginasTotal > 1 && pagina > 1) { %>
+                              <li class="page-item">
+                                <a class="page-link" href="/admin/alunos?pagina=<%= pagina - 1 %>" tabindex="-1" aria-disabled="true">Anterior</a>
+                              </li>
+                            <% } else { %>
+                              <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Anterior</a>
+                              </li>
+                            <% } %>
+                          
+
+                            <% for (let pag = pagina; pag <= paginasTotal; pag++) { %>
+                            
+                              <% if (pagina === pag) { %> 
+                                <li class="page-item active" aria-current="page">
+                                  <a class="page-link" href="/admin/alunos?pagina=<%= pag %>"><%= pag %></a>
+                                </li>
+                                <% continue %>
+                              <% } %>
+                              <li class="page-item">
+                                <a class="page-link" href="/admin/alunos?pagina=<%= pag %>"><%= pag %></a>
+                              </li>
+                            <% } %>
+
+                            <% if (paginasTotal > 1 && pagina < paginasTotal) { %>
+                              <li class="page-item">
+                                <a class="page-link" href="/admin/alunos?pagina=<%= pagina + 1 %>">Próximo</a>
+                              </li>
+                            <% } else { %>
+                              <li class="page-item disabled">
+                                <a class="page-link" href="#">Próximo</a>
+                              </li>
+                            <% } %>
+                          </ul>
+                        </nav><!-- End Disabled and active states -->
+                        
+                          <!-- Accções-->
+                          <div class="col-12 pt-2">
+                            <label for="classe_nivel" class="form-label">Acçoes</label>
+                            <div class="row">
+                                <div class="col-lg-5 col-md-6 col-sm-12">
+                                    <select class="form-select" id="action_choose" name="accao" required>
+                                        <option value="" selected disabled>-- selecione uma acção --</option>
+                                       
+                                            <option value="">Gerar Boletim de Notas</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="col-lg-2 col-md-2 col-sm-12">
+                                    <button class="btn btn-primary w-100" id="save" type="submit">Aplicar</button>
+                                </div>
+                            </div>
+                          </div>
+                      
+                        
+                      </form>
+                    </div>
+                  </div>
+            </div>
+    
+          </div>
+        </section>
+      
+    
+    </main><!-- End #main -->
+
+    <%- include('../components/footer'); -%>
+    <%- include('../components/scripts'); -%>
+
+    <script>
+      new FormFilter('form-admin-filter', 'alert');
+
+      const select = document.getElementById('action_choose');
+      const form = document.getElementById('form-accoes');
+      const form_stateMatri = document.getElementById('form_stateMatri')
+
+      document.querySelectorAll('.btn_saveState').forEach(btn => {
+        btn.addEventListener('click', () => {
+          form.action = form_stateMatri.action;
+          select.removeAttribute('required');
+        });
+      });
+    </script>
+    
+</body>
+</html>

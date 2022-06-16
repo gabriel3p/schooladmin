@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <%- include('../components/head'); -%>
+<body>
+    <%- include('../components/header'); -%>
+    <%- include('../components/menu'); -%>
+
+    <main id="main" class="main">
+
+      <%- include('../../partials/msg') -%>
+
+        <div class="pagetitle">
+          <h1>Perfil</h1>
+          <nav>
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="/admin/dashboard">Painel Principal</a></li>
+              <% if (funcionario.cargo.toLowerCase() === 'diretor') { %>
+                <li class="breadcrumb-item"><a href="/admin/funcionarios">Funcionários</a></li>
+              <% } else { %>
+                <li class="breadcrumb-item">Funcionários</li>
+              <% } %>
+              <li class="breadcrumb-item active">Perfil</li>
+            </ol>
+          </nav>
+        </div><!-- End Page Title -->
+    
+        <section class="section profile">
+          <div class="row">
+            <div class="col-xl-4">
+    
+              <div class="card">
+                <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+    
+                  <a href="/files/<%= perfil.foto %>" target="_blank" rel="noopener noreferrer">
+                    <img style="border: 4px solid #178be971;" src="/files/<%= perfil.foto %>" alt="Profile" class="rounded-circle img_perfil">
+                  </a>
+                  <h2><%= perfil.nome %> <%= perfil.sobrenome %></h2>
+                  <h3><%= perfil.cargo %></h3>
+                  <div class="social-links mt-2">
+                    <% sociais.forEach(social => { %>
+                      <% if (social.nome.toLowerCase() === 'twitter' && social.link) { %>
+                        <a href="<%= social.link %>" title="<%= social.nome %>" class="twitter"><i class="bi bi-twitter"></i></a>
+                      <% } %>
+
+                      <% if (social.nome.toLowerCase() === 'facebook' && social.link) { %>
+                        <a href="<%= social.link %>" title="<%= social.nome %>" class="facebook"><i class="bi bi-facebook"></i></a>
+                      <% } %>
+
+                      <% if (social.nome.toLowerCase() === 'instagram' && social.link) { %>
+                        <a href="<%= social.link %>" title="<%= social.nome %>" class="instagram"><i class="bi bi-instagram"></i></a>
+                      <% } %>
+
+                      <% if (social.nome.toLowerCase() === 'linkedin' && social.link) { %>
+                        <a href="<%= social.link %>" title="<%= social.nome %>" class="linkedin"><i class="bi bi-linkedin"></i></a>
+                      <% } %>
+                    <% }) %>
+                  </div>
+                </div>
+              </div>
+            </div>
+    
+            <div class="col-xl-8 row">
+
+              <% if (perfil.cargo.toLowerCase() == 'professor' ){ %>
+                <div class="card col-12">
+                  <div class="card-body profile-card pt-4 d-flex flex-column align-items-left">
+                    <h5 class="card-title">Dispciplinas Lecionadas</h5>  
+                    
+                    <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th scope="col">Disciplina</th>
+                            <th scope="col">Turma</th>
+                            <th scope="col">Classe</th>
+                            <th scope="col" colspan="2">Curso</th>
+                          </tr>
+                        </thead>
+                      <tbody >
+
+                        <tbody id="filtros">
+                        
+
+
+                                <% turmas.forEach(turma => { %>
+                                  <% turma.classe.disciplinas.forEach(disciplina => { %>
+                                    <% disciplina.professores.forEach(professor => { %>
+                                        <% if (perfil.id == professor.id) { %>
+
+                                        <tr>
+                                          <td title="<%= disciplina.nome_disciplina %>"><%= disciplina.nome_disciplina %></td>
+                                          <td title="<%= turma.codigo_turma %>"><%= turma.codigo_turma %></td>
+                                          <td><%= turma.classe.nivel %>ª</td>
+                                          <td title="<%= turma.classe.curso.nome %>"><%= turma.classe.curso.nome %></td>
+                                          <td>
+                                            <% if (funcionario.cargo.toLowerCase() != 'professor') { %>
+                                              <a style="color: #f33c3ce1;" href="#" data-bs-toggle="modal" data-bs-target=".modal_remover_<%= turma.id %>" title="Remover disciplina"><i class="bi bi-trash-fill"></i></a>
+                                            <% } %>
+                                          </td>
+                                        </tr>
+                                
+                                        <div class="modal fade modal_remover_<%= turma.id %>" id="" tabindex="-1" aria-hidden="true" style="display: none;">
+                                          <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                              <div class="modal-header">
+                                                <h5 class="modal-title">Tem certeza que quer Remover esta disciplina deste Professor(a)?</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                              </div>
+                                              <div class="modal-footer">
+                                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Não</button>
+                                                <a href="/admin/cursos/disciplinas/<%= perfil.id %>/<%= disciplina.id %>/<%= turma.id %>/remover"><button type="button" class="btn btn-danger">Sim</button></a>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div><!-- Fim Modal DEletar curso --> 
+
+                                  <% } %>
+                                  <% }) %>
+                                <% }) %>
+                            <% }) %>
+
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              <% } %>
+    
+    
+              <div class="card col-12">
+                <div class="card-body pt-3">
+                  <!-- Bordered Tabs -->
+                  <ul class="nav nav-tabs nav-tabs-bordered">
+    
+                    <li class="nav-item">
+                      <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Dados Pessoais</button>
+                    </li>
+
+                    <% if (funcionario.id === perfil.id) { %>
+                      <li class="nav-item">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Editar Perfil</button>
+                      </li>
+      
+                      <li class="nav-item">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-settings">Definições</button>
+                      </li>
+      
+                      <li class="nav-item">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">Alterar Senha</button>
+                      </li>
+                    <% } %>
+
+                  </ul>
+                  <div class="tab-content pt-2">
+    
+                    <div class="tab-pane fade show active profile-overview" id="profile-overview">
+
+                      <% if (perfil.biografia) { %>
+                      <h5 class="card-title">Biografia</h5>
+                      <p class="small fst-italic"><%= perfil.biografia %></p>
+                      <% } %>
+                      <h5 class="card-title">Detalhes do Perfil</h5>
+    
+                      <div class="row">
+                        <div class="col-lg-3 col-md-4 label ">Nome Completo</div>
+                        <div class="col-lg-9 col-md-8"><%= perfil.nome %> <%= perfil.sobrenome %></div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-lg-3 col-md-4 label">Nome de Usuário</div>
+                        <div class="col-lg-9 col-md-8"><%= perfil.usuario %></div>
+                      </div>
+    
+                    
+                      <div class="row">
+                        <div class="col-lg-3 col-md-4 label">Cargo</div>
+                        <div class="col-lg-9 col-md-8"><%= perfil.cargo %> </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-lg-3 col-md-4 label">Gênero</div>
+                        <% if (perfil.genero.toLowerCase() === 'm') { %>
+                          <div class="col-lg-9 col-md-8">Masculino</div>
+                        <% } else { %> 
+                          <div class="col-lg-9 col-md-8">Feminino</div>
+                          <% } %>
+                      </div>
+    
+                      <% if (perfil.data_nascimento) { %>
+                        <div class="row">
+                          <div class="col-lg-3 col-md-4 label">Data de Nascimento</div>
+                          <div class="col-lg-9 col-md-8"><%= setDate(perfil.data_nascimento) %></div>
+                        </div>
+                      <% } %>
+
+                      <% if (perfil.bi) { %>
+                        <div class="row">
+                          <div class="col-lg-3 col-md-4 label">Bilhete de Identidade nº</div>
+                          <div class="col-lg-9 col-md-8"><%= perfil.bi %></div>
+                        </div>
+                      <% } %>
+
+                      <% if (perfil.area_formação) { %>
+                        <div class="row">
+                          <div class="col-lg-3 col-md-4 label">Area de Formação</div>
+                          <div class="col-lg-9 col-md-8"><%= perfil.area_formação %></div>
+                        </div>
+                      <% } %>
+
+                      <% if (perfil.instituto_ensino) { %>
+                        <div class="row">
+                          <div class="col-lg-3 col-md-4 label">Instituto de Ensino</div>
+                          <div class="col-lg-9 col-md-8"><%= perfil.instituto_ensino %></div>
+                        </div>
+                      <% } %>
+
+                      <% if (perfil.grau) { %>
+                        <div class="row">
+                          <div class="col-lg-3 col-md-4 label">Grau Académico</div>
+                          <div class="col-lg-9 col-md-8"><%= perfil.grau %></div>
+                        </div>
+                      <% } %>
+
+                      <% if (perfil.nacionalidade) { %>
+                        <div class="row">
+                          <div class="col-lg-3 col-md-4 label">Nacionalidade</div>
+                          <div class="col-lg-9 col-md-8"><%= perfil.nacionalidade %></div>
+                        </div>
+                      <% } %>
+    
+                      <% if (perfil.estado_civil) { %>
+                        <div class="row">
+                          <div class="col-lg-3 col-md-4 label">Estado Civil</div>
+                          <div class="col-lg-9 col-md-8"><%= perfil.estado_civil %></div>
+                        </div>
+                      <% } %>
+
+                      <% if (perfil.telefone) { %>
+                        <div class="row">
+                          <div class="col-lg-3 col-md-4 label">Telefone</div>
+                          <div class="col-lg-9 col-md-8"><%= perfil.telefone %></div>
+                        </div>
+                      <% } %>
+
+                      <% if (perfil.email) { %>
+                        <div class="row">
+                          <div class="col-lg-3 col-md-4 label">Email</div>
+                          <div class="col-lg-9 col-md-8"><%= perfil.email %></div>
+                        </div>
+                      <% } %>
+
+                      <% if (perfil.createdAt ) { %>
+                        <div class="row">
+                          <div class="col-lg-3 col-md-4 label">Data de Criação</div>
+                          <div class="col-lg-9 col-md-8"><%= setDate(perfil.createdAt) %></div>
+                        </div>
+                      <% } %>
+                      
+
+                    </div>
+
+                    <% if (funcionario.id === perfil.id) { %> 
+                      <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+      
+                        <!-- Profile Edit Form -->
+                        <form class="needs-validation" id="form-edit" action="/admin/<%= perfil.usuario %>/editar" enctype="multipart/form-data" method="POST" novalidate>
+                          <div class="row mb-3">
+                            <label class="col-md-4 col-lg-3 col-form-label">Foto de Perfil</label>
+                            <div class="col-md-8 col-lg-9">
+                              <img src="/files/<%= perfil.foto %>" id="photo_student"  alt="Foto do perfil">
+                              <div class="pt-2  position-relative">
+                                <input type="hidden" class="form-control" id="validationTooltipPhotoHidden" required>
+                                <input style="display: none;" type="file" name="foto" class="form-control" id="validationTooltipPhoto" value="">
+                                <label for="validationTooltipPhoto" class="btn btn-primary btn-sm" title="Faça o upload de uma nova foto"><i style="color: #fff;" class="bi bi-upload"></i></label>
+                                <div id="error_msg" class="invalid-tooltip">
+                                  Campo obrigatório!
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+      
+                          <div class="row mb-3">
+                            <label for="nome" class="col-md-4 col-lg-3 col-form-label">Nome</label>
+                            <div class="col-md-8 col-lg-9 position-relative">
+                              <input name="nome" type="text" class="form-control" id="nome" value="<%= perfil.nome %>" required>
+                              <div class="invalid-tooltip">
+                                Campo obrigatório!
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="row mb-3">
+                            <label for="sobrenome" class="col-md-4 col-lg-3 col-form-label">Sobrenome</label>
+                            <div class="col-md-8 col-lg-9 position-relative">
+                              <input name="sobrenome" type="text" class="form-control" id="sobrenome" value="<%= perfil.sobrenome %>" required>
+                              <div class="invalid-tooltip">
+                                Campo obrigatório!
+                              </div>
+                            </div>
+                          </div>
+      
+                          <div class="row mb-3">
+                            <label for="about" class="col-md-4 col-lg-3 col-form-label">Biografia</label>
+                            <div class="col-md-8 col-lg-9">
+                              <textarea name="biografia" class="form-control" id="about" style="height: 100px"><%= perfil.biografia %></textarea>
+                            </div>
+                          </div>
+
+                          <div class="row mb-3">
+                            <label for="bi" class="col-md-4 col-lg-3 col-form-label">Bilhete de Identidade nº</label>
+                            <div class="col-md-8 col-lg-9 position-relative">
+                              <input name="bi" type="text" class="form-control" id="bi" maxlength="14" minLength="14" value="<%= perfil.bi %>">
+                              <div class="invalid-feedback">Por favor Introduza um número do Bilhete de Identidade válido!</div>
+
+                            </div>
+                          </div>
+      
+                          <div class="row mb-3">
+                            <label for="genero" class="col-md-4 col-lg-3 col-form-label">Gênero</label>
+                            <div class="col-md-8 col-lg-9 position-relative">
+                              <select id="genero" class="form-select" name="genero" required>
+                                <% if (perfil.genero.toLowerCase() === 'm') { %>
+                                  <option selected value="<%= perfil.genero %>">Masculino</option>
+                                  <option  value="F">Feminino</option>
+                                <% } else { %>
+                                  <option selected value="<%= perfil.genero %>">Feminino</option>
+                                  <option  value="M">Masculino</option>
+                                <% } %>
+                              </select>
+                              <div class="invalid-tooltip">
+                                Campo obrigatório!
+                              </div>
+                            </div>
+                          </div>
+          
+                          <div class="row mb-3">
+                            <label for="area_formacao" class="col-md-4 col-lg-3 col-form-label">Área de Formação</label>
+                            <div class="col-md-8 col-lg-9">
+                              <input name="area_formação" type="text" class="form-control" id="area_formacao" value="<%= perfil.area_formação %>">
+                            </div>
+                          </div>
+      
+                          <div class="row mb-3">
+                            <label for="instituto_ensino" class="col-md-4 col-lg-3 col-form-label">Instituto de Ensino</label>
+                            <div class="col-md-8 col-lg-9">
+                              <input name="instituto_ensino" type="text" class="form-control" id="instituto_ensino" value="<%= perfil.instituto_ensino %>">
+                            </div>
+                          </div>
+      
+                          <div class="row mb-3">
+                            <label for="grau" class="col-md-4 col-lg-3 col-form-label">Grau Académico</label>
+                            <div class="col-md-8 col-lg-9">
+                              <input name="grau" type="text" class="form-control" id="grau" value="<%= perfil.grau %>">
+                            </div>
+                          </div>
+      
+                          <div class="row mb-3">
+                            <label for="nacionalidade" class="col-md-4 col-lg-3 col-form-label">Nacionalidade</label>
+                            <div class="col-md-8 col-lg-9">
+                              <input name="nacionalidade" type="text" class="form-control" id="nacionalidade" value="<%= perfil.nacionalidade %>">
+                            </div>
+                          </div>
+
+                          <div class="row mb-3">
+                            <label for="estado_civil" class="col-md-4 col-lg-3 col-form-label">Estado Civil</label>
+                            <div class="col-md-8 col-lg-9">
+                              <select id="estado_civil" class="form-select" name="estado_civil" required>
+                                <% if (perfil.estado_civil) { %>
+                                  <% if (perfil.estado_civil.toLowerCase() === 'casado') { %>
+                                    <option selected value="<%= perfil.estado_civil %>">Casado</option>
+                                    <option  value="Solteiro">Solteiro</option>
+                                  <% } else if (perfil.estado_civil.toLowerCase() === 'solteiro') { %>
+                                    <option selected value="<%= perfil.estado_civil %>">Solteiro</option>
+                                    <option  value="Casado">Casado</option>
+                                  <% } %>
+                                <% } else { %>
+                                  <option selected value="Solteiro">Solteiro</option>
+                                  <option  value="Casado">Casado</option>
+                                <% } %>
+                              </select>
+                            </div>
+                          </div>
+
+                          <div class="row mb-3">
+                            <label for="usuario" class="col-md-4 col-lg-3 col-form-label">Nome de Usuário</label>
+                            <div class="col-md-8 col-lg-9 position-relative">
+                              <input name="usuario" type="text" class="form-control" id="usuario" value="<%= perfil.usuario %>" required>
+                              <div class="invalid-tooltip">
+                              Usuário obrigatório!
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="row mb-3">
+                            <label for="Email" class="col-md-4 col-lg-3 col-form-label">Email</label>
+                            <div class="col-md-8 col-lg-9 position-relative">
+                              <input name="email" type="email" class="form-control" id="Email" value="<%= perfil.email %>" required>
+                              <div class="invalid-tooltip">
+                                Email é obrigatório!
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="row mb-3">
+                            <label for="telefone" class="col-md-4 col-lg-3 col-form-label">Telefone</label>
+                            <div class="col-md-8 col-lg-9">
+                              <input name="telefone" type="text" class="form-control" id="telefone" value="<%= perfil.telefone %>">
+                            </div>
+                          </div>
+
+      
+                          <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                          </div>
+                        </form><!-- End Profile Edit Form -->
+      
+                      </div>
+      
+                      <div class="tab-pane fade pt-3" id="profile-settings">
+                
+      
+                         <!-- <div class="row mb-3">
+                            <label for="fullName" class="col-md-4 col-lg-3 col-form-label"></label>
+                            <div class="col-md-8 col-lg-9">
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="changesMade" checked>
+                                <label class="form-check-label" for="changesMade">
+                                  Modo Escuro
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+
+                         <div class="row mb-3">
+                            <label for="fullName" class="col-md-4 col-lg-3 col-form-label"></label>
+                            <div class="col-md-8 col-lg-9">
+                              <div class="form-check">
+                              
+                              </div>
+                            </div>
+                          </div>-->
+
+                        
+      
+                          <div class="text-center">
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#modal_eliminar" style="text-transform: uppercase;" class="btn btn-danger">
+                              Eliminar Conta
+                            </a>
+                          </div>
+                        
+      
+                      </div>
+      
+                      <div class="tab-pane fade pt-3" id="profile-change-password">
+                        <!-- Change Password Form -->
+                        <form action="/admin/<%= perfil.usuario %>/alterar-senha" class="needs-validation" id="form-edit-password" method="POST" novalidate>
+      
+                          <div class="row mb-3">
+                            <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Senha Actual</label>
+                            <div class="col-md-8 col-lg-9 position-relative">
+                              <input name="senha" type="password" class="form-control" id="currentPassword" required>
+                              <div id="error_msg" class="invalid-tooltip">
+                                Campo obrigatório!
+                              </div>
+                            </div>
+                          </div>
+      
+                          <div class="row mb-3">
+                            <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">Nova Senha</label>
+                            <div class="col-md-8 col-lg-9 position-relative">
+                              <input name="novaSenha" type="password" class="form-control" id="newPassword" required>
+                              <div id="error_msg" class="invalid-tooltip">
+                                Campo obrigatório!
+                              </div>
+                            </div>
+                          </div>
+      
+                          <div class="row mb-3">
+                            <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-introduza a Senha Nova</label>
+                            <div class="col-md-8 col-lg-9 position-relative">
+                              <input name="novaSenha2" type="password" class="form-control" id="renewPassword" required>
+                              <div id="error_msg" class="invalid-tooltip">
+                                Campo obrigatório!
+                              </div>
+                            </div>
+                          </div>
+      
+                          <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                          </div>
+                        </form><!-- End Change Password Form -->
+      
+                      </div>
+                    <% } %>
+                  </div><!-- End Bordered Tabs -->
+    
+                </div>
+              </div>
+    
+            </div>
+          </div>
+        </section>
+    
+      </main><!-- End #main -->
+
+    <%- include('../components/footer'); -%>
+    <%- include('../components/scripts'); -%>
+
+    <script>
+      //FormValidation(formId, alertId, studentForm, href)  
+      new FormValidation('form-edit', 'alert', false, '/admin/perfil/<%= perfil.id %>');
+      new FormValidation('form-edit-password', 'alert', false, false);
+  </script>
+    
+</body>
+</html>

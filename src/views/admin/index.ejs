@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <%- include('./components/head'); -%>
+<body>
+    <%- include('./components/header'); -%>
+    <%- include('./components/menu'); -%>
+
+    <%- include('../partials/msg') -%>
+
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+          <h1>Painel Principal</h1>
+          <nav>
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active">Olá, seja bem-vindo <a href="/admin/perfil/<%= funcionario.id %>"><%= funcionario.nome %> <%= funcionario.sobrenome %></a>!</li>
+            </ol>
+          </nav>
+        </div><!-- End Page Title -->
+    
+        <% if (funcionario.cargo.toLowerCase() == 'diretor') { %>
+
+          <%- include('./components/diretorDash'); -%>
+
+        <% } else if (funcionario.cargo.toLowerCase() == 'professor') { %>
+
+          <%- include('./components/professorDash'); -%>
+
+        <% } else if (funcionario.cargo.toLowerCase() == 'secretário') { %>
+
+          <%- include('./components/secretarioDash'); -%>
+
+        <% } %>
+      
+    
+    </main><!-- End #main -->
+
+    <%- include('./components/footer'); -%>
+    <%- include('./components/scripts'); -%>
+    
+</body>
+</html>

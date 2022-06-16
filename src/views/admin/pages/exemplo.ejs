@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <%- include('../components/head'); -%>
+<body>
+    <%- include('../components/header'); -%>
+    <%- include('../components/menu'); -%>
+    <%- include('../../partials/msg'); -%>
+
+    <!-- Conteúdos -->
+
+    <%- include('../components/footer'); -%>
+    <%- include('../components/scripts'); -%>
+    
+</body>
+</html>                 
+
+
+<!--<% if (funcionario.id === perfil.id) { %> 
+                            <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+            
+                              
+                              <form class="needs-validation" id="form-edit" action="/admin/<%= perfil.usuario %>/editar" enctype="multipart/form-data" method="POST" novalidate>
+                                <div class="row mb-3">
+                                  <label class="col-md-4 col-lg-3 col-form-label">Foto de Perfil</label>
+                                  <div class="col-md-8 col-lg-9">
+                                    <img src="/files/<%= perfil.foto %>" id="photo_student"  alt="Foto do perfil">
+                                    <div class="pt-2  position-relative">
+                                      <input type="hidden" class="form-control" id="validationTooltipPhotoHidden" required>
+                                      <input style="display: none;" type="file" name="foto" class="form-control" id="validationTooltipPhoto" value="">
+                                      <label for="validationTooltipPhoto" class="btn btn-primary btn-sm" title="Faça o upload de uma nova foto"><i style="color: #fff;" class="bi bi-upload"></i></label>
+                                      <div id="error_msg" class="invalid-tooltip">
+                                        Campo obrigatório!
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+            
+                                <div class="row mb-3">
+                                  <label for="nome" class="col-md-4 col-lg-3 col-form-label">Nome</label>
+                                  <div class="col-md-8 col-lg-9 position-relative">
+                                    <input name="nome" type="text" class="form-control" id="nome" value="<%= perfil.nome %>" required>
+                                    <div class="invalid-tooltip">
+                                      Campo obrigatório!
+                                    </div>
+                                  </div>
+                                </div>
+      
+                                <div class="row mb-3">
+                                  <label for="sobrenome" class="col-md-4 col-lg-3 col-form-label">Sobrenome</label>
+                                  <div class="col-md-8 col-lg-9 position-relative">
+                                    <input name="sobrenome" type="text" class="form-control" id="sobrenome" value="<%= perfil.sobrenome %>" required>
+                                    <div class="invalid-tooltip">
+                                      Campo obrigatório!
+                                    </div>
+                                  </div>
+                                </div>
+            
+                                <div class="row mb-3">
+                                  <label for="about" class="col-md-4 col-lg-3 col-form-label">Biografia</label>
+                                  <div class="col-md-8 col-lg-9">
+                                    <textarea name="biografia" class="form-control" id="about" style="height: 100px"><%= perfil.biografia %></textarea>
+                                  </div>
+                                </div>
+      
+                                <div class="row mb-3">
+                                  <label for="bi" class="col-md-4 col-lg-3 col-form-label">Bilhete de Identidade nº</label>
+                                  <div class="col-md-8 col-lg-9 position-relative">
+                                    <input name="bi" type="text" class="form-control" id="bi" maxlength="14" minLength="14" value="<%= perfil.bi %>">
+                                  </div>
+                                </div>
+            
+                                <div class="row mb-3">
+                                  <label for="genero" class="col-md-4 col-lg-3 col-form-label">Gênero</label>
+                                  <div class="col-md-8 col-lg-9 position-relative">
+                                    <select id="genero" class="form-control" name="genero" required>
+                                      <% if (perfil.genero.toLowerCase() === 'm') { %>
+                                        <option selected value="<%= perfil.genero %>">Masculino</option>
+                                        <option  value="F">Feminino</option>
+                                      <% } else { %>
+                                        <option selected value="<%= perfil.genero %>">Feminino</option>
+                                        <option  value="M">Masculino</option>
+                                      <% } %>
+                                    </select>
+                                    <div class="invalid-tooltip">
+                                      Campo obrigatório!
+                                    </div>
+                                  </div>
+                                </div>
+                
+                                <div class="row mb-3">
+                                  <label for="area_formacao" class="col-md-4 col-lg-3 col-form-label">Área de Formação</label>
+                                  <div class="col-md-8 col-lg-9">
+                                    <input name="area_formação" type="text" class="form-control" id="area_formacao" value="<%= perfil.area_formação %>">
+                                  </div>
+                                </div>
+            
+                                <div class="row mb-3">
+                                  <label for="instituto_ensino" class="col-md-4 col-lg-3 col-form-label">Instituto de Ensino</label>
+                                  <div class="col-md-8 col-lg-9">
+                                    <input name="instituto_ensino" type="text" class="form-control" id="instituto_ensino" value="<%= perfil.instituto_ensino %>">
+                                  </div>
+                                </div>
+            
+                                <div class="row mb-3">
+                                  <label for="grau" class="col-md-4 col-lg-3 col-form-label">Grau Académico</label>
+                                  <div class="col-md-8 col-lg-9">
+                                    <input name="grau" type="text" class="form-control" id="grau" value="<%= perfil.grau %>">
+                                  </div>
+                                </div>
+            
+                                <div class="row mb-3">
+                                  <label for="nacionalidade" class="col-md-4 col-lg-3 col-form-label">Nacionalidade</label>
+                                  <div class="col-md-8 col-lg-9">
+                                    <input name="nacionalidade" type="text" class="form-control" id="nacionalidade" value="<%= perfil.nacionalidade %>">
+                                  </div>
+                                </div>
+      
+                                <div class="row mb-3">
+                                  <label for="estado_civil" class="col-md-4 col-lg-3 col-form-label">Estado Civil</label>
+                                  <div class="col-md-8 col-lg-9">
+                                    <select id="estado_civil" class="form-control" name="estado_civil" required>
+                                      <% if (perfil.estado_civil) { %>
+                                        <% if (perfil.estado_civil.toLowerCase() === 'casado') { %>
+                                          <option selected value="<%= perfil.estado_civil %>">Casado</option>
+                                          <option  value="Solteiro">Solteiro</option>
+                                        <% } else if (perfil.estado_civil.toLowerCase() === 'solteiro') { %>
+                                          <option selected value="<%= perfil.estado_civil %>">Solteiro</option>
+                                          <option  value="Casado">Casado</option>
+                                        <% } %>
+                                      <% } else { %>
+                                        <option selected value="Solteiro">Solteiro</option>
+                                        <option  value="Casado">Casado</option>
+                                      <% } %>
+                                    </select>
+                                  </div>
+                                </div>
+      
+                                <div class="row mb-3">
+                                  <label for="usuario" class="col-md-4 col-lg-3 col-form-label">Nome de Usuário</label>
+                                  <div class="col-md-8 col-lg-9 position-relative">
+                                    <input name="usuario" type="text" class="form-control" id="usuario" value="<%= perfil.usuario %>" required>
+                                    <div class="invalid-tooltip">
+                                    Usuário obrigatório!
+                                    </div>
+                                  </div>
+                                </div>
+      
+                                <div class="row mb-3">
+                                  <label for="Email" class="col-md-4 col-lg-3 col-form-label">Email</label>
+                                  <div class="col-md-8 col-lg-9 position-relative">
+                                    <input name="email" type="email" class="form-control" id="Email" value="<%= perfil.email %>" required>
+                                    <div class="invalid-tooltip">
+                                      Email é obrigatório!
+                                    </div>
+                                  </div>
+                                </div>
+      
+                                <div class="row mb-3">
+                                  <label for="telefone" class="col-md-4 col-lg-3 col-form-label">Telefone</label>
+                                  <div class="col-md-8 col-lg-9">
+                                    <input name="telefone" type="text" class="form-control" id="telefone" value="<%= perfil.telefone %>">
+                                  </div>
+                                </div>
+      
+                                <% sociais.forEach(social => { %>
+                                  <% if (social.nome.toLowerCase() === 'twitter') { %>
+                                    <div class="row mb-3">
+                                      <label for="Twitter" class="col-md-4 col-lg-3 col-form-label"><i class="bi bi-twitter"></i> Twitter</label>
+                                      <div class="col-md-8 col-lg-9">
+                                        <input name="<%= social.nome %>" type="text" class="form-control" id="Twitter" value="<%= social.link %>">
+                                      </div>
+                                    </div>
+                                  <% } %>
+            
+                                  <% if (social.nome.toLowerCase() === 'facebook') { %>
+                                    <div class="row mb-3">
+                                      <label for="Facebook" class="col-md-4 col-lg-3 col-form-label"><i class="bi bi-facebook"></i> Facebook</label>
+                                      <div class="col-md-8 col-lg-9">
+                                        <input name="<%= social.nome %>" type="text" class="form-control" id="Facebook" value="<%= social.link %>">
+                                      </div>
+                                    </div>
+                                  <% } %>
+            
+                                  <% if (social.nome.toLowerCase() === 'instagram') { %>
+                                    <div class="row mb-3">
+                                      <label for="Instagram" class="col-md-4 col-lg-3 col-form-label"><i class="bi bi-instagram"></i> Instagram</label>
+                                      <div class="col-md-8 col-lg-9">
+                                        <input name="<%= social.nome %>" type="text" class="form-control" id="Instagram" value="">
+                                      </div>
+                                    </div>
+                                  <% } %>
+            
+                                  <% if (social.nome.toLowerCase() === 'linkedin') { %>
+                                    <div class="row mb-3">
+                                      <label for="Linkedin" class="col-md-4 col-lg-3 col-form-label"><i class="bi bi-linkedin"></i> Linkedin</label>
+                                      <div class="col-md-8 col-lg-9">
+                                        <input name="<%= social.nome %>" type="text" class="form-control" id="Linkedin" value="<%= social.link %>">
+                                      </div>
+                                    </div>
+                                  <% } %>
+                                <% }) %>
+            
+                                <div class="text-center">
+                                  <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                                </div>
+                              </form>
+            
+                            </div>
+            
+                            <div class="tab-pane fade pt-3" id="profile-settings">
+                      
+            
+                                <div class="row mb-3">
+                                  <label for="fullName" class="col-md-4 col-lg-3 col-form-label"></label>
+                                  <div class="col-md-8 col-lg-9">
+                                    <div class="form-check">
+                                      <input class="form-check-input" type="checkbox" id="changesMade" checked>
+                                      <label class="form-check-label" for="changesMade">
+                                        Modo Escuro
+                                      </label>
+                                    </div>
+                                  </div>
+                                </div>
+      
+                             
+                              
+            
+                                <div class="text-center">
+                                  <a href="#" data-bs-toggle="modal" data-bs-target="#modal_eliminar" style="text-transform: uppercase;" class="btn btn-danger">
+                                    Eliminar Conta
+                                  </a>
+                                </div>
+                              
+            
+                            </div>
+            
+                            <div class="tab-pane fade pt-3" id="profile-change-password">
+                              
+                              <form action="/admin/<%= perfil.usuario %>/alterar-senha" class="needs-validation" id="form-edit-password" method="POST" novalidate>
+            
+                                <div class="row mb-3">
+                                  <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Senha Actual</label>
+                                  <div class="col-md-8 col-lg-9 position-relative">
+                                    <input name="senha" type="password" class="form-control" id="currentPassword" required>
+                                    <div id="error_msg" class="invalid-tooltip">
+                                      Campo obrigatório!
+                                    </div>
+                                  </div>
+                                </div>
+            
+                                <div class="row mb-3">
+                                  <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">Nova Senha</label>
+                                  <div class="col-md-8 col-lg-9 position-relative">
+                                    <input name="novaSenha" type="password" class="form-control" id="newPassword" required>
+                                    <div id="error_msg" class="invalid-tooltip">
+                                      Campo obrigatório!
+                                    </div>
+                                  </div>
+                                </div>
+            
+                                <div class="row mb-3">
+                                  <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-introduza a Senha Nova</label>
+                                  <div class="col-md-8 col-lg-9 position-relative">
+                                    <input name="novaSenha2" type="password" class="form-control" id="renewPassword" required>
+                                    <div id="error_msg" class="invalid-tooltip">
+                                      Campo obrigatório!
+                                    </div>
+                                  </div>
+                                </div>
+            
+                                <div class="text-center">
+                                  <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                                </div>
+                              </form>
+            
+                            </div>
+                          <% } %>-->
+                        

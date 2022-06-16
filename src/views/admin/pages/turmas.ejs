@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <%- include('../components/head'); -%>
+<body>
+    <%- include('../components/header'); -%>
+    <%- include('../components/menu'); -%>
+
+    <%- include('../../partials/msg') -%>
+
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+          <h1>Turmas</h1>
+          <nav>
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="/admin/dashboard">Painel Principal</a></li>
+              <li class="breadcrumb-item">Turmas</li>
+            </ol>
+          </nav>
+        </div><!-- End Page Title -->
+    
+        <section class="section dashboard">
+          <div class="row">
+    
+            <!-- Left side columns -->
+            <div class="col-lg-12">
+              <div class="row">
+                 <!-- Customers Card -->
+                 <div class="col-xxl-4 col-md-4 col-sm-4">
+    
+                    <a class="card_link" href="/admin/turmas/cadastrar">
+                      <div class="card info-card revenue-card">
+                          <div class="card-body">
+                            <h5 class="card-title">Turmas </h5>
+                            <div class="d-flex align-items-center">
+                              <div style="background: transparent; margin: 0;" class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i style="font-size: 5rem;" class="bi bi-grid-1x2"></i>
+                              </div>
+                              <div class="ps-3">
+                                <h6 style="text-transform: uppercase;  font-size: 0.9rem;">Cadastrar</h6>
+                              </div>
+                            </div> 
+                          </div>
+                      </div>
+                    </a>
+                  </div><!-- End Customers Card -->
+
+                   
+                     <!-- Customers Card -->
+                <div class="col-xxl-4 col-md-4 col-sm-4">
+                  
+                  <a class="card_link" href="#" data-bs-toggle="modal" data-bs-target=".modal_imprimir">
+                    <div class="card info-card customers-card">
+                        <div class="card-body">
+                          <h5 class="card-title" style="visibility: hidden;">Turmas </h5>
+                          <div class="d-flex align-items-center">
+                            <div style="background: transparent; margin: 0;" class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                              <i style="font-size: 5rem; color: #0084ff;" class="bi bi-printer"></i>
+                            </div>
+                            <div class="ps-3">
+                              <h6 style="text-transform: uppercase;  font-size: 0.9rem;">Imprimir</h6>
+                            </div>
+                          </div> 
+                        </div>
+                    </div>
+                  </a>
+                </div><!-- End Customers Card -->
+
+              </div>
+            </div><!-- End Left side columns -->
+    
+            <div class="col-lg-12">
+              <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Buscar</h5>
+      
+                    <form class="row g-3" id="form-admin-filter" method="post" action="/admin/turmas/buscar">
+                      <div class="col-lg-3 col-md-6 col-sm-12">
+                        <label for="ano_lectivo" class="form-label">Ano lectivo</label>
+                        <input type="number" name="ano_lectivo" class="form-control" id="ano_lectivo" minLength="4" maxLength="4">
+                      </div>
+
+                      <div class="col-lg-3 col-md-6 col-sm-12">
+                        <label for="nivel" class="form-label">Classe</label>
+                        <select class="form-select" name="nivel" id="nivel">
+                          <option selected value="" disabled>-- selecione a classe --</option>
+                          <option value="10">10ª</option>
+                          <option value="11">11ª</option>
+                          <option value="12">12ª</option>
+                          <option value="13">13ª</option>
+                        </select>
+                      </div>
+
+                      <div class="col-lg-3 col-md-6 col-sm-12">
+                        <label for="codigo_curso" class="form-label">Curso</label>
+                        <select class="form-select" name="codigo_curso" id="codigo_curso">
+                          <option selected value="" disabled>-- selecione a classe --</option>
+                          <% cursos.forEach(curso => { %>
+                            <option value="<%= curso.dataValues.codigo_curso %>"><%= curso.dataValues.nome %></option>
+                          <% }) %>
+                        </select>
+                      </div>   
+
+                      <div class="col-lg-3 col-md-6 col-sm-12">
+                        <label for="turno" class="form-label">Turno</label>
+                        <select class="form-select" name="turno" id="turno">
+                          <option selected value="" disabled>-- selecione o turno --</option>
+                          <option value="m">Manhã</option>
+                          <option value="t">Tarde</option>
+                        </select>
+                      </div>
+
+                      <div class="col-lg-3 col-md-6 col-sm-12">
+                        <label for="codigo_turma" class="form-label">Turma</label>
+                        <input type="text" name="codigo_turma" class="form-control" id="codigo_turma" minLength="2">
+                      </div> 
+                      
+                      <div class="col-lg-3 col-md-6 col-sm-12">
+                        <label for="nome" class="form-label">Professor</label>
+                        <input type="text" name="nome" class="form-control" id="preco" minLength="2">
+                      </div> 
+
+                      <div class="col-12">
+                        <button class="btn btn-secondary w-10" type="reset">Limpar</button>
+                        <button class="btn btn-primary w-10" type="submit">Buscar</button>
+                      </div>
+                      
+                    </form>
+      
+                  </div>
+                </div>
+          </div>
+            
+            <div class="col-lg-12">
+                <div class="card" id="lista">
+                    <div class="card-body">
+                      <h5 class="card-title">Lista das Turmas</h5>
+                      <form class="needs-validation" id="form-accoes" method="post" action="" novalidate>
+                        <!-- Table with hoverable rows -->
+                        <table class="table table-hover" id="turmas">
+                            <thead>
+                            <tr>
+                                <th scope="col">
+                                  <input type="checkbox" class="form-check-input" name="todos" value="all" id="todos">
+                                  Turma
+                                </th>
+                                <th scope="col">Ano Lectivo</th>
+                                <th scope="col">Classe</th>
+                                <th scope="col">Curso</th>
+                                <th scope="col">Matrículas</th>
+                                <th>Acções</th>
+                            </tr>
+                            </thead>
+
+                            <tbody id="filtros">
+                                <% turmas.forEach(turma => { %>
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" class="form-check-input" name="turmas_id" value="<%= turma.dataValues.id %>" id="">
+                                            <%= turma.dataValues.codigo_turma %>
+                                        </td>
+                                        <td>
+                                          <%= turma.dataValues.ano_lectivo %>
+                                        </td>
+                                        <td>
+                                            <%= turma.dataValues.classe.dataValues.nivel %>ª
+                                        </td>
+                                        <td>
+                                            <%= turma.dataValues.classe.dataValues.curso.dataValues.nome %>
+                                        </td>
+                                        <td>
+                                          <%= turma.dataValues.matriculas.length %>
+                                        </td>
+                                        <td class="action_links">
+                                            <a href="/admin/turmas/<%= turma.dataValues.codigo_turma %>" data-bs-toggle="modal" data-bs-target=".modal_visualizar_<%= turma.dataValues.codigo_turma %>" title="Visualizar turma"><i class="bi bi-eye-fill"></i></a>
+                                            <a style="color: #2e9b2e" href="#" data-bs-toggle="modal" data-bs-target=".modal_editar" title="Editar curso" class="bi bi-pencil-square edit_btn"><span style="display: none;"><%= turma.dataValues.id %></span></a>
+                                            <% if (funcionario.cargo.toLowerCase() == 'diretor') { %>
+                                                <a href="#" data-bs-toggle="modal" data-bs-target=".modal_deletar_<%= turma.dataValues.id %>" title="Deletar curso"><i class="bi bi-trash-fill"></i></a>
+                                              <% } %>
+                                          </td>
+                                    </tr>
+
+                                    <div class="modal fade modal_deletar_<%= turma.dataValues.id %>" id="" tabindex="-1" aria-hidden="true" style="display: none;">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h5 class="modal-title">Tem certeza que quer eliminar esta turma?</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Não</button>
+                                            <a href="/admin/turmas/<%= turma.dataValues.id %>/deletar"><button type="button" class="btn btn-danger">Sim</button></a>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div><!-- Fim Modal DEletar curso --> 
+
+                                    <div class="modal fade modal_visualizar_<%= turma.dataValues.codigo_turma %>" id="verticalycentered" tabindex="-1" style="display: none;" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h5 class="modal-title">Informações sobre a turma</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                              <div class="tab-pane fade show active profile-overview turmas_view" id="profile-overview">
+                                                
+                                                <h5 class="card-title">Detalhes da Turma</h5>
+                              
+                                                <div class="row">
+                                                  <div class="col-lg-3 col-md-4 label ">Curso:</div>
+                                                  <div class="col-lg-9 col-md-8"><%= turma.dataValues.classe.dataValues.curso.dataValues.nome %></div>
+                                                </div>
+                              
+                                                <div class="row">
+                                                  <div class="col-lg-3 col-md-4 label">Classe:</div>
+                                                  <div class="col-lg-9 col-md-8"><%= turma.dataValues.classe.dataValues.nivel %>ª</div>
+                                                </div>
+                              
+                                                <div class="row">
+                                                  <div class="col-lg-3 col-md-4 label">Turma:</div>
+                                                  <div class="col-lg-9 col-md-8"><%= turma.dataValues.codigo_turma %></div>
+                                                </div>
+
+                                                <div class="row">
+                                                  <div class="col-lg-3 col-md-4 label">Turno:</div>
+                                                  <div class="col-lg-9 col-md-8"><%= (turma.dataValues.turno.toLowerCase() == 'm') ? 'Manhã' : 'Tarde' %></div>
+                                                </div>
+
+                                                <div class="row">
+                                                  <div class="col-lg-3 col-md-4 label">Ano lectivo:</div>
+                                                  <div class="col-lg-9 col-md-8"><%= turma.dataValues.ano_lectivo %></div>
+                                                </div>
+                              
+                                                <div class="row">
+                                                  <div class="col-lg-3 col-md-4 label">Criado em:</div>
+                                                  <div class="col-lg-9 col-md-8"><%= setDate(turma.dataValues.createdAt) %></div>
+                                                </div>
+
+                                                <div class="row">
+                                                  <div class="col-lg-12 col-md-12 label">Professores:</div>
+                                                  <div class="col-lg-12 col-md-12">
+                                                    <ul type="none" style="margin-left: 5rem;">
+                                                       
+                                                     <% turma.dataValues.classe.dataValues.disciplinas.forEach(disciplina => { %>
+                                                            <% disciplina.dataValues.professores.forEach(professor => { %>
+                                                                 <li><i class="bi bi-chevron-right"></i><%= professor.nome %> <%= professor.sobrenome %></li>
+                                                           <% }); %>
+                                                      <% }); %>
+                                                    </ul>
+                                                  </div>
+                                                </div>
+                                              </div>
+
+                                            </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                <% }); %>
+                            </tbody>
+                            
+                        </table>
+                        <!-- End Table with hoverable rows -->
+                        <nav aria-label="...">
+                          <ul class="pagination">
+                            <% if (paginasTotal > 1 && pagina > 1) { %>
+                              <li class="page-item">
+                                <a class="page-link" href="/admin/turmas?pagina=<%= pagina - 1 %>#turmas" tabindex="-1" aria-disabled="true">Anterior</a>
+                              </li>
+                            <% } else { %>
+                              <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Anterior</a>
+                              </li>
+                            <% } %>
+                           
+    
+                            <% for (let pag = pagina; pag <= paginasTotal; pag++) { %>
+                             
+                              <% if (pagina === pag) { %> 
+                                <li class="page-item active" aria-current="page">
+                                  <a class="page-link" href="/admin/turmas?pagina=<%= pag %>#turmas"><%= pag %></a>
+                                </li>
+                                <% continue %>
+                              <% } %>
+                              <li class="page-item">
+                                <a class="page-link" href="/admin/turmas?pagina=<%= pag %>#turmas"><%= pag %></a>
+                              </li>
+                             <% } %>
+    
+                             <% if (paginasTotal > 1 && pagina < paginasTotal) { %>
+                              <li class="page-item">
+                                <a class="page-link" href="/admin/turmas?pagina=<%= pagina + 1 %>#turmas">Próximo</a>
+                              </li>
+                            <% } else { %>
+                              <li class="page-item disabled">
+                                <a class="page-link" href="#">Próximo</a>
+                              </li>
+                            <% } %>
+                          </ul>
+                        </nav><!-- End Disabled and active states -->
+
+                        <div class="col-12 pt-2" id="apply_div">
+                            <label for="select_accoes" class="form-label">Acçoes</label>
+                            <div class="row">
+                                <div class="col-lg-5 col-md-6 col-sm-12">
+                                    <select class="form-select" id="select_accoes" name="accao" required>
+                                        <option value="" selected disabled>-- selecione uma acção --</option>
+                                        <option value="DS">Deletar Turmas Selecionadas</option>
+                                        <option value="GLP">Gerar Lista de Presença</option>
+                                       <!---- <option value="GMP">Gerar Mini Pautas</option>-->
+                                    </select>
+                                </div>
+                                
+                                <div class="col-lg-2 col-md-2 col-sm-12">
+                                    <a href="#apply_div" class="btn btn-primary w-100" id="btn_aplicar">Aplicar</a>
+                                </div>
+                            </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+            </div>
+    
+          </div>
+        </section>
+      
+    
+    </main><!-- End #main -->
+
+    <div class="modal fade modal_imprimir" id="" tabindex="-1" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          
+            <form class="needs-validation imprimir" id="form-imprimir" action="/admin/turmas/imprimir" method="post" novalidate>
+
+              <div class="modal-header">
+                <h5 class="modal-title">Impressão de Dados das Turmas <input type="checkbox" class="form-check-input" name="todos" id="todos"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+
+              <div class="row" style="padding: 1rem 2.5rem;">
+
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                  <input type="checkbox" name="codigo_turma" class="form-check-input" id="codigo_turma" value="codigo_turma">
+                  <label for="codigo_turma" class="form-label">
+                    Turmas
+                  </label>
+                </div>
+  
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                  <input type="checkbox" name="nome_curso" class="form-check-input" id="nome_curso" value="nome">
+                  <label for="nome_curso" class="form-label">
+                    Cursos
+                  </label>
+                </div>
+
+                <div class="col-lg-3 col-md-3 col-sm-12">
+                  <input type="checkbox" name="codigo_curso" class="form-check-input" id="codigo_curso" value="codigo_curso">
+                  <label for="codigo_curso" class="form-label">
+                    Abreviação
+                  </label>
+                </div>
+  
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                  <input type="checkbox" name="nivel" class="form-check-input" id="nivel" value="nivel">
+                  <label for="nivel" class="form-label">
+                    Classes
+                  </label>
+                </div>
+
+
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                  <input type="checkbox" name="turno" class="form-check-input" id="turno" value="turno">
+                  <label for="turno" class="form-label">
+                    Turno
+                  </label>
+                </div>
+  
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                  <input type="checkbox" name="ano_lectivo" class="form-check-input" id="ano_lectivo" value="ano_lectivo">
+                  <label for="ano_lectivo" class="form-label">
+                    Ano Lectivo
+                  </label>
+                </div>
+
+                <div class="col-lg-3 col-md-3 col-sm-12">
+                  <input type="checkbox" name="matriculas" class="form-check-input" id="matriculas" value="matriculas">
+                  <label for="matriculas" class="form-label">
+                    Matriculas
+                  </label>
+                </div>
+  
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                  <input type="checkbox" name="data_cadastro" class="form-check-input" id="data_cadastro" value="createdAt">
+                  <label for="data_cadastro" class="form-label">
+                    Data de cadastro
+                  </label>
+                </div>
+
+              </div>
+
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Visualizar</button>
+                 <button type="button" data-bs-dismiss="modal" class="btn btn-secondary">Fechar</button>
+              </div>
+
+            </form>
+
+        </div>
+      </div>
+    </div><!-- Fim Modal DEletar curso -->
+
+    <div class="modal fade modal_editar" id="" tabindex="-1" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Editar turma</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+            <form class="needs-validation" id="form-edit-turma" method="post" novalidate>
+             
+            </form>
+        </div>
+       
+      </div>
+    </div><!-- Fim Modal imprimir -->
+
+
+
+    
+     <!--********************************
+            Modals selecionados 
+      ***********************************-->   
+    
+
+    <div class="modal fade" id="modal_deletar_selecionados" tabindex="-1" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-header">
+          <h5 class="modal-title" id="select_modal"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form class="needs-validation" id="form_delete_selected" method="post" action="/admin/turmas/delete/selected">
+
+            <div id="select_inputs">
+
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Não</button>
+              <button type="submit" class="btn btn-danger">Sim</button>
+            </div>
+
+          </form>
+      </div>
+      </div>
+    </div><!-- Fim Modal Deletar Selecionados -->
+    
+    <div class="modal fade" id="modal_gerar_list_presenca" tabindex="-1" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-header">
+          <h5 class="modal-title" id="select_modal">Gerar Lista de Presença</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form class="needs-validation" id="form_lista_presenca_selected" method="post" action="/admin/turmas/generate-list/selected">
+
+            <div class="col-12 p-4">
+
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="estado_matricula" name="estado_matricula">
+                <label class="form-check-label" for="estado_matricula">
+                  Somente alunos ativos
+                </label>
+              </div>
+
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="codigo_matricula"  name="codigo_matricula">
+                <label class="form-check-label" for="codigo_matricula">
+                  Exibir código de matrícula dos alunos
+                </label>
+              </div>
+
+              <div class="form-check form-switch">
+                <input class="form-check-input" name="ordem_alfabetica" type="checkbox" id="ordem_alfabetica" checked="">
+                <label class="form-check-label" for="ordem_alfabetica">Ordenar alfabéticamente</label>
+              </div>
+
+            </div>
+
+            <div id="input_turmas">
+              
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+              <button type="submit" class="btn btn-primary">Gerar</button>
+            </div>
+
+          </form>
+          
+      </div>
+      </div>
+    </div><!-- Fim Modal Gerar Lista de Presença Selecionados --> 
+    
+    <%- include('../components/footer'); -%>
+    <%- include('../components/scripts'); -%>
+
+    <script>
+      const aEdits = document.querySelectorAll('.edit_btn');
+      const formEdit = document.getElementById('form-edit-turma');
+
+      aEdits.forEach((aEdit, index) => {
+        aEdit.addEventListener('click', async event => {
+          event.preventDefault();
+          let turma_id = aEdit.children[0].innerHTML;
+          
+          await fetch(`/admin/turmas/pegar-dados/${ turma_id }`).then(response => {
+                response.json().then(data => {
+                  
+                  formEdit.innerHTML = `
+                          <div class="modal-body row g-3">
+                          <div class="col-md-12">
+                            <div  class="row col-md-12 p-3">
+                                
+                              <div class="col-lg-6 col-md-12 pt-2 mb-2">
+                                <label for="codigo_turma" class="form-label">Turma*</label>
+                                <input type="text" name="codigo_turma" class="form-control" value="${ data.turma.codigo_turma }" id="codigo_turma" minLength="3" required>
+                                <div class="invalid-feedback">Por favor, introduza o nome da turma.</div>
+                              </div>
+                              
+                              <div class="col-lg-6 col-md-12 pt-2 mb-2">
+                                <label for="ano_lectivo" class="form-label">Ano Lectivo*</label>
+                                <input type="number" name="ano_lectivo" class="form-control" id="ano_lectivo" value="${ data.turma.ano_lectivo }" required>
+                                <div class="invalid-feedback">Por favor, digite o ano lectivo!</div>
+                              </div>
+                          </div>
+                          </div>
+                      </div> 
+                      
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                      </div>
+                  `;
+                    
+                  formEdit.action = `/admin/turmas/${ turma_id }/editar`;
+
+                  new DevMoonFileReader('validationTooltipPhoto', 'validationTooltipPhotoHidden', 'photo', 'error_msg');
+                }).catch(error => {
+                    console.error(error);
+                })
+            }).catch(error => {
+              console.error( error);
+            });
+        })
+      });
+    </script>
+
+    <script>
+      new FormValidation('form-edit-turma', 'alert', false, '/admin/turmas');
+      new FormPrint('form-imprimir', 'alert', '/admin/turmas/imprimir');
+      new FormFilter('form-admin-filter', 'alert');
+      new FormActions('form-accoes', 'alert');
+    </script>
+    
+</body>
+</html>                                                                                 

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <%- include('../components/head'); -%>
+<body>
+    <%- include('../components/header'); -%>
+    <%- include('../components/menu'); -%>
+
+    <%- include('../../partials/msg'); -%>
+
+
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+          <h1>Funcionários</h1>
+          <nav>
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="/admin/dashboard">Painel Principal</a></li>
+              <li class="breadcrumb-item">Funcionários</li>
+            </ol>
+          </nav>
+        </div><!-- End Page Title -->
+    
+        <section class="section dashboard">
+          <div class="row">
+    
+            <!-- Left side columns -->
+            <div class="col-lg-12">
+              <div class="row">
+
+                <!-- Customers Card -->
+                <div class="col-xxl-4 col-md-4">
+    
+                  <a class="card_link" href="/admin/funcionarios/cadastrar">
+                    <div class="card info-card customers-card">
+                        <div class="card-body">
+                          <h5 class="card-title">Funcionários </h5>
+                          <div class="d-flex align-items-center">
+                            <div style="background: transparent; margin: 0 10px;" class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                              <i style="font-size: 6rem;" class="bi bi-person-plus"></i>
+                            </div>
+                            <div class="ps-3">
+                              <h6 style="text-transform: uppercase;  font-size: 0.9rem;">Cadastrar</h6>
+                            </div>
+                          </div> 
+                        </div>
+                    </div>
+                  </a>
+                </div><!-- End Customers Card -->
+
+                    <!-- Customers Card -->
+                    <div class="col-xxl-4 col-md-4 col-sm-4">
+    
+                      <a class="card_link" href="/admin/funcionarios/adicionar-disciplina">
+                        <div class="card info-card customers-card">
+                            <div class="card-body">
+                              <h5 class="card-title">Professores </h5>
+                              <div class="d-flex align-items-center">
+                                <div style="background: transparent; margin: 0;" class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                  <i style="font-size: 5rem; color: #0084ff;" class="bi bi-calendar-plus"></i>
+                                </div>
+                                <div class="ps-3">
+                                  <h6 style="text-transform: uppercase;  font-size: 0.9rem;">Adicionar Disciplina</h6>
+                                </div>
+                              </div> 
+                            </div>
+                        </div>
+                      </a>
+                    </div><!-- End Customers Card -->
+
+        
+              </div>
+            </div><!-- End Left side columns -->
+    
+            <div class="col-lg-12">
+              <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Buscar</h5>
+      
+                    <form class="row g-3" id="form-admin-filter" method="post" action="/admin/funcionarios/buscar">
+                      <div class="col-lg-3 col-md-6 col-sm-12">
+                        <label for="yourName" class="form-label">Nome</label>
+                        <input type="text" name="nome" class="form-control" id="yourName" minLength="3">
+                      </div>
+
+                      <div class="col-lg-3 col-md-6 col-sm-12">
+                          <label for="sobrenome" class="form-label">Sobrenome</label>
+                          <input type="text" name="sobrenome" class="form-control" id="sobrenome" minLength="3">
+                      </div>
+
+                      <div class="col-lg-3 col-md-6 col-sm-12">
+                        <label for="bi" class="form-label">BI nº</label>
+                        <input type="text" name="bi" class="form-control" id="bi" minLength="3">
+                      </div>
+                      
+                      <div class="col-lg-3 col-md-6 col-sm-12">
+                        <label for="cargo" class="form-label">Cargo</label>
+                        <select class="form-select" name="cargo" id="cargo">
+                          <option selected value="" disabled>--selecione o cargo--</option>
+                          <option value="Diretor">Diretor</option>
+                          <option value="Professor">Professor</option>
+                          <option value="Secretário">Secretário</option>
+                      </select>
+                      </div>
+
+                      <div class="col-lg-3 col-md-6 col-sm-12">
+                        <label for="ativo" class="form-label">Status</label>
+                        <select class="form-select" name="ativo" id="ativo">
+                            <option selected value="" disabled>--selecione o status--</option>
+                            <option value="1">Ativo</option>
+                            <option value="0">Desativo</option>
+                        </select>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 col-sm-12">
+                      <label for="grau" class="form-label">Grau Académico</label>
+                      <input type="text" name="grau" class="form-control" id="grau" minLength="3">
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 col-sm-12">
+                      <label for="instituto_ensino" class="form-label">Instituição de Ensino</label>
+                      <input type="text" name="instituto_ensino" class="form-control" id="instituto_ensino" minLength="3">
+                    </div>
+
+                                    
+
+                      <div class="col-12">
+                        <button class="btn btn-secondary w-10" type="reset">Limpar</button>
+                        <button class="btn btn-primary w-10" type="submit">Buscar</button>
+                      </div>
+                      
+                    </form>
+      
+                  </div>
+                </div>
+          </div>
+            
+            <div class="col-lg-12">
+                <div class="card"  id="lista">
+                    <div class="card-body">
+                      <h5 class="card-title">Lista dos Funcionários</h5>
+        
+                      <!-- Table with hoverable rows -->
+                      <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Cargo</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Telefone</th>
+                            <th scope="col">Email</th>
+                            <th>Acções</th>
+                          </tr>
+                        </thead>
+                        <tbody id="filtros">
+                            <% funcionarios.forEach(perfil => { %>
+                                <tr>
+                                    <td><%= perfil.dataValues.nome %> <%= perfil.dataValues.sobrenome %></td>
+                                    <td><%= perfil.dataValues.cargo %></td>
+                                    <td>
+                                        <i style="font-size: .6rem; cursor: pointer;" class="bi bi-circle-fill active_<%= perfil.dataValues.ativo %>" <% if (perfil.dataValues.ativo) { %> title="Ativo" <% } else { %> title="Desativo" <% } %></i>
+                                    </td>
+                                    <td><%= perfil.dataValues.telefone %></td>
+                                    <td><%= perfil.dataValues.email %></td>
+                                    <td class="action_links">
+                                        <a href="/admin/perfil/<%= perfil.dataValues.id %>" title="Visualizar Perfil"><i class="bi bi-eye-fill"></i></a>
+                                        <a href="#" data-bs-toggle="modal" data-bs-target=".modal_deletar_<%= perfil.dataValues.id %>" title="Deletar Perfil"><i class="bi bi-trash-fill"></i></a>
+                                    </td>
+                                  </tr>
+                                  <div class="modal fade modal_deletar_<%= perfil.dataValues.id %>" id="" tabindex="-1" aria-hidden="true" style="display: none;">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <h5 class="modal-title">Tem certeza que quer eliminar esta Conta?</h5>
+                                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-footer">
+                                          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Não</button>
+                                          <a href="/admin/<%= perfil.dataValues.id %>/eliminar-conta"><button type="button" class="btn btn-danger">Sim</button></a>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div><!-- Fim Modal Sair -->
+                            <%});%>
+                        </tbody>
+                      </table>
+                      <!-- End Table with hoverable rows -->
+                    
+                      <!-- Disabled and active states -->
+                    <nav aria-label="...">
+                      <ul class="pagination">
+                        <% if (paginasTotal > 1 && pagina > 1) { %>
+                          <li class="page-item">
+                            <a class="page-link" href="/admin/funcionarios?pagina=<%= pagina - 1 %>" tabindex="-1" aria-disabled="true">Anterior</a>
+                          </li>
+                        <% } else { %>
+                          <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Anterior</a>
+                          </li>
+                        <% } %>
+                       
+
+                        <% for (let pag = pagina; pag <= paginasTotal; pag++) { %>
+                         
+                          <% if (pagina === pag) { %> 
+                            <li class="page-item active" aria-current="page">
+                              <a class="page-link" href="/admin/funcionarios?pagina=<%= pag %>"><%= pag %></a>
+                            </li>
+                            <% continue %>
+                          <% } %>
+                          <li class="page-item">
+                            <a class="page-link" href="/admin/funcionarios?pagina=<%= pag %>"><%= pag %></a>
+                          </li>
+                         <% } %>
+
+                         <% if (paginasTotal > 1 && pagina < paginasTotal) { %>
+                          <li class="page-item">
+                            <a class="page-link" href="/admin/funcionarios?pagina=<%= pagina + 1 %>">Próximo</a>
+                          </li>
+                        <% } else { %>
+                          <li class="page-item disabled">
+                            <a class="page-link" href="#">Próximo</a>
+                          </li>
+                        <% } %>
+                      </ul>
+                    </nav><!-- End Disabled and active states -->
+                    </div>
+                  </div>
+            </div>
+    
+          </div>
+        </section>
+      
+    
+    </main><!-- End #main -->
+
+    <%- include('../components/footer'); -%>
+    <%- include('../components/scripts'); -%>
+
+    <script>
+      new FormFilter('form-admin-filter', 'alert');
+    </script>
+    
+</body>
+</html>

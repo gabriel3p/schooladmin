@@ -1,0 +1,39 @@
+<div class="modal fade" id="modal_sair" tabindex="-1" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Tem certeza que quer sair?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Não</button>
+        <a href="/admin/<%= funcionario.usuario %>/sair"><button type="button" class="btn btn-primary">Sim</button></a>
+      </div>
+    </div>
+  </div>
+</div><!-- Fim Modal Sair -->
+
+<div class="modal fade" id="modal_eliminar" tabindex="-1" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Tem certeza que quer eliminar a sua Conta?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Não</button>
+        <a href="/admin/<%= funcionario.usuario %>/eliminar"><button type="button" class="btn btn-danger">Sim</button></a>
+      </div>
+    </div>
+  </div>
+</div><!-- Fim Modal Sair -->
+  
+  <br><br><br><br><br><br><br><br>
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+    <div class="copyright">
+      &copy; Copyright <strong><span>SchoolAdmin</span></strong>. Todos os direitos reservados
+    </div>
+  </footer><!-- End Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>

@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <%- include('../components/head'); -%>
+<body>
+    <%- include('../components/header'); -%>
+    <%- include('../components/menu'); -%>
+
+
+    <main id="main" class="main">
+        <%- include('../../partials/msg'); -%>
+
+        <div class="pagetitle">
+            <h1>Perfil do Aluno</h1>
+            <nav>
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/admin/dashboard">Painel Principal</a></li>
+                <% if (funcionario.cargo.toLowerCase() == 'professor') { %>
+                  <li class="breadcrumb-item"><a href="/admin/turmas/minhas-turma/<%= funcionario.id %>">Minhas Turmas</a></li>
+                <% } else { %>
+                  <li class="breadcrumb-item"><a href="/admin/alunos">Alunos</a></li>
+                <% } %>
+                <li class="breadcrumb-item active">Perfil</li>
+              </ol>
+            </nav>
+          </div><!-- End Page Title -->
+
+          <section class="section profile">
+
+            <div class="row">
+
+                <div class="col-12">
+    
+                    <div class="card">
+                      <div class="card-body profile-card pt-4 student-profile">
+          
+                       <div id="profile-student-photo">
+                        <a href="/files/<%= aluno.foto %>" target="_blank" rel="noopener noreferrer">
+                            <img style="border: 4px solid #178be971;" src="/files/<%= aluno.foto %>" alt="Foto do aluno" class="fluid">
+                          </a>
+                       </div>
+
+                       <div>
+                            <h6><span>Nome:</span> <%= aluno.nome %></h6>
+                            <h6><span>Código de Matrícula:</span> <%= aluno.matriculas[aluno.matriculas.length - 1].codigo_matricula%></h6>
+                            <h6><span>Curso:</span> <%= aluno.matriculas[aluno.matriculas.length - 1].classe[0].curso.nome %></h6>
+                            <h6><span>Turma:</span> <%= aluno.matriculas[aluno.matriculas.length - 1].turma[0].codigo_turma %></h6>
+                            <h6><span>Classe:</span> <%= aluno.matriculas[aluno.matriculas.length - 1].classe[0].nivel %>ª</h6>
+                            <h6><span>Ano Lectivo:</span> <%= aluno.matriculas[aluno.matriculas.length - 1].ano_lectivo %></h6>
+                       </div>
+                        
+                        
+                      </div>
+                    </div>          
+                </div>
+
+                <div class="col-12">
+    
+                    <div class="card">
+                      <div class="card-body pt-3">
+                        <!-- Bordered Tabs -->
+                        <ul class="nav nav-tabs nav-tabs-bordered">
+          
+                          <li class="nav-item">
+                            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Dados do Aluno</button>
+                          </li>
+
+                          <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#matriculas">Matriculas</button>
+                        </li>
+
+                        
+                          <li class="nav-item">
+                              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#propinas">Propina</button>
+                          </li>
+                        
+
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#notas">Comparativo de Notas</button>
+                        </li>
+      
+                        <% if (funcionario.cargo.toLowerCase() !== 'professor') { %>
+                          <li class="nav-item">
+                              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Editar Aluno</button>
+                          </li>
+                        <% } %>
+
+                        </ul>
+                        <div class="tab-content pt-2">
+          
+                          <div class="tab-pane fade show active profile-overview" id="profile-overview">
+      
+                          
+                            <h5 class="card-title">Detalhes do Aluno</h5>
+          
+                            <div class="row">
+                              <div class="col-lg-3 col-md-4 label ">Nome Completo</div>
+                              <div class="col-lg-9 col-md-8"><%= aluno.nome %></div>
+                            </div>
+      
+                            <div class="row">
+                              <div class="col-lg-3 col-md-4 label">Nome do Pai</div>
+                              <div class="col-lg-9 col-md-8"><%= aluno.nome_pai %></div>
+                            </div>
+          
+                          
+                            <div class="row">
+                              <div class="col-lg-3 col-md-4 label">Nome da Mãe</div>
+                              <div class="col-lg-9 col-md-8"><%= aluno.nome_mae %> </div>
+                            </div>
+      
+                            <div class="row">
+                              <div class="col-lg-3 col-md-4 label">Gênero</div>
+                              <% if (aluno.genero.toLowerCase() === 'm') { %>
+                                <div class="col-lg-9 col-md-8">Masculino</div>
+                              <% } else { %> 
+                                <div class="col-lg-9 col-md-8">Feminino</div>
+                                <% } %>
+                            </div>
+          
+                           
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Data de Nascimento</div>
+                                <div class="col-lg-9 col-md-8"><%= setDate(aluno.data_nascimento) %></div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Bilhete de Identidade nº</div>
+                                <div class="col-lg-9 col-md-8"><%= aluno.bi %></div>
+                            </div>
+                           
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Naturalidade</div>
+                                <div class="col-lg-9 col-md-8"><%= aluno.nacionalidade %></div>
+                            </div>
+                        
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Município</div>
+                                <div class="col-lg-9 col-md-8"><%= aluno.municipio %></div>
+                            </div>
+                            
+      
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Bairro</div>
+                                <div class="col-lg-9 col-md-8"><%= aluno.bairro %></div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Telefone</div>
+                                <div class="col-lg-9 col-md-8"><%= aluno.phone1 %></div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Telefone (2)</div>
+                                <div class="col-lg-9 col-md-8"><%= aluno.phone2 %></div>
+                            </div>
+
+
+          
+                            <% if (aluno.email) { %>
+                              <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Email</div>
+                                <div class="col-lg-9 col-md-8"><%= aluno.email %></div>
+                              </div>
+                            <% } %>
+                            
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Situação do Aluno</div>
+                                <div class="col-lg-9 col-md-8" style="text-transform: capitalize;"><%= aluno.situacao_aluno %></div>
+                            </div>
+                        
+      
+                            <% if (aluno.createdAt ) { %>
+                                <div class="row">
+                                  <div class="col-lg-3 col-md-4 label">Data de Criação</div>
+                                  <div class="col-lg-9 col-md-8"><%= setDate(aluno.createdAt) %></div>
+                                </div>
+                              <% } %>
+                            
+      
+                          </div>
+                          
+                          <div class="tab-pane fade profile-edit pt-3" id="matriculas">
+                            <h5 class="card-title">Matriculas do Aluno</h5>
+
+                            <% aluno.matriculas.forEach((matricula, index) => { %>
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label ">Ano Lectivo</div>
+                                    <div class="col-lg-9 col-md-8"><%= matricula.ano_lectivo %></div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label ">Curso</div>
+                                    <div class="col-lg-9 col-md-8"><%= matricula.classe[0].curso.nome %></div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label ">Turma</div>
+                                    <div class="col-lg-9 col-md-8"><%= matricula.turma[0].codigo_turma %></div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label ">Turno</div>
+                                    <div class="col-lg-9 col-md-8"><%= (matricula.turma[0].turno == 't') ? 'Tarde' : 'Manhã' %></div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label ">Classe</div>
+                                    <div class="col-lg-9 col-md-8"><%= matricula.classe[0].nivel %>ª</div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label ">Código de Matrícula</div>
+                                    <div class="col-lg-9 col-md-8"><%= matricula.codigo_matricula %></div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label ">Estado da Matrícula</div>
+                                    <div class="col-lg-9 col-md-8" style="text-transform: capitalize;"><%= matricula.estado_matricula %></div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label ">Data de Criação</div>
+                                    <div class="col-lg-9 col-md-8" style="text-transform: capitalize;"><%= setDate(matricula.createdAt)%></div>
+                                </div>
+                                
+                                <% if (matricula.bolderon) { %>
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-4 label ">Foto do Bolderon</div>
+                                        <div class="col-lg-9 col-md-8"><a href="/files/<%= matricula.bolderon %>" style="font-size: 1.5rem;" target="_blanc"><i class="bi bi-card-image"></i></a></div>
+                                    </div>
+                                <% } %>
+                                <hr>
+                                
+                            <% }); %>
+
+                          </div>
+
+
+                          <% if (funcionario.cargo.toLowerCase() != 'professor') { %>
+                            <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+                              <h5 class="card-title">Edite os Dados Aluno</h5>
+
+                              <form class="needs-validation" id="form-edit-student" action="/admin/alunos/<%= aluno.id %>/editar" enctype="multipart/form-data" method="POST" novalidate>
+
+                                  <div class="row mb-3">
+                                      <label class="col-md-4 col-lg-2 col-form-label">Foto do Aluno</label>
+                                      <div class="col-md-8 col-lg-9">
+                                        <img src="/files/<%= aluno.foto %>" id="photo_student"  alt="Foto do Aluno">
+                                        <div class="pt-2  position-relative">
+                                          <input type="hidden" class="form-control" id="validationTooltipPhotoHidden" required>
+                                          <input style="display: none;" type="file" name="foto" class="form-control" id="validationTooltipPhoto" value="">
+                                          <label for="validationTooltipPhoto" class="btn btn-primary btn-sm" title="Faça o upload de uma nova foto"><i style="color: #fff;" class="bi bi-upload"></i></label>
+                                          <div id="error_msg" class="invalid-tooltip">
+                                            Campo obrigatório!
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                      <label for="nome" class="col-md-4 col-lg-2 col-form-label">Nome</label>
+                                      <div class="col-md-8 col-lg-9 position-relative">
+                                        <input name="nome" type="text" class="form-control" id="nome" value="<%= aluno.nome %>" required>
+                                        <div class="invalid-tooltip">
+                                          Campo obrigatório!
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                      <label for="nome" class="col-md-4 col-lg-2 col-form-label">Nome do Pai</label>
+                                      <div class="col-md-8 col-lg-9 position-relative">
+                                        <input name="nome_pai" type="text" class="form-control" id="nome" value="<%= aluno.nome_pai %>" required>
+                                        <div class="invalid-tooltip">
+                                          Campo obrigatório!
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                      <label for="nome" class="col-md-4 col-lg-2 col-form-label">Nome da Mãe</label>
+                                      <div class="col-md-8 col-lg-9 position-relative">
+                                        <input name="nome_mae" type="text" class="form-control" id="nome" value="<%= aluno.nome_mae %>" required>
+                                        <div class="invalid-tooltip">
+                                          Campo obrigatório!
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                      <label for="genero" class="col-md-4 col-lg-2 col-form-label">Gênero</label>
+                                      <div class="col-md-8 col-lg-9 position-relative">
+                                        <select id="genero" class="form-control" name="genero" required>
+                                          <% if (aluno.genero.toLowerCase() === 'm') { %>
+                                            <option selected value="<%= aluno.genero %>">Masculino</option>
+                                            <option  value="F">Feminino</option>
+                                          <% } else { %>
+                                            <option selected value="<%= aluno.genero %>">Feminino</option>
+                                            <option  value="M">Masculino</option>
+                                          <% } %>
+                                        </select>
+                                        <div class="invalid-tooltip">
+                                          Campo obrigatório!
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                      <label for="bi" class="col-md-4 col-lg-2 col-form-label">Bilhete de Identidade</label>
+                                      <div class="col-md-8 col-lg-9 position-relative">
+                                        <input name="bi" type="text" class="form-control" id="bi" value="<%= aluno.bi %>" required>
+                                        <div class="invalid-tooltip">
+                                          Campo obrigatório!
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                      <label for="nacionalidade" class="col-md-4 col-lg-2 col-form-label">Naturalidade</label>
+                                      <div class="col-md-8 col-lg-9 position-relative">
+                                        <input name="nacionalidade" type="text" class="form-control" id="nacionalidade" value="<%= aluno.nacionalidade %>" required>
+                                        <div class="invalid-tooltip">
+                                          Campo obrigatório!
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                      <label for="municipio" class="col-md-4 col-lg-2 col-form-label">Município</label>
+                                      <div class="col-md-8 col-lg-9 position-relative">
+                                        <input name="municipio" type="text" class="form-control" id="municipio" value="<%= aluno.municipio %>" required>
+                                        <div class="invalid-tooltip">
+                                          Campo obrigatório!
+                                        </div>
+                                      </div>
+                                    </div>
+
+
+                                    <div class="row mb-3">
+                                      <label for="bairro" class="col-md-4 col-lg-2 col-form-label">Bairro</label>
+                                      <div class="col-md-8 col-lg-9 position-relative">
+                                        <input name="bairro" type="text" class="form-control" id="bairro" value="<%= aluno.bairro %>" required>
+                                        <div class="invalid-tooltip">
+                                          Campo obrigatório!
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                      <label for="phone" class="col-md-4 col-lg-2 col-form-label">Telefone</label>
+                                      <div class="col-md-8 col-lg-9 position-relative">
+                                        <input name="phone" type="number" class="form-control" id="phone" value="<%= aluno.phone1 %>" required>
+                                        <div class="invalid-tooltip">
+                                          Campo obrigatório!
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                      <label for="phone2" class="col-md-4 col-lg-2 col-form-label">Telefone (2)</label>
+                                      <div class="col-md-8 col-lg-9 position-relative">
+                                        <input name="phone2" type="number" class="form-control" id="phone2" value="<%= aluno.phone2 %>" required>
+                                        <div class="invalid-tooltip">
+                                          Campo obrigatório!
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                      <label for="email" class="col-md-4 col-lg-2 col-form-label">Email</label>
+                                      <div class="col-md-8 col-lg-9 position-relative">
+                                        <input name="email" type="email" class="form-control" id="email" value="<%= aluno.email %>">
+                                        <div class="invalid-tooltip">
+                                          Campo obrigatório!
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                      <label for="genero" class="col-md-4 col-lg-2 col-form-label">Situação do Aluno</label>
+                                      <div class="col-md-8 col-lg-9 position-relative">
+                                        <select id="genero" class="form-control" name="situacao_aluno" required>
+                                          <% if (aluno.situacao_aluno.toLowerCase() === 'ativo') { %>
+                                            <option selected value="<%= aluno.situacao_aluno %>">Ativo</option>
+                                            <option  value="desistente">Desistente</option>
+                                          <% } else if (aluno.situacao_aluno.toLowerCase() === 'desistente') { %>
+                                            <option selected value="<%= perfil.situacao_aluno %>">Desistente</option>
+                                            <option  value="ativo">Ativo</option>
+                                          <% } %>
+                                        </select>
+                                        <div class="invalid-tooltip">
+                                          Campo obrigatório!
+                                        </div>
+                                      </div>
+                                    </div>
+
+                            <!-- <h5 class="card-title">Edite os Dados da Matrícula Actual</h5>
+
+                              <div class="row mb-3">
+                                  <label for="ano_lectivo" class="col-md-4 col-lg-2 col-form-label">Ano Lectivo</label>
+                                  <div class="col-md-8 col-lg-9 position-relative">
+                                    <input name="ano_lectivo" type="number" class="form-control" id="ano_lectivo" value="<%= aluno.matriculas[aluno.matriculas.length - 1].ano_lectivo %>" required>
+                                    <div class="invalid-tooltip">
+                                      Campo obrigatório!
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                  <label for="curso" class="col-md-4 col-lg-2 col-form-label">Curso</label>
+                                  <div class="col-md-8 col-lg-9 position-relative">
+                                      <select class="form-select" id="curso" name="curso" required>
+                                          <% cursos.forEach(curso => { %>
+                                              <% if (curso.dataValues.id === aluno.matriculas[aluno.matriculas.length - 1].classe[0].curso.id) { %>
+                                                  <option selected value="<%= curso.dataValues.id %>"><%= curso.dataValues.nome %></option>
+                                              <% } else { %>
+                                                  <option value="<%= curso.dataValues.id %>"><%= curso.dataValues.nome %></option>
+                                              <% } %>
+                                          <% }) %>
+                                      </select>
+                                    <div class="invalid-tooltip">
+                                      Campo obrigatório!
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                  <label for="classe" class="col-md-4 col-lg-2 col-form-label">Classe</label>
+                                  <div class="col-md-8 col-lg-9 position-relative">
+                                      <select class="form-select" id="nivel" required name="nivel">
+                                          <option selected value="<%= aluno.matriculas[aluno.matriculas.length - 1].classe[0].id %>"><%= aluno.matriculas[aluno.matriculas.length - 1].classe[0].nivel %>ª</option>
+                                      </select>
+                                    <div class="invalid-tooltip">
+                                      Campo obrigatório!
+                                    </div>
+                                  </div>
+                                </div>
+
+
+                                <div class="row mb-3">
+                                  <label for="turno" class="col-md-4 col-lg-2 col-form-label">Turma</label>
+                                  <div class="col-md-8 col-lg-9 position-relative">
+                                      <select class="form-select" id="turno" required name="turma_id" required>
+                                          <option selected disabled value="<%= aluno.matriculas[aluno.matriculas.length - 1].turma[0].codigo_turma %>"><%= aluno.matriculas[aluno.matriculas.length - 1].turma[0].codigo_turma %> (<%= (aluno.matriculas[aluno.matriculas.length - 1].turma[0].turno.toLowerCase() == 't') ? 'Tarde' : 'Manhã' %>)</option>
+                                        
+                                          </select>
+                                      <div class="invalid-tooltip">
+                                        Campo obrigatório!
+                                      </div>
+                                  </div>
+                                </div>
+                                </div>-->
+                              
+                                <div class="text-center">
+                                  <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                                </div>
+                              </form>
+                            </div>
+                          <% } %>
+
+                          <div class="tab-pane fade notas pt-3" id="propinas">
+                            <h5 class="card-title">Propinas</h5>
+
+                            <table class="table table-hover" id="turmas">
+                              <thead>
+                                  <tr>
+                                      <th scope="col">Nº</th>
+                                      <th scope="col">Mês</th>
+                                      <th scope="col">Forma de Pagamento</th>
+                                      <th scope="col">Responsável</th>
+                                      <th scope="col">Data de Pagamento</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+
+                                  <% aluno.matriculas[aluno.matriculas.length - 1].pagamentos.forEach((pagamento, index)=> { %>
+                                    <tr>
+                                      <th scope="col"><%= index + 1 %></th>
+                                      <td><%= pagamento.mes.mes %></td>
+                                      <td style="text-transform: capitalize;"><%= pagamento.forma_pagamento %></td>
+                                      <td style="text-transform: capitalize;"><%= pagamento.funcionario.nome %> <%= pagamento.funcionario.sobrenome %></td>
+                                      <td style="text-transform: capitalize;"><%= setDate(pagamento.createdAt) %></td>
+                                    </tr>
+                                  <% }) %>
+                              </tbody>
+                              </table>
+                          </div>
+
+                          <div class="tab-pane fade notas pt-3" id="notas">
+                            <div class="">
+                              <div class="">
+                                <h5 class="card-title">Notas do aluno/matrículas</h5>
+                  
+                                <!-- Default Accordion -->
+                                <div class="accordion" id="accordionExample">
+                                  <% aluno.matriculas.forEach ((matricula, index) => { %>
+
+                                    <div class="accordion-item">
+                                      <h2 class="accordion-header" id="heading<%= index %>">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<%= index %>" aria-expanded="true" aria-controls="collapse<%= index %>">
+                                          Matrícula: <%= matricula.codigo_matricula %>
+                                        </button>
+                                      </h2>
+                                      <div id="collapse<%= index %>" class="accordion-collapse collapse <%= (index < 1) ? 'show' : '' %>" aria-labelledby="heading<%= index %>" data-bs-parent="#accordionExample">
+                                        <div class="accordion-body">
+                                          <% const trimestre = [ 'I', 'II', 'III' ] %>
+
+                                          <h5 class="card-title">Iº Trimestre</h5>
+                                            <table class="table table-striped student__notes">
+                                                <thead>
+                                                  <tr>
+                                                    <th scope="col">Disciplina</th>
+                                                    <th scope="col">1ª Prova</th>
+                                                    <th scope="col">2ª Prova</th>
+                                                    <th scope="col">Média</th>
+                                                  </tr>
+                                                </thead>
+                                                <tbody>
+                                                <% matricula.notas.forEach((nota, index) => { %>
+                                                    <% if (nota.trimestre == trimestre[0]) { %>
+                                                      <tr>
+                                                        <th scope="row"><%= nota.disciplina.nome_disciplina %></th>
+                                                        <td><%= nota.prova1 || '---' %></td>
+                                                        <td><%= nota.prova2 || '---' %></td>
+                                                        <td><%= (nota.prova1 > 0 && nota.prova2 > 0) ? (nota.prova1 + nota.prova2) / 2 || '---' : '---' %></td>
+                                                      </tr>
+                                                    <% } %>
+                                                  <% }) %>
+                                                </tbody>
+                                            </table>
+
+
+                                            <h5 class="card-title">IIº Trimestre</h5>
+                                            <table class="table table-striped student__notes">
+                                                <thead>
+                                                  <tr>
+                                                    <th scope="col">Disciplina</th>
+                                                    <th scope="col">1ª Prova</th>
+                                                    <th scope="col">2ª Prova</th>
+                                                    <th scope="col">Média</th>
+                                                  </tr>
+                                                </thead>
+                                                <tbody>
+                                                <% matricula.notas.forEach((nota, index) => { %>
+                                                    <% if (nota.trimestre == trimestre[1]) { %>
+                                                      <tr>
+                                                        <th scope="row"><%= nota.disciplina.nome_disciplina %></th>
+                                                        <td><%= nota.prova1 || '---' %></td>
+                                                        <td><%= nota.prova2 || '---' %></td>
+                                                        <td><%= (nota.prova1 > 0 && nota.prova2 > 0) ? (nota.prova1 + nota.prova2) / 2 || '---' : '---' %></td>
+                                                      </tr>
+                                                    <% } %>
+                                                  <% }) %>
+                                                </tbody>
+                                            </table>
+
+
+                                            <h5 class="card-title">IIIº Trimestre</h5>
+                                            <table class="table table-striped student__notes">
+                                                <thead>
+                                                  <tr>
+                                                    <th scope="col">Disciplina</th>
+                                                    <th scope="col">1ª Prova</th>
+                                                    <th scope="col">2ª Prova</th>
+                                                    <th scope="col">Média</th>
+                                                  </tr>
+                                                </thead>
+                                                <tbody>
+                                                <% matricula.notas.forEach((nota, index) => { %>
+                                                    <% if (nota.trimestre == trimestre[2]) { %>
+                                                      <tr>
+                                                        <th scope="row"><%= nota.disciplina.nome_disciplina %></th>
+                                                        <td><%= nota.prova1 || '---' %></td>
+                                                        <td><%= nota.prova2 || '---' %></td>
+                                                        <td><%= (nota.prova1 > 0 && nota.prova2 > 0) ? (nota.prova1 + nota.prova2) / 2 || '---' : '---' %></td>
+                                                      </tr>
+                                                    <% } %>
+                                                  <% }) %>
+                                                </tbody>
+                                            </table>
+                                       
+                                        </div>
+                                      </div>
+                                    </div>
+                                  
+                                  <% }); %>
+                                </div><!-- End Default Accordion Example -->
+                  
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+          
+                      </div>
+                    
+          
+                  </div>
+
+            </div>
+
+          </section>
+
+    </main>
+
+    <%- include('../components/footer'); -%>
+    <%- include('../components/scripts'); -%>
+
+    <script>
+
+        /*const cursoSelect = document.getElementById('curso');
+        const nivelSelect = document.getElementById('nivel');
+        const turnoSelect = document.getElementById('turno');
+
+        console.log(cursoSelect.value);
+
+        async function getCursoData () {
+            await fetch(`/admin/cursos/turno/pegar-dados/${ cursoSelect.value }`).then(response => {
+                response.json().then(data => {
+                    let element = '<option selected disabled value="">Escolha a classe...</option>';
+
+                    data.curso.classes.forEach(classe => {
+                        element += `
+                            <option value="${ classe.id }">${ classe.nivel }ª</option>
+                        `
+                    });
+
+                    nivelSelect.innerHTML = element;
+
+                    nivelSelect.addEventListener('change', () => {
+                      let turnoOpt = ' <option selected disabled value="">Escolha o turno...</option>';
+
+                      data.curso.classes.forEach(classe => {
+                          if (nivelSelect.value == classe.id) {
+                            classe.turmas.forEach(turma => {
+                              turnoOpt += `
+                                <option value="${ turma.id }">${ (turma.turno.toLowerCase() == 't') ? 'Tarde' : 'Manhã' }</option>
+                              `; 
+                            });
+                          }
+                      })
+
+                      turnoSelect.innerHTML = turnoOpt;
+                    })
+                    
+
+                }).catch(error => {
+                    console.error('Erro durante a requisição ' + error);
+                })
+            }).catch(error => {
+              console.error('Erro durante a requisição ' + error);
+          })
+        }
+
+        cursoSelect.addEventListener('change', getCursoData());
+        window.addEventListener('load', getCursoData());*/
+    </script>
+    
+</body>
+</html>                                                                                 
