@@ -226,6 +226,38 @@ module.exports = {
         }
     },
 
+    async pegarDados (req, res) {
+        try {
+            const alunos = await Alunos.findAll({
+                include: {
+                    association: 'matriculas',
+                    include: [
+                        {
+                            association: 'classe'
+                        },
+                        {
+                            association: 'turma'
+                        },
+                        {
+                            association: 'notas'
+                        },
+                        {
+                            association: 'pagamentos',
+                            include: {
+                                association: 'mes'
+                            }
+                        }
+                    ]
+                }
+            });
+
+            return res.json({ alunos });
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({ message: 'Houve um erro interno, por favor tente novamente!', success: false }); 
+        }
+    },
+
     //RENDER CONTROLLERS
     async alunosRender (req, res) {
         const numeroPagina = Number.parseInt(req.query.pagina);

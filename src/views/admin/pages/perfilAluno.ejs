@@ -42,9 +42,19 @@
                        <div>
                             <h6><span>Nome:</span> <%= aluno.nome %></h6>
                             <h6><span>Código de Matrícula:</span> <%= aluno.matriculas[aluno.matriculas.length - 1].codigo_matricula%></h6>
-                            <h6><span>Curso:</span> <%= aluno.matriculas[aluno.matriculas.length - 1].classe[0].curso.nome %></h6>
-                            <h6><span>Turma:</span> <%= aluno.matriculas[aluno.matriculas.length - 1].turma[0].codigo_turma %></h6>
-                            <h6><span>Classe:</span> <%= aluno.matriculas[aluno.matriculas.length - 1].classe[0].nivel %>ª</h6>
+
+                            <% if (aluno.matriculas[aluno.matriculas.length - 1].classe[0]) { %>
+                              <h6><span>Curso:</span> <%= aluno.matriculas[aluno.matriculas.length - 1].classe[0].curso.nome %></h6>
+                            <% } %>
+
+                            <% if (aluno.matriculas[aluno.matriculas.length - 1].turma[0]) { %>
+                              <h6><span>Turma:</span> <%= aluno.matriculas[aluno.matriculas.length - 1].turma[0].codigo_turma %></h6>
+                            <% } %>
+
+                            <% if (aluno.matriculas[aluno.matriculas.length - 1].classe[0]) { %>
+                              <h6><span>Classe:</span> <%= aluno.matriculas[aluno.matriculas.length - 1].classe[0].nivel %>ª</h6>
+                            <% } %>
+
                             <h6><span>Ano Lectivo:</span> <%= aluno.matriculas[aluno.matriculas.length - 1].ano_lectivo %></h6>
                        </div>
                         
@@ -192,22 +202,36 @@
 
                                 <div class="row">
                                     <div class="col-lg-3 col-md-4 label ">Curso</div>
-                                    <div class="col-lg-9 col-md-8"><%= matricula.classe[0].curso.nome %></div>
+                                    <% if (matricula.classe[0]) { %>
+                                      <div class="col-lg-9 col-md-8"><%= matricula.classe[0].curso.nome %></div>
+                                    <% } %>
                                 </div>
 
                                 <div class="row">
                                     <div class="col-lg-3 col-md-4 label ">Turma</div>
-                                    <div class="col-lg-9 col-md-8"><%= matricula.turma[0].codigo_turma %></div>
+                                    <% if (matricula.turma[0]) { %>
+                                      <div class="col-lg-9 col-md-8"><%= matricula.turma[0].codigo_turma %></div>
+                                    
+                                    <% } %>
+
                                 </div>
 
                                 <div class="row">
                                     <div class="col-lg-3 col-md-4 label ">Turno</div>
-                                    <div class="col-lg-9 col-md-8"><%= (matricula.turma[0].turno == 't') ? 'Tarde' : 'Manhã' %></div>
+                                    <% if (matricula.turma[0]) { %>
+                                      <div class="col-lg-9 col-md-8"><%= (matricula.turma[0].turno == 't') ? 'Tarde' : 'Manhã' %></div>
+                                      
+                                    <% } %>
+
                                 </div>
 
                                 <div class="row">
                                     <div class="col-lg-3 col-md-4 label ">Classe</div>
-                                    <div class="col-lg-9 col-md-8"><%= matricula.classe[0].nivel %>ª</div>
+                                    <% if (matricula.classe[0]) { %>
+                                      <div class="col-lg-9 col-md-8"><%= matricula.classe[0].nivel %>ª</div>
+                                      
+                                    <% } %>
+
                                 </div>
 
                                 <div class="row">
@@ -396,63 +420,7 @@
                                       </div>
                                     </div>
 
-                            <!-- <h5 class="card-title">Edite os Dados da Matrícula Actual</h5>
-
-                              <div class="row mb-3">
-                                  <label for="ano_lectivo" class="col-md-4 col-lg-2 col-form-label">Ano Lectivo</label>
-                                  <div class="col-md-8 col-lg-9 position-relative">
-                                    <input name="ano_lectivo" type="number" class="form-control" id="ano_lectivo" value="<%= aluno.matriculas[aluno.matriculas.length - 1].ano_lectivo %>" required>
-                                    <div class="invalid-tooltip">
-                                      Campo obrigatório!
-                                    </div>
-                                  </div>
-                                </div>
-
-                                <div class="row mb-3">
-                                  <label for="curso" class="col-md-4 col-lg-2 col-form-label">Curso</label>
-                                  <div class="col-md-8 col-lg-9 position-relative">
-                                      <select class="form-select" id="curso" name="curso" required>
-                                          <% cursos.forEach(curso => { %>
-                                              <% if (curso.dataValues.id === aluno.matriculas[aluno.matriculas.length - 1].classe[0].curso.id) { %>
-                                                  <option selected value="<%= curso.dataValues.id %>"><%= curso.dataValues.nome %></option>
-                                              <% } else { %>
-                                                  <option value="<%= curso.dataValues.id %>"><%= curso.dataValues.nome %></option>
-                                              <% } %>
-                                          <% }) %>
-                                      </select>
-                                    <div class="invalid-tooltip">
-                                      Campo obrigatório!
-                                    </div>
-                                  </div>
-                                </div>
-
-                                <div class="row mb-3">
-                                  <label for="classe" class="col-md-4 col-lg-2 col-form-label">Classe</label>
-                                  <div class="col-md-8 col-lg-9 position-relative">
-                                      <select class="form-select" id="nivel" required name="nivel">
-                                          <option selected value="<%= aluno.matriculas[aluno.matriculas.length - 1].classe[0].id %>"><%= aluno.matriculas[aluno.matriculas.length - 1].classe[0].nivel %>ª</option>
-                                      </select>
-                                    <div class="invalid-tooltip">
-                                      Campo obrigatório!
-                                    </div>
-                                  </div>
-                                </div>
-
-
-                                <div class="row mb-3">
-                                  <label for="turno" class="col-md-4 col-lg-2 col-form-label">Turma</label>
-                                  <div class="col-md-8 col-lg-9 position-relative">
-                                      <select class="form-select" id="turno" required name="turma_id" required>
-                                          <option selected disabled value="<%= aluno.matriculas[aluno.matriculas.length - 1].turma[0].codigo_turma %>"><%= aluno.matriculas[aluno.matriculas.length - 1].turma[0].codigo_turma %> (<%= (aluno.matriculas[aluno.matriculas.length - 1].turma[0].turno.toLowerCase() == 't') ? 'Tarde' : 'Manhã' %>)</option>
-                                        
-                                          </select>
-                                      <div class="invalid-tooltip">
-                                        Campo obrigatório!
-                                      </div>
-                                  </div>
-                                </div>
-                                </div>-->
-                              
+                          
                                 <div class="text-center">
                                   <button type="submit" class="btn btn-primary">Salvar Alterações</button>
                                 </div>

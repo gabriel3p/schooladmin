@@ -4,6 +4,7 @@ const Classes = require('../models/Classes');
 
 
 const { deletePhoto, setDate, setTime } = require('../helpers/utils');
+const { object } = require('yup');
 
 module.exports = {
    
@@ -53,9 +54,13 @@ module.exports = {
                     { where: { id } 
             });
 
-            nivel.forEach(async (niv, index) => { 
-                await Classes.update({ preco: preco[index] }, { where: { [Op.and]: { curso_id: id, nivel: niv } } })
-            })
+            if (typeof nivel == 'object') {
+                nivel.forEach(async (niv, index) => { 
+                    await Classes.update({ preco: preco[index] }, { where: { [Op.and]: { curso_id: id, nivel: niv } } })
+                })
+            } else {
+                await Classes.update({ preco: preco }, { where: { [Op.and]: { curso_id: id, nivel } } })
+            }
 
             res.json({ message: 'Alterações feitas com sucesso!', success: true });
            /* req.flash('success_msg', 'Dodos recebidos')

@@ -17,6 +17,7 @@ routes.post('/matricular', multer(multerConfig).single('foto'), validateToken, A
 
 //GET ROUTES
 routes.get('/:id/deletar', validateToken, eDiretor, AlunosControllers.delete);
+routes.get('/pegar-dados', validateToken, AlunosControllers.pegarDados);
 
 //RENDER ROUTES
 routes.get('/', validateToken, AlunosControllers.alunosRender);

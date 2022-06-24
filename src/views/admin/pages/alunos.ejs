@@ -228,9 +228,9 @@
                                       </td>
 
                                       <td>
-                                        
-                                          <%= aluno.dataValues.matriculas[aluno.dataValues.matriculas.length - 1].turma[0].dataValues.codigo_turma  %>
-                                       
+                                        <% if (aluno.dataValues.matriculas[aluno.dataValues.matriculas.length - 1].turma[0]) { %>
+                                          <%= aluno.dataValues.matriculas[aluno.dataValues.matriculas.length - 1].turma[0].codigo_turma %>
+                                          <% } %>
 
                                       </td>
 
