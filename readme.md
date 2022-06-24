@@ -1,8 +1,4 @@
+## Sistema de Gestão Escolar SchoolAmdin 
 
-155
-
-zplugin light zdharma/fast-syntax-highlighting
-zplugin light zsh-users/zsh-autosuggestions
-zplugin light zsh-users/zsh-history-substring-search
-zplugin light zsh-users/zsh-completions
-zplugin light buonomo/yarn-completion
+Mais controle e agilidade para sua gestão escolar
+Tudo o que é preciso para uma gestão escolar organizada, fácil e de qualidade em um único lugar.
