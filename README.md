@@ -35,6 +35,9 @@ Siga os passos abaixo:
 # Instale as dependências
 $ yarn
 
+# Execute as migrations
+$ yarn sequelize db:migrate
+
 # Inicie o projeto
 $ yarn start
 ```
