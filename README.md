@@ -35,6 +35,9 @@ Siga os passos abaixo:
 # Instale as dependências
 $ yarn
 
+# Crie o banco de dados
+$ yarn sequelize db:create
+
 # Execute as migrations
 $ yarn sequelize db:migrate
 
