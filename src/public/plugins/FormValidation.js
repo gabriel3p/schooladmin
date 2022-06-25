@@ -88,12 +88,24 @@ class FormValidation {
         this.isValid = true;
         let fieldFile = false;
         const data = {};
+        const names = [
+            'contacto',
+            'usuario',
+            'bi',
+            'telefone',
+            'phone1',
+            'phone'
+        ];
 
         [...this.formEl.elements].forEach(field => {
 
             if (['data_nascimento'].indexOf(field.name) > -1 && field.validity.valid) this.birthValidation(field);
 
             if (['bi'].indexOf(field.name) > -1 && field.validity.valid) this.biValidation(field);
+
+            if (field.type == 'text' && field.validity.valid && !names.includes(field.name)/*field.name != 'contacto' && field.name != 'usuario' && field.name != 'bi' && field.name != 'telefone' && field.name != 'phone1' && field.name != 'phone2'*/) {
+                if (!this.textValidation(field)) this.isValid = false;
+            }
             
             if (!field.validity.valid) {
                 this.isValid = false;
@@ -110,6 +122,32 @@ class FormValidation {
 
         return { data, fieldFile};
 
+    }
+
+    textValidation (field) {
+        let isNumbers = true;
+        const numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+        let values = field.value.split('');
+        let msg = (field.parentElement.querySelector('.invalid-tooltip')) ? field.parentElement.querySelector('.invalid-tooltip') : field.parentElement.querySelector('.invalid-feedback');
+
+
+        values.forEach((value, index) => {
+            if (numbers.includes(value)) {
+                isNumbers = false;
+            } 
+            
+        });
+
+        if(!isNumbers) {
+            msg.style.display = 'block';
+            field.classList.add('invalid3p')
+            msg.innerHTML = 'Este campo não pode conter números.';
+            return false
+        } else {
+            msg.style.display = 'none';
+            field.classList.remove('invalid3p')
+            return true
+        }
     }
 
     biValidation (field) {
