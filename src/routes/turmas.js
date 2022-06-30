@@ -14,6 +14,7 @@ routes.post('/imprimir', validateToken, TurmasControllers.imprimir);
 routes.post('/:id/editar', validateToken, TurmasControllers.editarTurma);
 routes.post('/delete/selected', validateToken, TurmasControllers.turmaDelete);
 routes.post('/generate-list/selected', validateToken, TurmasControllers.turmaGerarLista);
+routes.post('/generate-mini-pauta/selected', validateToken, TurmasControllers.turmaGerarMiniPauta);
 routes.post('/cadastrar', validateToken, multer(multerConfig).single('foto'), TurmasControllers.turmasCriar);
 
 //GET ROUTES

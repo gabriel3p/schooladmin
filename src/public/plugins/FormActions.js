@@ -27,6 +27,9 @@ class FormActions {
                     case 'GLP':
                         btn_apply.setAttribute('data-bs-target', '#modal_gerar_list_presenca');
                     break;
+                    case 'GMP':
+                        btn_apply.setAttribute('data-bs-target', '#modal_gerar_mini_pauta');
+                    break;
                 }
             }
             
@@ -66,6 +69,10 @@ class FormActions {
 
                 case 'GLP':
                     this.presenceList(data)
+                break;
+
+                case 'GMP':
+                    this.generateMiniPauta(data)
                 break;
             }
 
@@ -131,14 +138,33 @@ class FormActions {
         let elements = '';
 
         data.forEach(value => {
+            let ids = value.split('-');
+
             elements += `
-                <input type="hidden" name="turmas_id" value="${ value }"/>
+                <input type="hidden" name="turmas_id" value="${ ids[0] }"/>
             `;
         });
 
         divInput.innerHTML = elements;
         elements = ''
 
+    }
+
+    generateMiniPauta (data) {
+        let divInput = document.getElementById('input_turmaPauta');
+        let elements = '';
+
+        data.forEach(value => {
+            let ids = value.split('-');
+
+            elements += `
+                <input type="hidden" name="turmas_id" value="${ ids[0] }"/>
+                <input type="hidden" name="disciplina_id" value="${ ids[1] }"/>
+            `;
+        });
+
+        divInput.innerHTML = elements;
+        elements = ''
     }
 }
 

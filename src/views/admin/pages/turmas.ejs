@@ -428,6 +428,62 @@
       </div>
     </div><!-- Fim Modal imprimir -->
 
+    <div class="modal fade" id="modal_gerar_mini_pauta" tabindex="-1" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-header">
+          <h5 class="modal-title" id="select_modal">Gerar Mini-Pauta</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form class="needs-validation" id="form_lista_presenca_selected" method="post" action="/admin/turmas/generate-mini-pauta/selected">
+
+            <div class="col-12 p-4">
+
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="estado_matriculaPauta" name="estado_matricula">
+                <label class="form-check-label" for="estado_matricula">
+                  Somente alunos ativos
+                </label>
+              </div>
+
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="codigo_matriculaPauta"  name="codigo_matricula">
+                <label class="form-check-label" for="codigo_matricula">
+                  Exibir código de matrícula dos alunos
+                </label>
+              </div>
+
+              <div class="form-check form-switch">
+                <input class="form-check-input" name="ordem_alfabetica" type="checkbox" id="ordem_alfabeticaPauta" checked="">
+                <label class="form-check-label" for="ordem_alfabetica">Ordenar alfabéticamente</label>
+              </div>
+
+              <div class="col-12">
+                <label for="trimestre" class="form-label">Trimestre</label>
+                <select class="form-select" name="trimestre" id="trimestre">
+                  <option value="I" selected>Iº</option>
+                  <option value="II">IIº</option>
+                  <option value="III">IIIº</option>
+                </select>
+              </div>
+
+            </div>
+
+            <div id="input_turmaPauta">
+              
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+              <button type="submit" class="btn btn-primary">Gerar</button>
+            </div>
+
+          </form>
+          
+      </div>
+      </div>
+    </div><!-- Fim Modal Gerar Lista de Presença Selecionados --> 
+
 
 
     

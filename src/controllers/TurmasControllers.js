@@ -126,6 +126,99 @@ module.exports = {
         }
     },
 
+    async turmaGerarMiniPauta (req, res) {
+        const { estado_matricula, codigo_matricula, ordem_alfabetica, turmas_id, disciplina_id, trimestre } = req.body;
+
+        try {
+
+            if (typeof turmas_id == 'object') {
+                
+                req.flash('error_msg', 'Esta acção requer apenas uma única turma!');
+                return res.redirect('/admin/turmas');
+                    
+            } else {
+
+                const disciplina = await Disciplinas.findByPk(disciplina_id, {
+                    include: [
+                        {
+                            association: 'professores'
+                        },
+    
+                        {
+                            required: true,
+                            association: 'notas',
+                            where: {
+                                trimestre: trimestre,
+                            }
+                        }
+                    ]
+                });
+    
+                const turma = await Turmas.findByPk(turmas_id, {
+                    include: [
+                        {
+                            association: 'matriculas',
+                            include: [
+                                {
+                                    order: [['nome', 'ASC']],
+                                    association: 'aluno'
+                                },
+    
+                                {
+                                    association: 'notas',
+                                    where: {
+                                        [Op.and]: {
+                                            disciplina_id: disciplina_id,
+                                            trimestre: trimestre,
+                                        }
+                                        
+                                    }
+                                }
+                            ]
+                        },
+    
+                        {
+                            association: 'classe',
+                            include: 'curso'
+                        }
+                    ]
+                })
+    
+                const matriculas = await Matriculas.findAll({ 
+                    include: [
+                        {
+                            order: [['nome', 'ASC']],
+                            association: 'aluno'
+                        },
+    
+                        {
+                            association: 'notas',
+                            where: {
+                                [Op.and]: {
+                                    disciplina_id: disciplina_id,
+                                    trimestre: trimestre,
+                                }
+                            }
+                        }
+                    ]
+                });
+                
+                return res.render('./admin/pages/mini_pauta', { 
+                    disciplina, 
+                    turma, matriculas, 
+                    trimestre,
+                    funcionario: req.funcionario_logado 
+                });
+            }
+
+
+
+        } catch (error) {
+            req.flash('error_msg', 'Houve um erro interno, por favor tente novamente!');
+            return res.redirect('/admin/turmas');
+        }
+    },
+
     //Get CONTROLLERS
     async turmaDelete (req, res) {
         const { id } = req.params;

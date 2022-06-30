@@ -1380,3 +1380,22 @@ h1, h2, h3, h4, h5, h6 {
   padding: 0 3rem;
   font-size: 1rem;
 }
+
+.head_pauta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.head_pauta div{
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.head_pauta div h6 {
+  padding: .2rem 1rem;
+}
+
+.head_pauta div h6 span {
+  font-weight: bold;
+}

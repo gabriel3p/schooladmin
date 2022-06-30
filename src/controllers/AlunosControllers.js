@@ -399,7 +399,7 @@ module.exports = {
 
             if (!aluno) {
                 req.flash('error_msg', 'Aluno não encontrado!');
-                res.redirect('/admin/alunos');
+                return  res.redirect('/admin/alunos');
             }
 
             
