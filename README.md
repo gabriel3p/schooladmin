@@ -12,10 +12,11 @@
 
 Este projeto foi desenvolvido utilizando as seguintes tecnologias:
 
-- [HTML5](https://www.w3schools.com/html/)
+- [HTML](https://www.w3schools.com/html/)
 - [CSS3](https://www.w3schools.com/css/)
 - [Bootstrap 5](https://getbootstrap.com/)
 - [JavaScript](https://www.w3schools.com/js/)
+- [EJS](https://ejs.co/)
 - [Node.js](https://nodejs.org/en/)
 - [MySQL](https://www.mysql.com/)
 
@@ -33,6 +34,12 @@ Siga os passos abaixo:
 ```bash
 # Instale as dependências
 $ yarn
+
+# Crie o banco de dados
+$ yarn sequelize db:create
+
+# Execute as migrations
+$ yarn sequelize db:migrate
 
 # Inicie o projeto
 $ yarn start
