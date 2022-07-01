@@ -49,7 +49,7 @@ O aplicativo estará disponível para acesso em seu navegador em http://localhos
 ## 🔖 Descrição
 
 <p>O Sistema de Gestão Escolar <strong>SchoolAdim</strong>  
-foi desenvolvido e apresentado como projectop de conclusão de curso ao
+foi desenvolvido e apresentado como projecto de conclusão de curso ao
 Instituto Politécnico Privado Qinet - IPPQ, como requisito parcial para
 obtenção do título de Técnico Médio.</p>
 
