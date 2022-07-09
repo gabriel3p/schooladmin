@@ -140,16 +140,16 @@ module.exports = {
                 res.redirect(`/admin/perfil/${ perfil_id }`);
             }
 
-            if (funcionario.turmas.length < 2) {
+            if (disciplina_id) { // funcionario.turmas.length < 2
                 const disciplina = await Disciplinas.findOne({ where: { id: disciplina_id } });
                 await funcionario.removeDisciplina(disciplina);
 
             }
 
-            const turma = await Turmas.findOne({ where: { id: turma_id } });
-            await funcionario.removeTurma(turma)
-          
-            
+            if (turma_id != -1) {
+                const turma = await Turmas.findOne({ where: { id: turma_id } });
+                await funcionario.removeTurma(turma, { limit: 1 })
+            }            
 
             req.flash('success_msg', 'Disciplina removida do Professor com sucesso!');
             res.redirect(`/admin/perfil/${ perfil_id }`);

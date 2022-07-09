@@ -77,47 +77,44 @@
                         </thead>
                       <tbody >
 
-                        <tbody id="filtros">
+                      <tbody id="filtros">
+                        <% turmas.forEach(turma => { %>
+                          <% turma.classe.disciplinas.forEach(disciplina => { %>
+                            <% disciplina.professores.forEach(professor => { %>
+                                <% if (perfil.id == professor.id) { %>
+                      
+                                <tr>
+                                  <td title="<%= disciplina.nome_disciplina %>"><%= disciplina.nome_disciplina %></td>
+                                  <td title="<%= turma.codigo_turma %>"><%= turma.codigo_turma %></td>
+                                  <td><%= turma.classe.nivel %>ª</td>
+                                  <td title="<%= turma.classe.curso.nome %>"><%= turma.classe.curso.nome %></td>
+                                  <td>
+                                    <% if (funcionario.cargo.toLowerCase() != 'professor') { %>
+                                      <a style="color: #f33c3ce1;" href="#" data-bs-toggle="modal" data-bs-target=".modal_remover_<%= turma.id %>" title="Remover disciplina"><i class="bi bi-trash-fill"></i></a>
+                                    <% } %>
+                                  </td>
+                                </tr>
                         
-
-
-                                <% turmas.forEach(turma => { %>
-                                  <% turma.classe.disciplinas.forEach(disciplina => { %>
-                                    <% disciplina.professores.forEach(professor => { %>
-                                        <% if (perfil.id == professor.id) { %>
-
-                                        <tr>
-                                          <td title="<%= disciplina.nome_disciplina %>"><%= disciplina.nome_disciplina %></td>
-                                          <td title="<%= turma.codigo_turma %>"><%= turma.codigo_turma %></td>
-                                          <td><%= turma.classe.nivel %>ª</td>
-                                          <td title="<%= turma.classe.curso.nome %>"><%= turma.classe.curso.nome %></td>
-                                          <td>
-                                            <% if (funcionario.cargo.toLowerCase() != 'professor') { %>
-                                              <a style="color: #f33c3ce1;" href="#" data-bs-toggle="modal" data-bs-target=".modal_remover_<%= turma.id %>" title="Remover disciplina"><i class="bi bi-trash-fill"></i></a>
-                                            <% } %>
-                                          </td>
-                                        </tr>
-                                
-                                        <div class="modal fade modal_remover_<%= turma.id %>" id="" tabindex="-1" aria-hidden="true" style="display: none;">
-                                          <div class="modal-dialog modal-dialog-centered">
-                                            <div class="modal-content">
-                                              <div class="modal-header">
-                                                <h5 class="modal-title">Tem certeza que quer Remover esta disciplina deste Professor(a)?</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                              </div>
-                                              <div class="modal-footer">
-                                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Não</button>
-                                                <a href="/admin/cursos/disciplinas/<%= perfil.id %>/<%= disciplina.id %>/<%= turma.id %>/remover"><button type="button" class="btn btn-danger">Sim</button></a>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div><!-- Fim Modal DEletar curso --> 
-
-                                  <% } %>
-                                  <% }) %>
-                                <% }) %>
-                            <% }) %>
-
+                                <div class="modal fade modal_remover_<%= turma.id %>" id="" tabindex="-1" aria-hidden="true" style="display: none;">
+                                  <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <h5 class="modal-title">Tem certeza que quer Remover esta disciplina deste Professor(a)?</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                      </div>
+                                      <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Não</button>
+                                        <a href="/admin/cursos/disciplinas/<%= perfil.id %>/<%= disciplina.id %>/<%= turma.id %>/remover"><button type="button" class="btn btn-danger">Sim</button></a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div><!-- Fim Modal DEletar curso --> 
+                      
+                          <% } %>
+                          <% }) %>
+                        <% }) %>
+                      <% }) %>
+                      
                       </tbody>
                     </table>
                   </div>

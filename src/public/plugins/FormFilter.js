@@ -94,17 +94,77 @@ class FormFilter {
 
     showMatriculaDataToConfirm (data) {
         const { matricula } = data;
+
+        const trimestres = ['I', 'II', 'III'];
+        const medias = {};
+        let totNotasEcontradas = 0;
+
         const formConfirm = document.getElementById('form-confirm');
         const matriculaData = document.querySelectorAll('.outros-dados');
+        const error_payment = document.querySelector('.error_payment');
+        const error_notes = document.querySelector('.error_notes');
+
+
         let photo = document.getElementById('photo_student');
 
+        const mesActual = new Date().toLocaleDateString('pt-br', { month: 'long', });
+        let no_inamdiplete = false;
 
-        if (matricula.id) {
+        matricula.pagamentos.forEach((pagamento, index)=> {
+            if (pagamento.mes.mes.toLowerCase() == mesActual.toLowerCase()) no_inamdiplete = true;
+        })
 
-           if (matriculaData) {
+        trimestres.forEach(trimestre => {
+            let media = 0;
+            let totNotas = 0;
+            matricula.notas.forEach(nota => {
+                if (nota.trimestre == trimestre && nota.prova1 && nota.prova2) {
+                    totNotasEcontradas += 1;
+                    totNotas += 1;
+                    media += (parseFloat(nota.prova1 ) + parseFloat(nota.prova2)) / 2;
+                }
+            });
+            medias[trimestre] = media / totNotas;
+        });
+
+        let mediaFinal = (medias.I + medias.II + medias.III) / 3;
+           
+        console.log(medias)
+        console.log(mediaFinal)
+
+        if (matricula) {
+
+            error_payment.style.display = 'block';
+            if (matriculaData) {
                 matriculaData.forEach(element => {
-                    element.style.display = 'block';
+                    element.style.display = 'none';
                 });
+            }          
+
+            if (no_inamdiplete) {
+
+                if (matriculaData) {
+                    matriculaData.forEach(element => {
+                        element.style.display = 'block';
+                    });
+               }
+
+               error_payment.style.display = 'none';
+            }
+
+            if (totNotasEcontradas != matricula.notas.length) {
+
+                error_notes.innerHTML = 'Só será possível fazer a confirmação<br> quando todas as notas forem atribuidas';
+                error_notes.style.display = 'block'
+
+                if (matriculaData) {
+                    matriculaData.forEach(element => {
+                        element.style.display = 'none';
+                    });
+                } 
+
+           } else {
+                error_notes.style.display = 'none'
            }
 
             photo.src = `/files/${ matricula.aluno.foto }`;
@@ -328,6 +388,9 @@ class FormFilter {
         let linhasDeNotasIII = ''
         let linhaPropina = '';
 
+        const mesActual = new Date().toLocaleDateString('pt-br', { month: 'long', });
+        let no_inamdiplete = false;
+
         const avatar_group = document.querySelector('#avatar_group');
         const about_student = document.querySelector('#about_student');
 
@@ -384,6 +447,8 @@ class FormFilter {
 
        matricula.pagamentos.forEach((pagamento, index)=> {
 
+        if (pagamento.mes.mes.toLowerCase() == mesActual.toLowerCase()) no_inamdiplete = true;
+
             linhaPropina +=  `
                     <tr>
                         <th scope="col">${ index + 1 }</th>
@@ -396,6 +461,7 @@ class FormFilter {
                 `
 
         })
+
 
         about_student.innerHTML = `
                         <div class="col-sm-12 col-md-4" align="center">
@@ -558,90 +624,99 @@ class FormFilter {
                                 
                                         
                                 <!-- Default Accordion -->
-                                <div class="accordion" id="accordionExample">
-                                  <div class="accordion-item">
-                                    <h2 class="accordion-header" id="headingOne">
-                                      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                        Iº Trimestre
-                                      </button>
-                                    </h2>
-                                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                                      <div class="accordion-body">
-                                        
-                                        <table class="table table-striped student__notes" style="text-align: left;">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">Disciplina</th>
-                                                    <th scope="col">1ª Prova</th>
-                                                    <th scope="col">2ª Prova</th>
-                                                    <th scope="col">Média</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                               
-                                               ${ linhasDeNotasI }
-                                                       
-                                            </tbody>
-                                        </table>
+                                ${
 
-                                      
-                                        </div>
-                                    </div>
-                                  </div>
-                                  <div class="accordion-item">
-                                    <h2 class="accordion-header" id="headingTwo">
-                                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                      IIº Trimestre
-                                      </button>
-                                    </h2>
-                                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                                      <div class="accordion-body">
-                                        
-                                            <table class="table table-striped student__notes" style="text-align: left;">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col">Disciplina</th>
-                                                        <th scope="col">1ª Prova</th>
-                                                        <th scope="col">2ª Prova</th>
-                                                        <th scope="col">Média</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
+                                    (no_inamdiplete) ? `
+                                    
+                                                <div class="accordion" id="accordionExample">
+                                                <div class="accordion-item">
+                                                <h2 class="accordion-header" id="headingOne">
+                                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                    Iº Trimestre
+                                                    </button>
+                                                </h2>
+                                                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                                    <div class="accordion-body">
                                                     
-                                                    ${ linhasDeNotasII }
+                                                    <table class="table table-striped student__notes" style="text-align: left;">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">Disciplina</th>
+                                                                <th scope="col">1ª Prova</th>
+                                                                <th scope="col">2ª Prova</th>
+                                                                <th scope="col">Média</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
                                                             
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                  </div>
-                                  <div class="accordion-item">
-                                    <h2 class="accordion-header" id="headingThree">
-                                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                      IIIº Trimestre
-                                      </button>
-                                    </h2>
-                                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
-                                      <div class="accordion-body">
-                                            <table class="table table-striped student__notes" style="text-align: left;">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col">Disciplina</th>
-                                                        <th scope="col">1ª Prova</th>
-                                                        <th scope="col">2ª Prova</th>
-                                                        <th scope="col">Média</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
+                                                            ${ linhasDeNotasI }
+                                                                    
+                                                        </tbody>
+                                                    </table>
+            
                                                     
-                                                    ${ linhasDeNotasIII }
-                                                            
-                                                </tbody>
-                                            </table>  
-                                        </div>
-                                    </div>
-                                  </div>
-                                </div><!-- End Default Accordion Example -->
+                                                    </div>
+                                                </div>
+                                                </div>
+                                                <div class="accordion-item">
+                                                <h2 class="accordion-header" id="headingTwo">
+                                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                    IIº Trimestre
+                                                    </button>
+                                                </h2>
+                                                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                                    <div class="accordion-body">
+                                                    
+                                                        <table class="table table-striped student__notes" style="text-align: left;">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th scope="col">Disciplina</th>
+                                                                    <th scope="col">1ª Prova</th>
+                                                                    <th scope="col">2ª Prova</th>
+                                                                    <th scope="col">Média</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                
+                                                                ${ linhasDeNotasII }
+                                                                        
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                </div>
+                                                <div class="accordion-item">
+                                                <h2 class="accordion-header" id="headingThree">
+                                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                    IIIº Trimestre
+                                                    </button>
+                                                </h2>
+                                                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                                    <div class="accordion-body">
+                                                        <table class="table table-striped student__notes" style="text-align: left;">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th scope="col">Disciplina</th>
+                                                                    <th scope="col">1ª Prova</th>
+                                                                    <th scope="col">2ª Prova</th>
+                                                                    <th scope="col">Média</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                
+                                                                ${ linhasDeNotasIII }
+                                                                        
+                                                            </tbody>
+                                                        </table>  
+                                                    </div>
+                                                </div>
+                                                </div>
+                                            </div><!-- End Default Accordion Example -->
+                                    
+                                    
+                                    ` : '<h1 class="error_payment">Por favor efetue o pagamento da propina<br> para visualizar as notas</h1>'
+
+                                }
                                     
                                 
                                 </div>

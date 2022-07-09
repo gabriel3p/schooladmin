@@ -559,7 +559,7 @@ module.exports = {
             const sociais = perfil.sociais.map(item => {
                 let { dataValues } = item
                 return dataValues;
-            })
+            })           
             
             res.render('./admin/pages/perfil', { funcionario, setDate, perfil, sociais, message: req.messages, setTime, turmas });
         } catch (error) {

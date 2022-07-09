@@ -94,7 +94,8 @@ class FormValidation {
             'bi',
             'telefone',
             'phone1',
-            'phone'
+            'phone2',
+            'email'
         ];
 
         [...this.formEl.elements].forEach(field => {
@@ -144,8 +145,10 @@ class FormValidation {
             msg.innerHTML = 'Este campo não pode conter números.';
             return false
         } else {
-            msg.style.display = 'none';
-            field.classList.remove('invalid3p')
+            if (msg) {
+                msg.style.display = 'none';
+                field.classList.remove('invalid3p')
+            }
             return true
         }
     }

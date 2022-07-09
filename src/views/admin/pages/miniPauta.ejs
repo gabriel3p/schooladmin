@@ -101,7 +101,7 @@
                         <!-- End Table with hoverable rows -->
 
                         <div class="col-12" align="right">
-                            <button type="submit" class="btn btn-success w-40" type="submit">Salvar</button>
+                            <button type="submit" class="btn btn-success w-40" type="submit" id="salvar">Salvar</button>
                           </div>
 
                     </div>             
@@ -123,15 +123,44 @@
         let prova2 = document.querySelectorAll('.prova2'); 
         let medias = document.querySelectorAll('.medias'); 
 
+        const btnSubmit = document.querySelector('#salvar');
+
+        const maxValue = 20;
+        const minValue = 0;
+
         window.addEventListener('load', calcMedia(medias));
 
-        prova1.forEach(prova => {
-            prova.addEventListener('change', () => calcMedia(medias));
+       
+        prova1.forEach((prova, index) => {
+            prova.addEventListener('change', event => {
+              console.log(prova);
+              if (event.target.value >= minValue && event.target.value <= maxValue) {
+                btnSubmit.disabled = false;
+                prova.style.borderColor = 'green';
+                return calcMedia(medias)
+              } 
+
+              btnSubmit.disabled = true;
+              prova.style.borderColor = 'red';
+              medias[index].value = '';
+              
+            });
         });
 
-        prova2.forEach(prova => {
-            prova.addEventListener('change', () => calcMedia(medias));
+        prova2.forEach((prova, index) => {
+            prova.addEventListener('change', event => {
+              if (event.target.value >= minValue && event.target.value <= maxValue) {
+                btnSubmit.disabled = false;
+                prova.style.borderColor = 'green';
+                return calcMedia(medias)
+              } 
+
+              btnSubmit.disabled = true;
+              prova.style.borderColor = 'red';
+              medias[index].value = '';
+            });
         });
+       
 
        function calcMedia(filds) {
            filds.forEach((media, index) => {
@@ -140,6 +169,8 @@
                 }
             });
         }
+
+        
 
     </script>
     
@@ -157,7 +188,7 @@
               let element = '';
               let item = '';
 
-              alunos.forEach((aluno,  index)=> {
+              alunos.forEach((aluno,  index) => {
 
                 aluno.matriculas[aluno.matriculas.length - 1].notas.forEach(nota => {
 
@@ -182,6 +213,58 @@
               });
               
               tbody.innerHTML = element;
+
+
+              let prova1 = document.querySelectorAll('.prova1');
+              let prova2 = document.querySelectorAll('.prova2'); 
+              let medias = document.querySelectorAll('.medias'); 
+
+              const btnSubmit = document.querySelector('#salvar');
+
+              const maxValue = 20;
+              const minValue = 0;
+
+              window.addEventListener('load', calcMedia(medias));
+
+            
+              prova1.forEach((prova, index) => {
+                  prova.addEventListener('change', event => {
+                    if (event.target.value >= minValue && event.target.value <= maxValue) {
+                      btnSubmit.disabled = false;
+                      prova.style.borderColor = 'green';
+                      return calcMedia(medias)
+                    } 
+
+                    btnSubmit.disabled = true;
+                    prova.style.borderColor = 'red';
+                    medias[index].value = '';
+                    
+                  });
+              });
+
+              prova2.forEach((prova, index) => {
+                  prova.addEventListener('change', event => {
+                    if (event.target.value >= minValue && event.target.value <= maxValue) {
+                      btnSubmit.disabled = false;
+                      prova.style.borderColor = 'green';
+                      return calcMedia(medias)
+                    } 
+
+                    btnSubmit.disabled = true;
+                    prova.style.borderColor = 'red';
+                    medias[index].value = '';
+                  });
+              });
+            
+
+            function calcMedia(filds) {
+                filds.forEach((media, index) => {
+                      if (prova1[index].value > 0 && prova2[index].value > 0) {
+                          media.value = (parseFloat(prova1[index].value) + parseFloat(prova2[index].value) ) / 2;
+                      }
+                  });
+              }
+             
 
             }).catch(error => {
               console.log(error)
